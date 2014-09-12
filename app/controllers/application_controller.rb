@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-
+  attr_reader :current_user
 
   def render_json_e(error_code)
     error_code_obj = {
@@ -38,10 +38,8 @@ class ApplicationController < ActionController::Base
 
 
   def refresh_session(user_id)
-    # 1. get current user
     @current_user = user_id.blank? ? nil : User.find(user_id)
     if current_user.present?
-      # If current user is not empty, set cookie
       cookies[:auth_key] = {
         :value => user_id,
         :expires => Rails.application.config.permanent_signed_in_months.months.from_now,
@@ -49,7 +47,6 @@ class ApplicationController < ActionController::Base
       }
       return true
     else
-      # If current user is empty, delete cookie
       cookies.delete(:auth_key, :domain => :all)
       return false
     end

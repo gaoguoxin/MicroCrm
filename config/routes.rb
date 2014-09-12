@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+  resources :feedbacks
+
   root 'welcome#index'
+  get '/regist' => 'users#new'
+  get '/login'  => 'sessions#new'
+
+
   namespace :admin do
-    # Directs /admin/products/* to Admin::ProductsController
-    # (app/controllers/admin/products_controller.rb)
     resources :users
     resources :orders
     resources :companies
