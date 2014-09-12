@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Sentir, Responsive admin and dashboard UI kits template">
+    <meta name="keywords" content="">
+    <title>注册页</title>
+    <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
+    <%= javascript_include_tag 'layouts/app-layout' %>
+    <%= csrf_meta_tags %> 
+    <%= yield :app_head %>
+    <script type="text/javascript">
+      jQuery(function($) {
+        $('input,textarea').placeholder();
+      });
+    </script>
+  </head>
+  <body class="<%= @body_class %>">
+    <%= content_for?(:app_content) ? yield(:app_content) : yield %>
+  </body>
+</html>
