@@ -4,7 +4,7 @@ body {
 	font-family: 'Lato', Calibri, Arial, sans-serif;
 	font-size: 15px;
 	color: #656D78;
-	padding-top: 60px;
+	/*padding-top: 60px;*/
 	overflow-x: hidden;
 	height: 100%;
 }
@@ -2185,9 +2185,9 @@ textarea.no-resize {
 .has-feedback.no-label .form-control-feedback {
 	top: 0px;
 }
-.has-feedback.no-label.lg .form-control-feedback {
+/*.has-feedback.no-label.lg .form-control-feedback {
 	top: 7px;
-}
+}*/
 .has-feedback.left-feedback .form-control {
 	padding-left: 35.5px;
 	padding-right: 0px;
@@ -2196,9 +2196,9 @@ textarea.no-resize {
 	left: 0;
 	right: auto;
 }
-.has-feedback.left-feedback.lg .form-control-feedback {
+/*.has-feedback.left-feedback.lg .form-control-feedback {
 	left: 3px;
-}
+}*/
 .form-control-feedback {
 	color: #AAB2BD;
 }

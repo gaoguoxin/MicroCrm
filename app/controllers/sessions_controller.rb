@@ -17,4 +17,9 @@ class SessionsController < ApplicationController
     refresh_session(nil)
     redirect_to root_url
   end
+
+
+
+
+
 end

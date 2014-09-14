@@ -17,7 +17,10 @@ class UsersController < ApplicationController
   end
 
 
-
+  #检查用户是否已经存在
+  def check_exist
+    
+  end
 
   #更新个人信息
   def update

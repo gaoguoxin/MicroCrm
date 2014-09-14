@@ -1,0 +1,44 @@
+@import "compass/utilities/general/clearfix";
+@import "compass/css3/inline-block";
+
+@mixin one-line($height) {
+	height: $height;
+	line-height: $height;
+	vertical-align: middle;
+}
+
+@mixin square($edge) {
+	@include inline-block;
+	width: $edge;
+	@include one-line($edge);
+}
+
+@mixin size($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+
+.login-wrapper{
+	form{
+		.form-group{
+			.form-control-feedback.glyphicon{
+				@include square(46px);
+				display:none;
+				right:0;
+				left:auto;
+				
+			}
+		}
+	}
+	p{
+		margin:0px;
+		padding:0px 6px;
+		@include clearfix;
+		strong{
+			a{
+				text-decoration: none;
+			}
+		}
+	}
+}

@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
-  layout "default"
+  #layout "default"
+
+  layout :diffrent_layout
 
   protect_from_forgery with: :exception
   attr_reader :current_user
@@ -51,6 +53,16 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+
+
+  def diffrent_layout
+    if controller_name == 'sessions' || controller_name == 'users'
+      false
+    else
+      "default"
+    end
+  end
+
 
 
 
