@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   attr_reader :current_user
 
+  def render_json(is_success = true, &block)
+    @is_success = is_success.present?
+    render :json => {
+                :value => block_given? ? yield(is_success) : is_success ,
+                :success => !!@is_success
+              }
+  end
+  
   def render_json_e(error_code)
     error_code_obj = {
       :error_code => error_code,

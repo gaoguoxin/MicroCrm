@@ -80,7 +80,7 @@ class User
   def self.login(opt)
     email_mobile =  opt[:account].to_s.downcase
     password     =  opt[:password].downcase
-    user = self.find_by_email_or_mobile(email_mobile).first
+    user = self.find_by_email_or_mobile(email_mobile)
     return ErrorEnum::USER_NOT_EXIST unless user.present?
     return ErrorEnum::PASSWORD_ERROR if user.password != make_encrypt(password)
     return user
@@ -88,7 +88,7 @@ class User
 
   def update_info(opt)
     self.update(opt)
-    if self.company.present? && company.name !== '其他'
+    if self.company.present? && company.name != '其他'
       if opt[:company_id].present?  #用户如果之前填写了公司信息，那么不允许用户再次修改所属公司信息
         SmsWorker.perform_async("join_company",self.company.mobile,self)
       end
