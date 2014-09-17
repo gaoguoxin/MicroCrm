@@ -1,7 +1,3 @@
-//=require icheck/skins/all
-//=require ./style
-//=require ./style-responsive
-
-@import "bootstrap-sprockets";
-@import "bootstrap";
 @import "font-awesome";
+@import "groundworkcss/settings-rails4"; 
+@import "groundworkcss/groundwork";

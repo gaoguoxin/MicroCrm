@@ -1,4 +1,5 @@
-source 'https://rubygems.org'
+#source 'https://rubygems.org'
+source 'http://ruby.taobao.org'
 
 gem 'mongoid', github: 'mongoid/mongoid'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -10,7 +11,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer',  platforms: :ruby
+gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -26,13 +27,11 @@ gem 'spring',        group: :development
 
 gem 'ezcrypto', '~> 0.7.2'
 
-gem 'compass-rails'
-
+# gem 'compass-rails'
+gem 'compass-rails', '~> 1'
 gem 'spreadsheet'
+gem 'groundworkcss'
 
-# gem 'jquery-turbolinks'
-# gem 'nprogress-rails'
-gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem "font-awesome-rails"
 

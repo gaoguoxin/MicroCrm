@@ -1,70 +1,28 @@
-.navbar{
-	background:#37BC9B;
-	.navbar-brand{
-		padding:10px 15px;
-	}
+@import "compass/utilities/general/clearfix";
+@import "compass/css3/inline-block";
+@import "compass/css3/opacity";
 
+@mixin one-line($height) {
+	height: $height;
+	line-height: $height;
+	vertical-align: middle;
+}
 
-	#navbar{
-		ul{
-			li{
-				a{
-					background:none;
-					color:#fff;
-				}
-				&.active{
-					background:#16a085;
-				}
-				&:hover{
-				background:#16a085;
-				}
-			}
-		}
-		.navbar-form{
-			.form-group{
-				position:relative;
-				.glyphicon.glyphicon-search{
-					position:absolute;
-					width:34px;
-					height:34px;
-					line-height: 34px;
-					text-align: center;
-					right:0px;
-					top:0px;
-				}
-			}
-		}
-	}	
+@mixin square($edge) {
+	@include inline-block;
+	width: $edge;
+	@include one-line($edge);
+}
+
+@mixin size($width, $height) {
+	width: $width;
+	height: $height;
 }
 
 
-#footer {
-	background: #444749;
-	color:rgba(236,235,231,0.5);
-	overflow: hidden;
-	position: absolute;
-	left: 0;
-	right: 0;
-	h5{
-		text-align:left;
-	}
-	ul{
-		li{
-			text-align:left;
-			a{
-				text-decoration: none;
-			}
-		}
-	&.contact{
-		span{
-			margin-right:6px;
-		}
-	}
-
-	}
-	.copyright{
-		font-weight:bold;
-		color:#fff;
+.search-container{
+	position:relative;
+	.fa-search{
+		@include square(32px);
 	}
 }
-
