@@ -38,7 +38,8 @@ class User
 
   #注册用户
   def self.regist(opt)
-    email_mobile      = opt[:account].to_s.downcase
+    account = {}
+    email_mobile      = opt[:email_mobile].to_s.downcase
     account[:role]    = opt[:role] || ROLE_EMPLOYEE
     account[:source]  = opt[:source] ||  SOURCE_R
     opt[:password]    = opt[:password].downcase
@@ -50,7 +51,7 @@ class User
 
     exist_user = false
 
-    user = self.find_by_email_or_mobile(email_mobile).first
+    user = self.find_by_email_or_mobile(email_mobile)
 
     exist_user = true if user.present?
     return ErrorEnum::USER_EXIST if exist_user
@@ -63,14 +64,14 @@ class User
 
     user = self.create(account)
     
-    if source == SOURCE_S #系统管理员添加企业管理员行为
-      if user.mobile.present?
-        SmsWorker.perform_async("add_manager",user.mobile,opt[:password])
-      end
-    elsif source == SOURCE_M #企业管理员添加员工行为
-      if user.mobile.present?
-        SmsWorker.perform_async("add_employee",user.mobile,opt[:password])
-      end
+    if account[:source] == SOURCE_S #系统管理员添加企业管理员行为
+      # if user.mobile.present?
+      #   SmsWorker.perform_async("add_manager",user.mobile,opt[:password])
+      # end
+    elsif account[:source] == SOURCE_M #企业管理员添加员工行为
+      # if user.mobile.present?
+      #   SmsWorker.perform_async("add_employee",user.mobile,opt[:password])
+      # end
     end
 
     return user
@@ -78,7 +79,7 @@ class User
 
   #登录用户
   def self.login(opt)
-    email_mobile =  opt[:account].to_s.downcase
+    email_mobile =  opt[:email_mobile].to_s.downcase
     password     =  opt[:password].downcase
     user = self.find_by_email_or_mobile(email_mobile)
     return ErrorEnum::USER_NOT_EXIST unless user.present?
@@ -86,6 +87,11 @@ class User
     return user
   end
 
+  def self.check_exist(opt)
+    user = self.find_by_email_or_mobile(opt[:email_mobile])
+  end
+
+  # 更改信息
   def update_info(opt)
     self.update(opt)
     if self.company.present? && company.name != '其他'

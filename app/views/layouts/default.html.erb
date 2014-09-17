@@ -1,6 +1,6 @@
 <% content_for :app_head do %>
-	<%= stylesheet_link_tag    "pages/default" %>
-	<%= javascript_include_tag "pages/default" %>
+	<%= stylesheet_link_tag    "layouts/default-layout" %>
+	<%= javascript_include_tag "layouts/default-layout" %>
 	<script type="text/javascript">
 	jQuery(function($) {
 
@@ -11,7 +11,6 @@
 <% end %>
 
 <% content_for :app_content do %>
-	<!--nav link  about -->
   <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -21,46 +20,41 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Project name</a>
+        <a class="navbar-brand" href="javascript:void(0);"><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
+          <li class="active"><a href="#">首页</a></li>
+          <li><a href="#">AX</a></li>
+          <li><a href="#">CRM</a></li>
+          <li><a href="#">GP</a></li>
+          <li><a href="#">NAV</a></li>
+          <li><a href="#">SL</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="./">Default</a></li>
-          <li><a href="../navbar-static-top/">Static top</a></li>
-          <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-        </ul>
+        <div class="navbar-right">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="搜索课程">
+              <span class="glyphicon glyphicon-search"></span>
+            </div>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login">登录</a></li>
+            <li><a href="regist">注册</a></li>
+          </ul>          
+        </div>
       </div>
     </div>
   </nav>
-
-  <!--nav link  about -->
 	<%= yield %>
-  <!-- fotter about  -->
   <footer id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 col-sm-12">
-          <div class="row">
-            <div class="col-md-2 col-sm-3">
-              <h5>Product</h5>
-              <ul>
+        <div class="col-xs-12">
+          <div class="row hidden-xs">
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+              <h5>关于我们</h5>
+              <ul class='list-unstyled'>
                 <li class="create"><a href="https://www.bunkr.me/en/create-presentation/">Create</a></li>
                 <li class="gallery"><a href="https://www.bunkr.me/gallery">Gallery</a></li>
                 <li class="collaborate"><a href="https://www.bunkr.me/en/collaborate/">Collaborate</a></li>
@@ -68,68 +62,42 @@
                 <li class="pricing"><a href="https://www.bunkr.me/en/pricing/">Pricing</a></li>
                 <li class="support"><a href="http://bunkr.uservoice.com/" target="_blank">Support</a></li>
               </ul>
-              <h5>Customers</h5>
-              <ul>
-                <li class="schools"><a href="https://www.bunkr.me/en/schools/">Schools/Students</a></li>
-                <li class="incubators"><a href="https://www.bunkr.me/en/incubators/">Incubators/Startups</a></li>
-                <li class="speakers"><a href="https://www.bunkr.me/en/speakers/">Events/Speakers</a></li>
-                <li class="ambassadors"><a href="https://www.bunkr.me/en/ambassadors/">Ambassadors</a></li>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+              <h5>联系方式</h5>
+              <ul class='list-unstyled contact'>
+                <li><a href="javascript:void(0);"><span>电话:</span>010-61598821</a></li>
+                <li><a href="javascript:void(0);"><span>Email:</span>naitnix@126.com</a></li>
+                <li><a href="javascript:void(0);"><span>QQ:</span>564126197</a></li>
+                <li><a href="javascript:void(0);"><span>地址:</span>北京市海淀区</a></li>
               </ul>
             </div>
-            <div class="col-md-2 col-sm-3">
-              <h5>Company</h5>
-              <ul>
-                <li class="story"><a href="https://www.bunkr.me/en/story/">Story</a></li>
-                <li class="values"><a href="https://www.bunkr.me/en/values/">Our values</a></li>
-                <li class="team"><a href="https://www.bunkr.me/en/team/">Team</a></li>
-                <li class="jobs"><a href="https://www.bunkr.me/en/jobs/">Jobs</a></li>
-                <li class="partners"><a href="https://www.bunkr.me/en/partners/">Partners</a></li>
-                <li><a href="http://bunkr.spreadshirt.fr/" target="_blank">Shop</a></li>
-              </ul>
-              <h5>News/Press</h5>
-              <ul>
-                <li><a href="http://blog.bunkr.me" target="_blank" class="blog">Blog</a></li>
-                <li class="press_releases"><a href="https://www.bunkr.me/en/press-releases/">Press releases</a></li>
-                <li class="press_review"><a href="https://angel.co/bunkr/activity#press">Press review</a></li>
-                <li class="media_kit">
-                  <a target="_blank" href=""><span class="glyphicon glyphicon-download"></span> Media Kit</a>
-                </li>
-              </ul>
-            </div>
-            <div class="col-md-3 col-sm-3">
-              <h5>Community</h5>
-              <ul class="social-btn-list community-icon-set-list">
-                <li><a class="community-icon-twitter" target="_blank" href="">Twitter</a></li>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+              <h5>友情链接</h5>
+              <ul class='list-unstyled'>
+                <li><a class="community-icon-twitter" target="_blank" href="">百度</a></li>
                 <li>
-                  <a class="community-icon-facebook" target="_blank" href="">Facebook</a>
+                  <a class="community-icon-facebook" target="_blank" href="">腾讯</a>
                 </li>
                 <li>
-                  <a class="community-icon-google" target="_blank" href="" rel="publisher">Google +</a>
+                  <a class="community-icon-google" target="_blank" href="" rel="publisher">阿里巴巴</a>
                 </li>
                 <li>
-                  <a class="community-icon-youtube" target="_blank" href="">YouTube</a>
+                  <a class="community-icon-youtube" target="_blank" href="">微软</a>
                 </li>
                 <li>
-                  <a class="community-icon-instagram" target="_blank" href="">Instagram</a>
+                  <a class="community-icon-instagram" target="_blank" href="">IBM</a>
                 </li>
                 <li>
-                  <a class="community-icon-linkedin" target="_blank" href="">LinkedIn</a>
-                </li>
-                <li>
-                  <a class="community-icon-angellist" target="_blank" href="">Angel List</a>
+                  <a class="community-icon-linkedin" target="_blank" href="">联想</a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="row copyright">
-            <div class="col-md-12 col-sm-12">
-              <div class="row">
-                <div class="col-md-4 col-sm-5">
-                  Copyright 2014 Bunkr. All rights reserved.
-                </div>
-                <div class="col-md-6 col-sm-5">
-                  <a href="https://www.bunkr.me/en/terms">Terms &amp; Conditions</a>
-                </div>
+            <div class="row">
+              <div class="col-xs-12">
+                Copyright<span class='fa fa-copyright'></span>2014
               </div>
             </div>
           </div>
@@ -137,9 +105,6 @@
       </div>
     </div>
   </footer> 
-  <!-- fotter about  -->
-
-
 <% end %>
 
 <%= parent_layout 'app' %>

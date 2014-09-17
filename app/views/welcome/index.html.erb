@@ -1,0 +1,62 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/index-bundle" %>
+  <%= javascript_include_tag "pages/default/index-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+
+  <%= yield :head %>
+<% end %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="thumbnail ax">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail crm">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail crm_dy">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail gp">
+          </div>
+        </div>                
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="thumbnail nav">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail sl">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail sl_dy">
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="thumbnail ax_dy">
+          </div>
+        </div>                
+      </div>      
+    </div>
+    <div class="col-xs-3 col-xs-offset-1">
+      <h5>如何使用</h5>
+      <div class="setp1"><span class="fa fa-key"></span>登录</div>
+      <div class="step2"><span class="fa fa-edit"></span>完善个人信息</div>
+      <div class="setp3"><span class="fa fa-search"></span>搜索自己感兴趣的课程</div>
+      <div class="setp4"><span class="fa fa-bell"></span>报名</div>
+      <div class="setp5"><span class="fa fa-check-square"></span>等待公司主管及系统管理员审核</div>
+      <div class="setp6"><span class="fa fa-plane"></span>接收通知，前去听课</div>
+    </div> 
+  </div>  
+</div>

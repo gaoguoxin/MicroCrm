@@ -3,8 +3,20 @@ class ApplicationController < ActionController::Base
 
   layout :diffrent_layout
 
-  protect_from_forgery with: :exception
   attr_reader :current_user
+
+  protect_from_forgery with: :exception
+
+  before_filter :init
+  helper_method :current_user
+  
+
+
+
+  # init action
+  def init
+    refresh_session(cookies[:auth_key])
+  end
 
   def render_json(is_success = true, &block)
     @is_success = is_success.present?

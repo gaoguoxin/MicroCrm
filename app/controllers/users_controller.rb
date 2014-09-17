@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   #注册用户
   def create
     user = User.regist(params)
-    refresh_session(user.id.to_s) if user.present? && user.id.present?
+    refresh_session(user.id.to_s) if user.present? && user.class == User
     render_json_auto user and return
   end
 
@@ -19,7 +19,12 @@ class UsersController < ApplicationController
 
   #检查用户是否已经存在
   def check_exist
-    
+    exist = false
+    user = User.check_exist(params)
+    if user.present?
+      exist = true
+    end
+    render_json_auto exist and return
   end
 
   #更新个人信息

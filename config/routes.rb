@@ -24,7 +24,11 @@ Rails.application.routes.draw do
 
   resources :companies
 
-  resources :users
+  resources :users do 
+    collection do 
+      post  'check_exist'
+    end
+  end
 
   resources :sessions
   
