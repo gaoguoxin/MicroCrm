@@ -20,9 +20,36 @@
 }
 
 
+.logo-container{
+	display:inline-block;
+	width:100%;
+	&.mobile{
+		text-align:center;
+	}
+}
+
 .search-container{
 	position:relative;
 	.fa-search{
 		@include square(32px);
+	}
+}
+.login-container{
+	a{
+		display:inline-block;
+		@include one-line(32px);
+		text-align:center;
+		text-decoration: none;
+	}
+}
+.nav{
+	ul{
+		li{
+			text-align:center;
+			a{
+				display:inline-block;
+				width:100%;
+			}
+		}
 	}
 }

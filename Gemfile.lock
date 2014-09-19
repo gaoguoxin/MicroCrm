@@ -88,6 +88,9 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     minitest (5.4.1)
+    mobile-fu (1.2.2)
+      rack-mobile-detect
+      rails
     moped (2.0.0)
       bson (~> 2.2)
       connection_pool (~> 2.0)
@@ -97,6 +100,8 @@ GEM
     origin (2.1.1)
     polyglot (0.3.5)
     rack (1.5.2)
+    rack-mobile-detect (0.4.0)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.5)
@@ -172,6 +177,7 @@ DEPENDENCIES
   groundworkcss
   jbuilder (~> 2.0)
   jquery-rails
+  mobile-fu (~> 1.2.2)
   mongoid!
   rails (= 4.1.5)
   sass-rails (~> 4.0.3)

@@ -1,0 +1,17 @@
+<% content_for :app_head do %>
+	<%= stylesheet_link_tag    "layouts/default-layout-mobile" %>
+	<%= javascript_include_tag "layouts/default-layout-mobile" %>
+	<script type="text/javascript">
+	jQuery(function($) {
+	});
+	</script>
+	<%= yield :head %>
+<% end %>
+
+
+<% content_for :app_content do %>
+	<%= yield %>
+<% end %>
+
+
+<%= parent_layout 'app' %>

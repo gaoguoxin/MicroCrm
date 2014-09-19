@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   #layout "default"
 
+
   layout :diffrent_layout
 
   attr_reader :current_user
@@ -8,11 +9,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :init
+  before_filter :force_tablet_html
+
+  has_mobile_fu 
   helper_method :current_user
   
 
 
-
+  def force_tablet_html
+    session[:tablet_view] = false
+  end
+  
   # init action
   def init
     refresh_session(cookies[:auth_key])

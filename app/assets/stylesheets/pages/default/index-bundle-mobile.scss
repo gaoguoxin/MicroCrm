@@ -1,9 +1,34 @@
 @import "compass/css3/border-radius";
+
+@mixin one-line($height) {
+	height: $height;
+	line-height: $height;
+	vertical-align: middle;
+}
+
+@mixin square($edge) {
+	@include inline-block;
+	width: $edge;
+	@include one-line($edge);
+}
+
+@mixin size($width, $height) {
+	width: $width;
+	height: $height;
+}
+.logo-container{
+	display:inline-block;
+	background:#008287;
+	width:100%;
+	img{
+		width:100%;
+		height:auto;
+	}
+}
 .nav-box{
 	display:inline-block;
 	position: relative;
 	width:100%;
-	outline:none;
 	&:before{
 		content: "";
 		display: block;

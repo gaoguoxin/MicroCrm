@@ -1,6 +1,6 @@
 <% content_for :app_head do %>
-  <%= stylesheet_link_tag    "pages/default/index-bundle" %>
-  <%= javascript_include_tag "pages/default/index-bundle" %>
+  <%= stylesheet_link_tag    "pages/default/index-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/index-bundle-mobile" %>
   <script type="text/javascript">
   jQuery(function($) {
 
@@ -8,65 +8,77 @@
   </script>
   <%= yield :head %>
 <% end %>
+
+
+<header class="padded">
+    <div class="container">
+      <div class="row">
+        <div>
+          <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo responsive',:alt => "logo" %></a>
+        </div>     
+      </div>
+    </div>
+  </header>
+
 <div class="container">
   <article class="row">
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInLeft animated">
       <a href="/"class="nav-box block purple">
-        <h3 class="responsive">Welcome</h3>
+        <h3 class="">Welcome</h3>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInDownLeft animated">
       <a href="/category?t=crm" class="nav-box block charcoal">
-       <h3 class="responsive">Responsive Heading</h3>
-       <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+       <h3 class="">Responsive Heading</h3>
+       <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInDown animated">
       <a href="" class="nav-box block asphalt">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInUp animated">
       <a href="" class="nav-box block green">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInUpRight animated">
       <a href="" class="nav-box block blue">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInLeft animated">
       <a href="" class="nav-box block yellow">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInDownLeft animated">
       <a href="" class="nav-box block orange">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInDown animated">
       <a href="" class="nav-box block red">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInUp animated">
       <a href="" class="nav-box block pink">
-        <h3 class="responsive">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao<span class="fa fa-cloud"></span></h5>
+        <h3 class="">Responsive Heading</h3>
+        <h5>Shadn.D.Xiao</h5>
       </a>
     </div>
     <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInUpRight animated">
-      <a href="" class="nav-box block turquoise">
-        <h3 class="responsive">联系电话</h3>
-        <h5><span class='block align-center'>15210427877</span><span class="fa fa-phone"></span></h5>
+      <a href="tel:15210427877" class="nav-box turquoise noicon">
+        <h3 class="">联系电话</h3>
+        <h5 class='tel'>15210427877</h5>
       </a>
     </div>
   </article>  
