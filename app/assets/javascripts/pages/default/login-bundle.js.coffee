@@ -28,7 +28,7 @@ $(->
 		password = password_ipt.val()
 		$.post("/sessions",{email_mobile:account,password:password},(ret)->
 			if ret.success
-				window.location.href = "/user/users"
+				window.location.href = ret.value.ref
 			else
 				if ret.value.error_code == "error_3"
 					flag_notice(account_ipt,'该用户不存在')

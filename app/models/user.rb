@@ -6,6 +6,8 @@ class User
   include FindTool
   include Mongoid::Timestamps
 
+  attr_accessor :ref
+
   EmailRexg  = '\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z'
   MobileRexg = '^(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$' 
 
@@ -78,6 +80,9 @@ class User
     user = self.find_by_email_or_mobile(email_mobile)
     return ErrorEnum::USER_NOT_EXIST unless user.present?
     return ErrorEnum::PASSWORD_ERROR if user.password != make_encrypt(password)
+    user.write_attribute(:ref,'/admin/courses') if user.is_system? || user.is_viewer?
+    user.write_attribute(:ref,'/manager/users') if user.is_manager?
+    user.write_attribute(:ref,'/user/users') if user.is_employee?
     return user
   end
 
@@ -129,7 +134,7 @@ class User
     return self.role == ROLE_VIEW
   end
 
-  def is_manger?
+  def is_manager?
     return self.role == ROLE_MANAGER
   end
 
