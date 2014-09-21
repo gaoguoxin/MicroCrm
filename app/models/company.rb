@@ -25,4 +25,7 @@ class Company
 
   has_many :users
   belongs_to :manager, class_name: "User", inverse_of: :company
+
+  scope :actived, -> { where(status: STATUS_GOING) }
+
 end

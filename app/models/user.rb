@@ -84,7 +84,14 @@ class User
   end
 
   def self.check_exist(opt)
-    user = self.find_by_email_or_mobile(opt[:email_mobile])
+    email  = opt[:email].to_s.downcase
+    mobile = opt[:mobile].to_s.downcase
+    if email.present?
+      user = self.find_by_email(email)  
+    else
+      user = self.find_by_mobile(mobile) 
+    end
+    return user
   end
 
 

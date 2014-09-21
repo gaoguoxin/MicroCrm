@@ -1,23 +1,25 @@
 $(->
 	account_ipt  = $('input[name="email_mobile"]')
 	password_ipt = $('input[name="password"]')
-	ipt_focus = ->
-		$('.form input').focus(->
-			$(this).parents('.ipt-container').removeClass('invalid')
-		)
 
-	flag_notice = (obj,klass)->
-		obj.parents('.ipt-container').addClass("#{klass}")
+	flag_notice = (obj,msg)->
+		obj.parents('.ipt-container').addClass("invalid")
+		obj.siblings('.tooltip').text('').text(msg).removeClass('animated bounceOutRight').addClass('animated bounceInRight').show()
+
+	remove_notice = (obj)->
+		obj.parents('.ipt-container').removeClass("invalid")
+		if obj.siblings('.tooltip:visible').length > 0
+			obj.siblings('.tooltip').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('')
 
 	check_required = ->
 		email_mobile = $.trim(account_ipt.val())
 		password     = $.trim(password_ipt.val())
 		if email_mobile.length == 0
-			flag_notice(account_ipt,'invalid')
+			flag_notice(account_ipt,'请输入帐号')
 			return false
 
 		if password.length == 0
-			flag_notice(password_ipt,'invalid')
+			flag_notice(password_ipt,'请输入密码')
 			return false
 		send_ajax()
 
@@ -29,12 +31,17 @@ $(->
 				window.location.href = "/user/users"
 			else
 				if ret.value.error_code == "error_3"
-					$('.account.tooltip').addClass('animated bounceInRight').show()
+					flag_notice(account_ipt,'该用户不存在')
 				else
-					$('.password.tooltip').addClass('animated bounceInRight').show()
+					flag_notice(password_ipt,'您输入的密码有误')
 		)
 
-	ipt_focus();
+	# ipt_focus();
+
+	$('.form input').focus(->
+		remove_notice($(@))
+	)
+
 
 	$('.login-btn').click((e)->
 		e.preventDefault()

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   def new
-    @companis = Company.where(status:Company::STATUS_GOING)
+    @companis = Company.actived
     redirect_to root_url if current_user.present?
   end
 

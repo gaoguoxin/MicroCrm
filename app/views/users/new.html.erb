@@ -37,6 +37,7 @@
           </div>
           <div class="five small-tablet sixths">
             <input type="text" name="name" class='large' placeholder="请输入姓名">
+            <div class='tooltip name'></div>
           </div>       
         </div>   
         <div class="row padded ipt-container">
@@ -45,6 +46,7 @@
           </div>
           <div class="five small-tablet sixths">
             <input type="text" name="email" class='large' placeholder="请输入邮箱"  >
+            <div class='tooltip email'></div>
           </div>       
         </div> 
         <div class="row padded ipt-container">
@@ -53,6 +55,7 @@
           </div>
           <div class="five small-tablet sixths">
             <input type="text" name="mobile" class='large' placeholder="手机号码"  >
+            <div class='tooltip mobile'></div>
           </div>       
         </div> 
         <div class="row padded ipt-container">
@@ -61,25 +64,27 @@
           </div>
           <div class="five small-tablet sixths">
             <input type="password" name="password" class='large' placeholder="密码">
+            <div class='tooltip password'></div>
           </div>
         </div>    
-        <div class="padded">
+        <div class="padded ipt-container">
           <div class="one small-tablet sixth">
             <span class="prefix large"><span class="fa fa-building"></span></span>
           </div>  
           <div class="five small-tablet sixths">
             <span class="select-wrap large">
-                <select class="unselected">
-                  <option value="" disabled="" selected="">所属公司</option>
-                  <% @companis.each do |company| %>
-                    <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
-                  <% end %>
-                </select>
-            </span>            
+              <select class="unselected" name='company'>
+                <option value="" disabled="" selected="">所属公司</option>
+                <% @companis.each do |company| %>
+                  <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
+                <% end %>
+              </select>
+            </span>
+            <div class='tooltip company'></div>        
           </div>      
         </div>
         <div class="row padded">
-          <button class="block large login-btn">立即注册</button>
+          <button class="block large reg-btn">立即注册</button>
         </div>
         <div class="row padded">
           <p>
