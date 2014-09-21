@@ -2,25 +2,22 @@ $(->
 	account_ipt  = $('input[name="email_mobile"]')
 	password_ipt = $('input[name="password"]')
 	ipt_focus = ->
-		$('.form-group input').focus(->
-			$(this).parent('.form-group').removeClass('has-error').removeClass('has-success')
-			$(this).siblings('span.glyphicon').hide().siblings('.tooltip').hide()
-
+		$('.form input').focus(->
+			$(this).parents('.ipt-container').removeClass('invalid')
 		)
 
 	flag_notice = (obj,klass)->
-		obj.parent('.form-group').addClass("#{klass}")
-		obj.siblings('span.glyphicon').show()
+		obj.parents('.ipt-container').addClass("#{klass}")
 
 	check_required = ->
 		email_mobile = $.trim(account_ipt.val())
 		password     = $.trim(password_ipt.val())
 		if email_mobile.length == 0
-			flag_notice(account_ipt,'has-error')
+			flag_notice(account_ipt,'invalid')
 			return false
 
 		if password.length == 0
-			flag_notice(password_ipt,'has-error')
+			flag_notice(password_ipt,'invalid')
 			return false
 		send_ajax()
 
@@ -29,22 +26,22 @@ $(->
 		password = password_ipt.val()
 		$.post("/sessions",{email_mobile:account,password:password},(ret)->
 			if ret.success
-				window.location.href = "/users/#{ret.value._id.$oid}/edit"
+				window.location.href = "/user/users"
 			else
 				if ret.value.error_code == "error_3"
-					$('.account.tooltip').show()
+					$('.account.tooltip').addClass('animated bounceInRight').show()
 				else
-					$('.password.tooltip').show()
+					$('.password.tooltip').addClass('animated bounceInRight').show()
 		)
 
 	ipt_focus();
 
-	$('.form-group button').click((e)->
+	$('.login-btn').click((e)->
 		e.preventDefault()
 		check_required()
 	)
 
 	$('password').keydown (e)->
 		if e.which == 13
-			$('.form-group button').click
+			$('.login-btn').click
 )

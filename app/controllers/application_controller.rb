@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  #layout "default"
-
 
   layout :diffrent_layout
 

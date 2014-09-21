@@ -12,29 +12,25 @@ class User
   ROLE_ADMIN = 1 # 系统管理员   
   ROLE_MANAGER = 2 # 企业管理员
   ROLE_EMPLOYEE = 3 # 普通用户
- 
-  STATUS_UN_COMPLETE = 0 # 尚未完成个人信息
-  STATUS_COMPLETE = 1 # 已经完成个人信息
-
-  MALE = 0 #男
-  FEMALE = 1 # 女
-
-  SOURCE_R = 0 #注册用户
-  SOURCE_M = 1 #管理员添加用户
-  SOURCE_S = 2 #系统管理员添加用户
 
   field :name, type: String
   field :email, type: String
   field :mobile, type: String
   field :password, type: String
-  field :age, type: Integer
-  field :sex, type: Integer
   field :role, type: Integer,:default => 3
-  field :status, type: Integer,:default => 0
-  field :source, type: Integer,:default => 0 
+  field :position, type: String
+  field :related, type:Integer #表示该用户主要关联的产品
+  field :course_count,type:Integer #该用户有效报名的人天总数
+  field :description,type:String #该用户对自己的描述
+  field :qq, type: String
+  field :wechart, type: String
+  field :skype, type: String
+  field :gtalk, type: String
+  field :twitter, type: String
+  field :facebook, type: String
+
 
   belongs_to :company
-  belongs_to :position
 
   #注册用户
   def self.regist(opt)
@@ -91,17 +87,34 @@ class User
     user = self.find_by_email_or_mobile(opt[:email_mobile])
   end
 
-  # 更改信息
-  def update_info(opt)
-    self.update(opt)
-    if self.company.present? && company.name != '其他'
-      if opt[:company_id].present?  #用户如果之前填写了公司信息，那么不允许用户再次修改所属公司信息
-        SmsWorker.perform_async("join_company",self.company.mobile,self)
-      end
-    end
-    return self
+
+  def self.update_pwd(user,opt)
+    password = opt[:password].downcase
+    password = make_encrypt(password)
+    user.update_attributes(password:password)
+    return user
   end
 
+
+  def update_info(opt)
+    opt.each_pair do |k,v|
+      k = v.downcase.strip!
+      user = User.find_by_col("#{k}",v,self.id.to_s)
+      if user.present?
+        return ErrorEnum::EMAIL_EXIST    if k == 'email'
+        return ErrorEnum::MOBILE_EXIST   if k == 'mobile'
+        return ErrorEnum::QQ_EXIST       if k == 'qq'
+        return ErrorEnum::WECHART_EXIST  if k == 'wechart'
+        return ErrorEnum::SKYPE_EXIST    if k == 'skype'
+        return ErrorEnum::GTALK_EXIST    if k == 'gtalk'
+        return ErrorEnum::TWITTER_EXIST  if k == 'twitter'
+        return ErrorEnum::FACEBOOK_EXIST if k == 'facebook'
+      end
+    end
+  
+    self.update_attributes(opt)
+    return self
+  end
 
 
   private 

@@ -2,10 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>登录页</title>
+    <!--[if lt IE 8]>
+      <div class='low-version' style='color:#fff;height:100px;line-height:100px;background:#9a3d3d;font-weight:bold; text-align:center;'>
+    您当前的浏览器版本过低,请使用IE8及以上版本
+    </div>
+    <![endif]-->    
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/login-bundle", :media => "all" %>
@@ -18,41 +24,52 @@
     </script>
   </head>
   <body class="login">
-    <div class="login-header text-center">
-      <%=image_tag "logo.png", :class => 'logo',:alt => "logo" %>
+    <div class="login-header row triple-padded">
+      <div class="one fourth logo-container">
+        <%=image_tag "logo.png", :class => 'logo',:alt => "logo" %>  
+      </div>
     </div>
-    <div class="login-wrapper">
-      <form role="form">
-        <div class="form-group has-feedback lg left-feedback no-label">
-          <input type="text" name="email_mobile" class="form-control no-border input-lg rounded" placeholder="手机号码/邮箱"  autofocus>
-          <span class="fa fa-user form-control-feedback"></span>
-          <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-          <div class="tooltip right account" role="tooltip">
-            <div class="tooltip-arrow"></div>
-            <div class="tooltip-inner">
-              该用户不存在
-            </div>
+    <div class="login-wrapper row ">
+      <form role="form" class='form one thirds double-padded'>
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-user "></span></span>
           </div>
+          <div class="five small-tablet sixths">
+            <input type="text" name="email_mobile" class='large' placeholder="手机号码/邮箱">
+            <div class='tooltip account'>该用户不存在</div>
+          </div>       
+        </div>        
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-unlock-alt"></span></span>
+          </div>
+          <div class="five small-tablet sixths">
+            <input type="password" name="password" class='large' placeholder="密码">
+            <div class='tooltip password'>您输入的密码有误</div>
+          </div>
+        </div>    
+        <div class="row padded">
+            <ul class="checklist">
+              <li aria-checked="true" class='double-pad-left'>记住我</li>
+            </ul>
         </div>
-        <div class="form-group has-feedback lg left-feedback no-label">
-          <input type="password" name="password" class="form-control no-border input-lg rounded "  placeholder="密码">
-          <span class="fa fa-unlock-alt form-control-feedback"></span>
-          <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-          <div class="tooltip right password" role="tooltip">
-            <div class="tooltip-arrow"></div>
-            <div class="tooltip-inner">
-              该用户不存在
-            </div>
-          </div> 
+        <div class="row padded">
+          <button class="block large login-btn">登录</button>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">登录</button>
-        </div>
+        <div class="row padded">
+          <p>
+            <strong ><a href="/regist">立即注册</a></strong>
+          </p>
+          <p>
+            <strong>or</strong>
+          </p>
+          <p>
+            <strong ><a href="forgot-password.html">忘记密码?</a></strong>
+          </p>
+          
+        </div>        
       </form>
-      <p class="text-center">
-        <strong class='pull-left'><a href="/regist">立即注册</a></strong>
-        <strong class='pull-right'><a href="forgot-password.html">忘记密码?</a></strong>
-      </p>
     </div>
   </body>
 </html>

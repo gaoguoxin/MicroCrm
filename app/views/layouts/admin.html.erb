@@ -1,0 +1,59 @@
+<% content_for :app_head do %>
+	<%= stylesheet_link_tag    "layouts/admin-layout" %>
+	<%= javascript_include_tag "layouts/admin-layout" %>
+	<script type="text/javascript">
+	jQuery(function($) {
+	});
+	</script>
+	<%= yield :head %>
+<% end %>
+
+
+<% content_for :app_content do %>
+  <header class="padded">
+    <div class="container">
+      <div class="row">
+        <div class="ten twelfths logo-container small-tablet">
+          <a href="/"><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
+        </div>
+        <div class="two twelfths account-container small-tablet">
+          <div class="row">
+            <div class="one half small-tablet">
+              <a href="javascript:void(0);"><span class="fa fa-user"></span>管理员</a>
+            </div>
+            <div class="one half small-tablet">
+              <a data-method="delete" href="/logout">
+                <span class="fa fa-sign-out"></span>退出
+              </a>
+            </div>
+          </div>
+        </div>       
+      </div>
+    </div>
+  </header>
+  <div class="container body">
+    <div class="row container-box pad-top pad-bottom">
+      <div class="left-side one fifth small-tablet">
+        <%= yield :left_side %>
+      </div>
+      <div class="right-side four fifths small-tablet">
+        <%= yield :right_side %>
+      </div>         
+    </div>
+  </div>
+	
+  <div class="foot" id="footer">
+    <ul class="links ft unstyled">
+      <li class="links_item">
+        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=564126197&site=qq&menu=yes">在线客服</a>
+      </li>
+      <li class="links_item"><a href="mailto:naitnix@126.com" target="_blank">联系邮箱</a></li>
+      <li class="links_item">联系电话:15210427877</li>
+      <li class="links_item">Copyright © 2014</li>
+    </ul>
+  </div>
+
+<% end %>
+
+
+<%= parent_layout 'app' %>

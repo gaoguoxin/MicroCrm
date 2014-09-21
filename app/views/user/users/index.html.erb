@@ -1,0 +1,122 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/user/users-bundle" %>
+  <%= javascript_include_tag "pages/user/users-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+
+
+<% content_for :left_side do %>
+	<%= render :partial => 'left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+	<div class="row right-head triple-pad-left">
+		<span class="fa fa-flag-o"></span><span class="locate">账户管理<i class="fa fa-angle-double-right"></i>信息管理</span>
+	</div>
+	<div class="row right-notice triple-pad-left">
+		<div class="notice-content double-gap-top double-gap-bottom  triple-gap-right double-pad-left pad-top pad-bottom">
+			<i class="fa fa-info"></i>
+			<span>为了便于我们更多的了解您的情况请完善以下信息</span>
+		</div>
+	</div>
+	<div class="row right-main triple-pad-left">
+		<div class="tabs ipad">
+  		<ul role="tablist">
+  		  <li role="tab" aria-controls="#tab1" class='one fourth'>个人信息</li>
+  		  <li role="tab" aria-controls="#tab2" class='one fourth'>修改密码</li>
+  		</ul>
+  		<div id="tab1" role="tabpanel">
+			<form class='info'>
+			  <fieldset>
+			    <legend>information</legend>
+			    <div class="row">
+			      <div class="one half padded">
+			        <label for="name">用户名</label>
+			        <input id="name" type="text" name='user[name]' placeholder="username">
+			      </div>
+			      <div class="one half padded">
+			        <label for="email">邮箱</label>
+			        <input id="email" type="email" name='user[email]' placeholder="you@example.com">
+			      </div>
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded">
+			        	<label for="mobile">手机号</label>
+			        	<input id="mobile"  nam='user[mobile]' type="text" placeholder="your mobile number">
+			    	</div>
+			    	<div class="one half padded">
+			        	<label for="position">职位</label>
+			        	<input id="position" name='user[position]' type="text" placeholder="your position">
+			    	</div>			    	
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded">
+			        	<label for="qq">QQ帐号</label>
+			        	<input id="qq" type="text" name='user[qq]' placeholder="your qq account">
+			    	</div>
+			    	<div class="one half padded">
+			        	<label for="wechart">微信帐号</label>
+			        	<input id="wechart"  name='user[wechart]' type="text" placeholder="your wechart account">
+			    	</div>			    	
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded">
+			        	<label for="skype">Skype帐号</label>
+			        	<input id="skype" name='user[skype]' type="text" placeholder="your skype account">
+			    	</div>
+			    	<div class="one half padded">
+			        	<label for="gtalk">Gtalk帐号</label>
+			        	<input id="gtalk" name='user[gtalk]' type="text" placeholder="your gtalk account">
+			    	</div>			    	
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded">
+			        	<label for="twitter">Twitter帐号</label>
+			        	<input id="twitter" name='user[twitter]' type="text" placeholder="your twitter account">
+			    	</div>
+			    	<div class="one half padded">
+			        	<label for="facebook">Facebook帐号</label>
+			        	<input id="facebook" name='user[facebook]' type="text" placeholder="your facebook account">
+			    	</div>			    	
+			    </div>			    
+			    <div class="row">
+			      <div class="one whole padded">
+			        <label for="message">个人简介</label>
+			        <textarea id="message" name='user[description]' placeholder="Enter your message..."></textarea>
+			      </div>
+			    </div>
+			    <button class="block info info-submit">提交</button>
+			  </fieldset>
+			</form>
+  		</div>
+  		<div id="tab2" role="tabpanel">
+			<form class='pwd'>
+			  <fieldset>
+			    <legend>change password</legend>
+			    <div class="row">
+			    	<div class="one half padded password-container">
+			    		<label for="password">新密码</label>
+			    		<input id="password" name='password' type="password" placeholder="new password">		
+			    	</div>
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded password-container">
+			    		<label for="confirm_password">确认密码</label>
+			    		<input id="confirm_password" type="password" placeholder="confirm password">
+			    	</div>
+			    </div>
+			    <div class="row">
+			    	<div class="one half padded password-container">
+			    		<button class="block info pass-submit">提交</button>			
+			    	</div>
+			    </div>			    
+			  </fieldset>
+			</form>
+  		</div>
+	</div>
+<% end %>

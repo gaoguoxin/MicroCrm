@@ -2,10 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>注册页</title>
+    <!--[if lt IE 8]>
+      <div class='low-version' style='color:#fff;height:100px;line-height:100px;background:#9a3d3d;font-weight:bold; text-align:center;'>
+    您当前的浏览器版本过低,请使用IE8及以上版本
+    </div>
+    <![endif]-->      
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/regist-bundle", :media => "all" %>
@@ -18,34 +24,69 @@
     </script>
   </head>
   <body class="login">
-    <div class="login-header text-center">
-      <%=image_tag "logo.png", :class => 'logo',:alt => "logo" %>
+    <div class="login-header row triple-padded">
+      <div class="one fourth logo-container">
+        <a href="/"><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
+      </div>
     </div>
-    <div class="login-wrapper">
-      <form role="form">
-        <div class="form-group has-feedback lg left-feedback no-label">
-          <input type="text" name="email_mobile" class="form-control no-border input-lg rounded" placeholder="手机号码/邮箱"  autofocus>
-          <span class="fa fa-user form-control-feedback"></span>
-          <span class="glyphicon glyphicon-ok form-control-feedback"></span>
-          <div class="tooltip right account" role="tooltip">
-            <div class="tooltip-arrow"></div>
-            <div class="tooltip-inner">
-              该用户已经存在
-            </div>
+    <div class="login-wrapper row ">
+      <form role="form" class='form one thirds double-padded'>
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-user "></span></span>
           </div>
+          <div class="five small-tablet sixths">
+            <input type="text" name="name" class='large' placeholder="请输入姓名">
+          </div>       
+        </div>   
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-envelope-o "></span></span>
+          </div>
+          <div class="five small-tablet sixths">
+            <input type="text" name="email" class='large' placeholder="请输入邮箱"  >
+          </div>       
+        </div> 
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-mobile "></span></span>
+          </div>
+          <div class="five small-tablet sixths">
+            <input type="text" name="mobile" class='large' placeholder="手机号码"  >
+          </div>       
+        </div> 
+        <div class="row padded ipt-container">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-unlock-alt"></span></span>
+          </div>
+          <div class="five small-tablet sixths">
+            <input type="password" name="password" class='large' placeholder="密码">
+          </div>
+        </div>    
+        <div class="padded">
+          <div class="one small-tablet sixth">
+            <span class="prefix large"><span class="fa fa-building"></span></span>
+          </div>  
+          <div class="five small-tablet sixths">
+            <span class="select-wrap large">
+                <select class="unselected">
+                  <option value="" disabled="" selected="">所属公司</option>
+                  <% @companis.each do |company| %>
+                    <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
+                  <% end %>
+                </select>
+            </span>            
+          </div>      
         </div>
-        <div class="form-group has-feedback lg left-feedback no-label">
-          <input type="password" name="password" class="form-control no-border input-lg rounded "  placeholder="密码">
-          <span class="fa fa-lock form-control-feedback"></span>
-          <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+        <div class="row padded">
+          <button class="block large login-btn">立即注册</button>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">注册</button>
-        </div>
+        <div class="row padded">
+          <p>
+            <strong ><a href="/regist">登录</a></strong>
+          </p>
+        </div>        
       </form>
-      <p class="text-center">
-        <strong class='pull-right'><a href="/login">登录</a></strong>
-      </p>
     </div>
   </body>
 </html>

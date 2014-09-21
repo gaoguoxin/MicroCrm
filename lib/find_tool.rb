@@ -13,6 +13,10 @@ module FindTool
       retval
     end
 
+    def find_by_col(col,val,id)
+      where(:"#{col}" => val,:id.ne => id).first
+    end
+
     def find_by_name(name)
       retval = where(:name => name).first
     end

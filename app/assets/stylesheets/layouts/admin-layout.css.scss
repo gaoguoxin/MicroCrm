@@ -1,0 +1,142 @@
+@import "compass/css3/border-radius";
+@import "compass/utilities/general/clearfix";
+body{
+	background:#e7e8eb;
+	line-height: 1.6;
+	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","微软雅黑","黑体",Arial,sans-serif;
+	color: #222;
+	font-size: 14px;	
+	header{
+		background:#fff;
+		border-top: 4px solid #44b549;
+		border-bottom: 1px solid #d9dadc;	
+		.container{
+			.row{
+				a{
+					display:inline-block;
+				}
+				.account-container{
+					height:36px;
+					line-height:36px;
+					a{
+						text-decoration:none;					
+						color:#222;
+						&:hover{
+							color:#459ae9
+						}
+						.fa{
+							margin-right:4px;
+						}
+					}
+				}
+			}
+		}
+	}	
+	.body{
+		margin-left: auto;
+		margin-right: auto;
+		padding: 36px 0 88px;	
+		.container-box{
+			border: 1px solid #d9dadc;
+			background-color: #fff;
+			// min-height: 650px;
+			.left-side{
+				// min-height:650px;
+				.menu{
+					padding-bottom: 6px;
+					padding-top: 8px;
+					border-top: 1px solid #e7e7eb;
+					&:nth-child(1){
+						border-top:0px;
+					}
+					.menu_title{
+						position: relative;
+						width: auto;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						word-wrap: normal;
+						line-height: 34px;
+						color: #8d8d8d;
+						.fa{
+							margin-right:4px;
+						}
+					}
+					.menu_item{
+						height:34px;
+						line-height:34px;
+						&:hover,&.active{
+							background:#fafafa;
+						}
+						a{
+							display:inline-block;
+							width:100%;
+							height:100%;
+							color:#222;
+							text-decoration:none;
+						}
+					}
+				}
+			}
+			.right-side{
+				border-left: 1px solid #e7e7eb;			
+				.right-head{
+					height:70px;
+					line-height:70px;
+					font-size:16px;
+					border-bottom:1px solid #d9dadc;
+					.fa{
+						margin:0px 4px;
+					}
+				}
+				.right-notice{
+					.notice-content{
+						background:#e0eaf6;
+						.fa{
+							display:inline-block;
+							width:16px;
+							height:16px;
+							line-height:16px;
+							text-align:center;
+							background:#309dd4;
+							color:#fff;
+							@include border-radius(100px);
+						}
+					}
+				}
+				.right-main{
+					padding:0px 30px;
+					.tabs{
+						ul{
+							li{
+								background:#fafafa;
+								&.active{
+									background:none;
+								}
+							}
+						}
+					}
+				}
+			}
+		}	
+	}
+	.foot{
+		padding: 24px 0;
+		color: #f1f1f1;
+		text-align: center;
+		background-color: #b8b9b9;
+		.ft{
+			font-size: 12px;
+			@include clearfix;
+			.links_item{
+				display: inline-block;
+				padding: 0 1em;
+				border-left: 1px solid #797979;
+				a{
+					color:#fff;
+					text-decoration:none;
+				}
+			}
+		}
+	}
+}

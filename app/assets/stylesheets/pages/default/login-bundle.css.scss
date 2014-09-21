@@ -1,3 +1,68 @@
 @import "compass/utilities/general/clearfix";
 @import "compass/css3/inline-block";
 @import "compass/css3/opacity";
+@import "compass/css3/border-radius";
+body.login{
+	background:#37BC9B;
+	.login-header{
+		.logo-container{
+			margin:0 auto;
+			float:none;
+			text-align:center;
+		}
+	}
+	.login-wrapper{
+		.form{
+			float:none;
+			margin:0 auto;	
+			border: 1px solid #fafafa;
+			@include border-radius(6px);	
+			.ipt-container{
+				position:relative;
+				input{
+					outline:none;
+				}	
+				.tooltip{
+					display:none;
+					width: 100%;
+					font-size: 1.5em;
+					height: 100%;
+					padding: 0.4em;
+					top: 0px;
+					left:110%;
+					background:#b94a48;
+					color: #fff;
+					position: absolute;
+					@include border-top-right-radius(6px);
+					@include border-bottom-right-radius(6px);
+				}
+			}		
+
+			button{
+				background:#E8AA2E;
+				border-color:#E8AA2E;
+				color:#fff;
+				letter-spacing:1em;
+				outline:none;
+				&:hover{
+					background:#ed9c28;
+				}
+			}
+			.checklist{
+				color:#fff;
+			}
+			p{
+				color:#fff;
+				text-align:center;
+				a{
+					color:#fff;
+					cursor:pointer;
+					text-decoration:none;
+				}	
+			}
+	
+		}
+
+	}
+
+}

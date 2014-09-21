@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  resources :feedbacks
-
   root 'welcome#index'
   get '/regist' => 'users#new'
   get '/login'  => 'sessions#new'
+  delete '/logout' => 'sessions#destroy'
 
 
   namespace :admin do
@@ -16,6 +15,17 @@ Rails.application.routes.draw do
   namespace :manager do
      resources :orders
      resources :users
+  end
+
+  namespace :user do 
+    resources :users do 
+      collection do 
+        post 'update_info'
+        post 'update_pwd'
+      end
+    end
+    resources :courses
+    resources :feedbacks
   end
 
   resources :orders
