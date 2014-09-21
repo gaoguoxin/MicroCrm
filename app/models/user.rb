@@ -12,6 +12,7 @@ class User
   ROLE_ADMIN = 1 # 系统管理员   
   ROLE_MANAGER = 2 # 企业管理员
   ROLE_EMPLOYEE = 3 # 普通用户
+  ROLE_VIEW     = 4 #查看员
 
   field :name, type: String
   field :email, type: String
@@ -35,40 +36,37 @@ class User
   #注册用户
   def self.regist(opt)
     account = {}
-    email_mobile      = opt[:email_mobile].to_s.downcase
+    account[:name]    = opt[:name]
+    account[:email]   = opt[:email].to_s.downcase
+    account[:mobile]  = opt[:mobile]
     account[:role]    = opt[:role] || ROLE_EMPLOYEE
-    account[:source]  = opt[:source] ||  SOURCE_R
     opt[:password]    = opt[:password].downcase
-
-    return ErrorEnum::EMAIL_MIBILE_BLANK unless email_mobile.present?
+    return ErrorEnum::NAME_BLANK unless account[:name].present?
+    return ErrorEnum::EMAIL_BLANK unless account[:email].present?
+    return ErrorEnum::MIBILE_BLANK unless account[:mobile].present?
     return ErrorEnum::PASSWORD_BLANK unless opt[:password].present?
 
     account[:password] = make_encrypt(opt[:password])
 
     exist_user = false
 
-    user = self.find_by_email_or_mobile(email_mobile)
+    user = self.find_by_email(account[:email])
+    user = self.find_by_mobile(account[:mobile]) unless user.present?
 
     exist_user = true if user.present?
     return ErrorEnum::USER_EXIST if exist_user
 
-    if email_mobile.match(/#{EmailRexg}/i)
-      account[:email] = email_mobile
-    elsif email_mobile.match(/#{MobileRexg}/i)
-      account[:mobile] = email_mobile
-    end
-
     user = self.create(account)
     
-    if account[:source] == SOURCE_S #系统管理员添加企业管理员行为
-      # if user.mobile.present?
-      #   SmsWorker.perform_async("add_manager",user.mobile,opt[:password])
-      # end
-    elsif account[:source] == SOURCE_M #企业管理员添加员工行为
-      # if user.mobile.present?
-      #   SmsWorker.perform_async("add_employee",user.mobile,opt[:password])
-      # end
-    end
+    # if account[:source] == SOURCE_S #系统管理员添加企业管理员行为
+    #   # if user.mobile.present?
+    #   #   SmsWorker.perform_async("add_manager",user.mobile,opt[:password])
+    #   # end
+    # elsif account[:source] == SOURCE_M #企业管理员添加员工行为
+    #   # if user.mobile.present?
+    #   #   SmsWorker.perform_async("add_employee",user.mobile,opt[:password])
+    #   # end
+    # end
 
     return user
   end
@@ -121,6 +119,22 @@ class User
   
     self.update_attributes(opt)
     return self
+  end
+
+  def is_system?
+    return self.role == ROLE_ADMIN
+  end
+
+  def is_viewer?
+    return self.role == ROLE_VIEW
+  end
+
+  def is_manger?
+    return self.role == ROLE_MANAGER
+  end
+
+  def is_employee?
+    return self.role == ROLE_EMPLOYEE
   end
 
 

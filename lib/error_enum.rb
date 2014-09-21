@@ -12,4 +12,7 @@ module ErrorEnum
 	GTALK_EXIST    	   = "error_10"
 	TWITTER_EXIST  	   = "error_11"
 	FACEBOOK_EXIST 	   = "error_12"
+	EMAIL_BLANK        = "error_13"
+	MOBILE_BLANK       = "error_14"
+	NAME_BLANK         = "error_15"
 end 
