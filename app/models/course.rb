@@ -26,7 +26,7 @@ class Course
   field :start_time,type:Time
   field :end_date,type:Date
   field :end_time,type:Time
-  filed :during,type:String #课程持续时间,以天我为单位
+  field :during,type:String #课程持续时间,以天我为单位
   field :lim_num,type:Integer #最多容纳人数
   field :enroll_num,type:Integer #已经报名人数
   field :receive_num,type:Integer #已经接受人数

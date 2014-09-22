@@ -27,6 +27,6 @@ module MicroCrm
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.filter_parameters += [:password]
-    config.permanent_signed_in_months = 24
+    config.permanent_signed_in_months = 168 # 7days
   end
 end

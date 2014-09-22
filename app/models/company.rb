@@ -6,10 +6,12 @@ class Company
 
   COMP_TYPE_1      = 1 #伙伴
   COMP_TYPE_2      = 2 #客户
-  COMP_TYPE_3      = 3 #管理单位        
+  COMP_TYPE_3      = 3 #管理单位
+
+  COMP_TYPE_HASH = {1 => '伙伴', 2 => '客户',3 => '管理单位'}        
 
   field :name, type: String
-  field :status, type: Integer # 合作状态 
+  field :status, type: Integer,default:STATUS_GOING # 合作状态 
   field :type, type: Integer # 合作类型  伙伴 客户 管理单位
   field :level,type: String #等级
   field :pri_serv,type:String #主要业务
@@ -27,5 +29,10 @@ class Company
   belongs_to :manager, class_name: "User", inverse_of: :company
 
   scope :actived, -> { where(status: STATUS_GOING) }
+
+
+  def cooperate
+    COMP_TYPE_HASH[self.type]
+  end
 
 end

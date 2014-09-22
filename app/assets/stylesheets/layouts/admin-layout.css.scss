@@ -1,5 +1,6 @@
 @import "compass/css3/border-radius";
 @import "compass/utilities/general/clearfix";
+@import "compass/typography/text";
 body{
 	background:#e7e8eb;
 	line-height: 1.6;
@@ -18,16 +19,23 @@ body{
 				.account-container{
 					height:36px;
 					line-height:36px;
-					a{
-						text-decoration:none;					
-						color:#222;
-						&:hover{
-							color:#459ae9
-						}
-						.fa{
-							margin-right:4px;
-						}
+					.one{
+						overflow: hidden;
+						white-space: nowrap;
+						-o-text-overflow: ellipsis;
+						text-overflow: ellipsis;
+						a{
+							text-decoration:none;					
+							color:#222;
+							&:hover{
+								color:#459ae9
+							}
+							.fa{
+								margin-right:4px;
+							}
+						}						
 					}
+
 				}
 			}
 		}

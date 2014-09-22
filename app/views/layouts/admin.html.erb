@@ -18,8 +18,8 @@
         </div>
         <div class="two twelfths account-container small-tablet">
           <div class="row">
-            <div class="one half small-tablet">
-              <a href="javascript:void(0);"><span class="fa fa-user"></span>管理员</a>
+            <div class="one half small-tablet" >
+              <a href="javascript:void(0);"><span class="fa fa-user"></span><%= current_user.name %></a>
             </div>
             <div class="one half small-tablet">
               <a data-method="delete" href="/logout">

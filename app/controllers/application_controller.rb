@@ -64,14 +64,21 @@ class ApplicationController < ActionController::Base
   end
 
 
-  def refresh_session(user_id)
+  def refresh_session(user_id,remember=false)
     @current_user = user_id.blank? ? nil : User.find(user_id)
     if current_user.present?
-      cookies[:auth_key] = {
-        :value => user_id,
-        :expires => Rails.application.config.permanent_signed_in_months.months.from_now,
-        :domain => :all
-      }
+      if remember.to_s == 'true'
+        cookies[:auth_key] = {
+          :value => user_id,
+          :expires => Rails.application.config.permanent_signed_in_months.months.from_now,
+          :domain => :all
+        }
+      else
+        cookies[:auth_key] = {
+          :value => user_id,
+          :domain => :all
+        }
+      end
       return true
     else
       cookies.delete(:auth_key, :domain => :all)

@@ -26,7 +26,8 @@ $(->
 	send_ajax = ->
 		account  = account_ipt.val()
 		password = password_ipt.val()
-		$.post("/sessions",{email_mobile:account,password:password},(ret)->
+		rem      = $('.remember-me').attr('aria-checked')
+		$.post("/sessions",{email_mobile:account,password:password,remember:rem},(ret)->
 			if ret.success
 				window.location.href = ret.value.ref
 			else
@@ -35,8 +36,6 @@ $(->
 				else
 					flag_notice(password_ipt,'您输入的密码有误')
 		)
-
-	# ipt_focus();
 
 	$('.form input').focus(->
 		remove_notice($(@))

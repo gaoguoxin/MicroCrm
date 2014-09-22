@@ -14,16 +14,21 @@
     <div class="container">
       <div class="row">
         <div class="three sixths mobile">
-          <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo responsive',:alt => "logo" %></a>
+          <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
         </div>
         <div class="two sixths mobile search-container">
           <input id="search-name" type="text" placeholder="课程名称">
           <span class='fa fa-search absolute top right'></span>
         </div>
-        <div class="one sixth mobile login-container responsive">
+        <div class="one sixth mobile login-container">
           <div class="row">
+          <% if current_user.present?%>
+            <a href="javascript:void(0);" class='one half mobile'><%= current_user.name %></a>
+            <a data-method="delete" class='one half mobile ' href="/logout">退出</a>
+          <% else%>
             <a href="/login" class='one half mobile'>登录</a>
-            <a href="/regist" class='one half mobile '>注册</a>            
+            <a href="/regist" class='one half mobile '>注册</a>          
+          <% end %>
           </div>
         </div>        
       </div>
