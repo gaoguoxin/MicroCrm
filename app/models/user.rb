@@ -126,7 +126,7 @@ class User
     return self
   end
 
-  def is_system?
+  def is_admin?
     return self.role == ROLE_ADMIN
   end
 

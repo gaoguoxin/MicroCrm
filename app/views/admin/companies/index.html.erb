@@ -32,7 +32,7 @@
       </ul>
 
       <div id="tab1" role="tabpanel">
-        <table class="responsive" data-max="15">
+        <table class="responsive <%= @companies.length > 0 ? 'info' : 'error' %>" data-max="15">
           <thead>
             <tr>
               <th>名称</th>
@@ -43,7 +43,7 @@
           </thead>
           <tbody>
             <% if @companies.length > 0 %>
-              <% @companies.each do |company|  do %>
+              <% @companies.each do |company|%>
                 <tr>
                   <td><%= company.name %></td>
                   <td><%= company.cooperate %></td>
@@ -53,18 +53,10 @@
               <% end %>
             <% else %>
               <tr>
-                <td colspan="2">您还没有添加任何的单位</td>  
+                <td colspan="4" class='no-data'>您还没有添加任何的单位</td>  
               </tr>  
             <% end %>
           </tbody>
-          <tfoot>
-            <tr>
-              <td>Footer cell</td>
-              <td>Footer cell</td>
-              <td>Footer cell</td>
-              <td>Footer cell</td>
-            </tr>
-          </tfoot>
         </table>
       </div>
 
@@ -74,8 +66,8 @@
             <legend>information</legend>
             <div class="row">
               <div class="one half padded">
-                <label for="name">用户名</label>
-                <input id="name" type="text" name='user[name]' placeholder="username">
+                <label for="name">单位名称</label>
+                <input id="name" type="text" name='company[name]' placeholder="company name">
               </div>
               <div class="one half padded">
                 <label for="email">邮箱</label>
