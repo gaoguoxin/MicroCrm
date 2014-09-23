@@ -4,6 +4,20 @@ module ApplicationHelper
     self.output_buffer = render(:file => "layouts/#{layout}")
   end
 
+  def selected(inst,att,v)
+    val = ''
+    val = 'selected' if inst.present? && inst.attributes["#{att}"] == v
+    return val
+  end
+
+  def default(inst,att)
+    val = ''
+    if inst.present?
+      val = inst.attributes["#{att}"]
+    end
+    return val
+  end
+
   def actived(c_name,pa=nil,str=nil)
   	if c_name == controller_name
   		if pa == str

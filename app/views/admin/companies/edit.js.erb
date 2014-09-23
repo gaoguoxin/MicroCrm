@@ -1,0 +1,6 @@
+<% if @company.present? %>
+  $('#tab2 form.new-company .form-detail').html("<%= escape_javascript(render :partial => 'form', :locals => { :company => @company }) %>");
+  $('form.new-company .info-submit').addClass('upd');
+  $('.tab-nav:first').removeClass('active').siblings().addClass('active');
+  $('#tab1').hide().siblings('#tab2').show();
+<% end %>

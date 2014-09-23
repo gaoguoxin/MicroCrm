@@ -20,7 +20,7 @@ class User
   field :email, type: String
   field :mobile, type: String
   field :password, type: String
-  field :role, type: Integer,:default => 3
+  field :role_of_system, type: Integer,:default => 3
   field :position, type: String
   field :related, type:Integer #表示该用户主要关联的产品
   field :course_count,type:Integer #该用户有效报名的人天总数
@@ -35,17 +35,21 @@ class User
 
   belongs_to :company
 
+  has_one :company,class_name: "Company",inverse_of: :manager
+
+
   #注册用户
-  def self.regist(opt)
+  def self.regist(opt,is_admin=false)
     account = {}
-    account[:name]    = opt[:name]
-    account[:email]   = opt[:email].to_s.downcase
-    account[:mobile]  = opt[:mobile]
-    account[:role]    = opt[:role] || ROLE_EMPLOYEE
-    opt[:password]    = opt[:password].downcase
-    return ErrorEnum::NAME_BLANK unless account[:name].present?
-    return ErrorEnum::EMAIL_BLANK unless account[:email].present?
-    return ErrorEnum::MIBILE_BLANK unless account[:mobile].present?
+    account[:name]              = opt[:name]
+    account[:email]             = opt[:email].to_s.downcase
+    account[:mobile]            = opt[:mobile]
+    account[:role_of_system]    = opt[:role_of_system] || ROLE_EMPLOYEE
+    opt[:password]              = opt[:password].downcase
+    
+    return ErrorEnum::NAME_BLANK unless account[:name].present? 
+    return ErrorEnum::EMAIL_BLANK unless account[:email].present? unless is_admin
+    return ErrorEnum::MOBILE_BLANK unless account[:mobile].present? unless is_admin
     return ErrorEnum::PASSWORD_BLANK unless opt[:password].present?
 
     account[:password] = make_encrypt(opt[:password])
@@ -53,8 +57,7 @@ class User
     exist_user = false
 
     user = self.find_by_email(account[:email])
-    user = self.find_by_mobile(account[:mobile]) unless user.present?
-
+    user = self.find_by_mobile(account[:mobile]) if(!user.present? && account[:mobile].present?)
     exist_user = true if user.present?
     return ErrorEnum::USER_EXIST if exist_user
 
@@ -80,7 +83,7 @@ class User
     user = self.find_by_email_or_mobile(email_mobile)
     return ErrorEnum::USER_NOT_EXIST unless user.present?
     return ErrorEnum::PASSWORD_ERROR if user.password != make_encrypt(password)
-    user.write_attribute(:ref,'/admin/courses') if user.is_system? || user.is_viewer?
+    user.write_attribute(:ref,'/admin/courses') if user.is_admin? || user.is_viewer?
     user.write_attribute(:ref,'/manager/users') if user.is_manager?
     user.write_attribute(:ref,'/user/users') if user.is_employee?
     return user
@@ -102,6 +105,13 @@ class User
     password = opt[:password].downcase
     password = make_encrypt(password)
     user.update_attributes(password:password)
+    return user
+  end
+
+  def self.search_manager(opt)
+    account = opt[:account]
+    user = self.find_by_email(account)  if account.match(/#{EmailRexg}/i)
+    user = self.find_by_mobile(account) unless user.present?
     return user
   end
 
@@ -127,19 +137,19 @@ class User
   end
 
   def is_admin?
-    return self.role == ROLE_ADMIN
+    return self.role_of_system == ROLE_ADMIN
   end
 
   def is_viewer?
-    return self.role == ROLE_VIEW
+    return self.role_of_system == ROLE_VIEW
   end
 
   def is_manager?
-    return self.role == ROLE_MANAGER
+    return self.role_of_system == ROLE_MANAGER
   end
 
   def is_employee?
-    return self.role == ROLE_EMPLOYEE
+    return self.role_of_system == ROLE_EMPLOYEE
   end
 
 

@@ -15,11 +15,12 @@
 <% end %>
 
 <% content_for :right_side do %>
-  <div class="row right-head triple-pad-left">
+  <div class="flash-notice row success double-padded">新单位创建成功,点击列表进行查看!</div>
+  <div class="row right-head triple-pad-left triple-pad-right">
     <span class="fa fa-flag-o"></span><span class="locate">单位管理<i class="fa fa-angle-double-right"></i>单位列表</span>
   </div>
-  <div class="row right-notice triple-pad-left">
-    <div class="notice-content double-gap-top double-gap-bottom  triple-gap-right double-pad-left pad-top pad-bottom">
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
       <i class="fa fa-info"></i>
       <span>增加/删除/修改单位，请确认是否已增加了“其他”这个特殊的单位</span>
     </div>
@@ -27,8 +28,8 @@
   <div class="row right-main triple-pad-left">
     <div class="tabs ipad">
       <ul role="tablist">
-        <li role="tab" aria-controls="#tab1" class='one fourth'>单位列表</li>
-        <li role="tab" aria-controls="#tab2" class='one fourth'>新增单位</li>
+        <li role="tab" aria-controls="#tab1" class='one fourth tab-nav'>单位列表</li>
+        <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;单位</li>
       </ul>
 
       <div id="tab1" role="tabpanel">
@@ -36,9 +37,13 @@
           <thead>
             <tr>
               <th>名称</th>
+              <th>管理员</th>
               <th>合作类型</th>
               <th>等级</th>
               <th>合作状态</th>
+              <th>有效报名人天</th>
+              <th>创建时间</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -46,9 +51,13 @@
               <% @companies.each do |company|%>
                 <tr>
                   <td><%= company.name %></td>
-                  <td><%= company.cooperate %></td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
+                  <td><%= company.try(:manager).try(:name) %></td>
+                  <td><%= Company::TYPE_HASH[company.type] %></td>
+                  <td><%= company.level %></td>
+                  <td><%= Company::STATUS_HASH[company.status]%></td>
+                  <td><%= company.enroll_count%></td>
+                  <td><%= company.created_at.strftime("%F")%></td>
+                  <td><a href="javascript:void(0);" class='edit-company' id="<%= company.id.to_s %>">修改/查看</a></td>
                 </tr>
               <% end %>
             <% else %>
@@ -61,68 +70,16 @@
       </div>
 
       <div id="tab2" role="tabpanel">
-        <form class='info'>
+        <form class='info new-company'>
           <fieldset>
             <legend>information</legend>
-            <div class="row">
-              <div class="one half padded">
-                <label for="name">单位名称</label>
-                <input id="name" type="text" name='company[name]' placeholder="company name">
-              </div>
-              <div class="one half padded">
-                <label for="email">邮箱</label>
-                <input id="email" type="email" name='user[email]' placeholder="you@example.com">
-              </div>
-            </div>
-            <div class="row">
-              <div class="one half padded">
-                  <label for="mobile">手机号</label>
-                  <input id="mobile"  nam='user[mobile]' type="text" placeholder="your mobile number">
-              </div>
-              <div class="one half padded">
-                  <label for="position">职位</label>
-                  <input id="position" name='user[position]' type="text" placeholder="your position">
-              </div>            
-            </div>
-            <div class="row">
-              <div class="one half padded">
-                  <label for="qq">QQ帐号</label>
-                  <input id="qq" type="text" name='user[qq]' placeholder="your qq account">
-              </div>
-              <div class="one half padded">
-                  <label for="wechart">微信帐号</label>
-                  <input id="wechart"  name='user[wechart]' type="text" placeholder="your wechart account">
-              </div>            
-            </div>
-            <div class="row">
-              <div class="one half padded">
-                  <label for="skype">Skype帐号</label>
-                  <input id="skype" name='user[skype]' type="text" placeholder="your skype account">
-              </div>
-              <div class="one half padded">
-                  <label for="gtalk">Gtalk帐号</label>
-                  <input id="gtalk" name='user[gtalk]' type="text" placeholder="your gtalk account">
-              </div>            
-            </div>
-            <div class="row">
-              <div class="one half padded">
-                  <label for="twitter">Twitter帐号</label>
-                  <input id="twitter" name='user[twitter]' type="text" placeholder="your twitter account">
-              </div>
-              <div class="one half padded">
-                  <label for="facebook">Facebook帐号</label>
-                  <input id="facebook" name='user[facebook]' type="text" placeholder="your facebook account">
-              </div>            
-            </div>          
-            <div class="row">
-              <div class="one whole padded">
-                <label for="message">个人简介</label>
-                <textarea id="message" name='user[description]' placeholder="Enter your message..."></textarea>
-              </div>
+            <div class='form-detail'>
+              <%= render :partial => '/admin/companies/form',:locals => {:company => @company}%>
             </div>
             <button class="block info info-submit">提交</button>
           </fieldset>
         </form>
+        
       </div>
   </div>
 <% end %>

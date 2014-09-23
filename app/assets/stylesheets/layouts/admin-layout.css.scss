@@ -87,7 +87,16 @@ body{
 				}
 			}
 			.right-side{
-				border-left: 1px solid #e7e7eb;			
+				position:relative;
+				border-left: 1px solid #e7e7eb;
+				.flash-notice{
+					display:none;
+					position:absolute;
+					background:#468847;
+					color:#fff;
+					text-align:center;
+					z-index:99;
+				}
 				.right-head{
 					height:70px;
 					line-height:70px;

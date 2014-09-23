@@ -3,14 +3,10 @@ class User::UserController < ApplicationController
   layout "admin"
   def check_login
     unless current_user.present?
-      #redirect_to login_url(:ref => "#{request.protocol}#{request.host_with_port}#{request.fullpath}")
+      redirect_to login_url(:ref => "#{request.protocol}#{request.host_with_port}#{request.fullpath}")
     else
-      if current_user.is_admin?
-        redirect_to admin_companies_url
-      elsif current_user.is_manager?
-        redirect_to manager_uesrs_url
-      elsif current_user.is_viewer?
-        redirect_to admin_companies_url
+      unless current_user.is_employee?
+        redirect_to root_url
       end
     end
   end

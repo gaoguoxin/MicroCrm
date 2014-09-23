@@ -1,25 +1,96 @@
-<%= form_for(@company) do |f| %>
-  <% if @company.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
-
-      <ul>
-      <% @company.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="row">
+  <div class="one half padded">
+    <label for="name">单位名称</label>
+    <input id="name" type="text" name='company[name]' placeholder="company name" value="<%= default(company,'name') %>">
+  </div>
+  <div class="one half padded">
+    <div class="row search-container">
+      <label for="manager">管理者&nbsp;<span class='error'>(创建新用户时,密码默认6个1)</span></label>
+      <div class="three small-tablet fifths">
+        <input id="manager" type="text" name='company[manager_id]' placeholder="manager email or mobile" value="<%= company.try(:manager).try(:name) %>">
+      </div>
+      <div class="two small-tablet fifths">
+        <span class="suffix search-manager">search</span>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
+</div>
+<div class="row">
+  <div class="one half padded">
+      <label for="status">合作状态</label>
+      <span class="select-wrap">
+        <select class="unselected" id='status' name='company[status]'>
+          <% Company::STATUS_HASH.each_pair do |k,v| %>
+            <option value="<%= k %>" <% if company.try(:status) == k %>selected='selected' <% end %> ><%= v %></option>
+          <% end %>
+        </select>
+      </span>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="one half padded">
+      <label for="type">合作类型</label>
+      <span class="select-wrap">
+        <select class="unselected" id='type' name='company[type]'>
+          <% Company::TYPE_HASH.each_pair do |k,v| %>
+            <option value="<%= k %>" <% if company.try(:type) == k %> selected='selected'<% end %> ><%= v %></option>
+          <% end %>
+        </select>
+      </span>
+  </div>            
+</div>
+<div class="row">
+  <div class="one half padded">
+      <label for="level">等级</label>
+      <span class="select-wrap">
+        <select class="unselected" id='level' name='company[level]'>
+          <% Company::LEVEL_ARRAY.each do |level| %>
+            <option value="<%= level %>" <% if company.try(:level) == level %>selected='selected'<% end%> ><%= level %></option>
+          <% end %>
+        </select>
+      </span>
   </div>
-<% end %>
+  <div class="one half padded">
+      <label for="pri_serv">主要业务</label>
+      <input id="pri_serv"  name='company[pri_serv]' type="text" placeholder="primary service" maxlength=64 value="<%= default(company,'pri_serv') %>">
+  </div>            
+</div>
+<div class="row">
+  <div class="one half padded">
+      <label for="main_area">主要区域</label>
+      <input id="main_area" name='company[main_area]' type="text" placeholder="main area" maxlength=64 value="<%= default(company,'main_area') %>">
+  </div>
+  <div class="one half padded">
+      <label for="sales_count">销售人员数量</label>
+      <input id="sales_count" name='company[sales_count]' type="number" placeholder="salesman count" value="<%= default(company,'sales_count') %>">
+  </div>            
+</div>
+<div class="row">
+  <div class="one half padded">
+      <label for="ax_presales_count">AX售前人员数量</label>
+      <input id="ax_presales_count" name='company[ax_presales_count]' type="number " placeholder="ax pre salesman count" value="<%= default(company,'ax_presales_count') %>">
+  </div>
+  <div class="one half padded">
+      <label for="crm_presales_count">CRM售前人员数量</label>
+      <input id="crm_presales_count" name='company[crm_presales_count]' type="number" placeholder="crm pre calesman count" value="<%= default(company,'crm_presales_count') %>">
+  </div>  
+<div class="row">
+  <div class="one half padded">
+      <label for="ax_consultant_count">AX顾问数量</label>
+      <input id="ax_consultant_count" name='company[ax_consultant_count]' type="number " placeholder="ax consultant count" value="<%= default(company,'ax_consultant_count') %>">
+  </div>
+  <div class="one half padded">
+      <label for="crm_consultant_count">CRM顾问数量</label>
+      <input id="crm_consultant_count" name='company[crm_consultant_count]' type="number" placeholder="crm consultant count" value="<%= default(company,'crm_consultant_count') %>">
+  </div>  
+</div>  
+<div class="row">
+  <div class="one whole padded">
+    <label for="dynamic_count">Dynamics从业人员数量</label>
+    <input id="dynamic_count" name='company[dynamic_count]' type="number " placeholder="dynamic count" value="<%= default(company,'dynamic_count') %>">
+  </div>
+</div> 
+<div class="row">
+  <div class="one whole padded">
+    <label for="description">公司描述</label>
+    <textarea id="description" name='company[description]' placeholder="Enter company  description..." ><%= default(company,'description') %></textarea>
+  </div>
+</div>

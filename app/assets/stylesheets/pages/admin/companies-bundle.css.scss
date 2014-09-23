@@ -1,3 +1,30 @@
-td.no-data{
-	text-align:center;
+// body .body .container-box{
+// 	.right-side.admin-right{
+// 		border-left:0px;
+// 	}
+// 	.left-side.admin-left{
+// 		border-right: 1px solid #e7e7eb;
+// 	}
+// }
+
+
+table{
+	tr{
+		th,td{
+			text-align:center;
+		}
+		td.no-data{
+			text-align:center;
+		}		
+	}
+}
+
+
+form.new-company{
+	input,select{
+		outline:none;
+	}
+	.search-manager{
+		cursor:pointer;
+	}
 }

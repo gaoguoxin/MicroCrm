@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :orders
-    resources :companies
+    resources :companies do 
+      collection do 
+        get 'search_manager'
+        post 'update_info'
+      end
+    end
     resources :courses
   end
 
