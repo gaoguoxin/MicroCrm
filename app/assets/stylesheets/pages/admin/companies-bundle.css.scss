@@ -1,13 +1,3 @@
-// body .body .container-box{
-// 	.right-side.admin-right{
-// 		border-left:0px;
-// 	}
-// 	.left-side.admin-left{
-// 		border-right: 1px solid #e7e7eb;
-// 	}
-// }
-
-
 table{
 	tr{
 		th,td{
@@ -15,6 +5,9 @@ table{
 		}
 		td.no-data{
 			text-align:center;
+		}
+		td a{
+			display:block;
 		}		
 	}
 }

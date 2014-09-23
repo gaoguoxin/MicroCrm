@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       collection do 
         get 'search_manager'
         post 'update_info'
+        get 'delete'
       end
     end
     resources :courses

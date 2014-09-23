@@ -1,40 +1,36 @@
 class Admin::CompaniesController < Admin::AdminController
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_company, only: [:show, :edit, :update, :delete,:update_info]
 
   def index
     @companies = Company.all
   end
 
-
-  def show
+  def new
   end
-
 
   def edit
   end
 
   def search_manager
+    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto User.search_manager(params) and return
   end
 
 
   def create
+    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto Company.create_new(company_params) and return 
   end
 
   def update_info
-    Rails.logger.info('=================================')
-    Rails.logger.info(company_params.inspect)
-    Rails.logger.info('=================================')
+    render_json_e('error_authorid') and return if current_user.is_viewer?
+    render_json_auto Company.update_info(company_params,@company)
   end
 
-
-  def destroy
-    @company.destroy
-    respond_to do |format|
-      format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+  def delete
+    render_json_e('error_authorid') and return if current_user.is_viewer?
+    render_json_auto @company.update_attributes(:status => Company::STATUS_FINISHED)
+    #render_json_auto @company.destroy
   end
 
   private

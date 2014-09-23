@@ -33,6 +33,12 @@ class Company
   scope :actived, -> { where(status: STATUS_GOING) }
 
   def self.create_new(opt)
+    opt = create_manager(opt)
+    self.create(opt)
+    return true
+  end
+
+  def self.create_manager(opt)
     user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
     user = User.find_by_mobile(opt[:manager_id]) unless user.present?
     unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
@@ -45,10 +51,15 @@ class Company
         account[:role_of_system]     =  User::ROLE_MANAGER
         account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
         user = User.regist(account,true)
-        opt[:manager_id] = user.id.to_s
       end
     end
-    self.create(opt)
+    opt[:manager_id] = user.id.to_s
+    return opt    
+  end
+
+  def self.update_info(opt,inst)
+    opt = create_manager(opt)
+    inst.update(opt)
     return true
   end
 

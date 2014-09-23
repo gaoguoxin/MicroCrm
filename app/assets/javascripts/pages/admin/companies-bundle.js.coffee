@@ -1,11 +1,9 @@
 #=require regex
 $(->
-
-
 	delay = (ms, func) -> setTimeout func, ms
 
-	flash_notice = ->
-		$('.flash-notice').addClass('animated bounceInRight').show()
+	flash_notice = (msg)->
+		$('.flash-notice').text(msg).addClass('animated bounceInRight').show()
 		$("html, body").animate({ scrollTop: 0 }, 500)
 		delay 2000, ->  window.location.reload()
 
@@ -37,19 +35,36 @@ $(->
 		data = $('form.new-company').serialize()
 		if obj.hasClass('upd')
 			ajax_url = "/admin/companies/update_info"
+			msg = '单位信息修改成功！'
 		else
 			ajax_url = "/admin/companies"
+			msg = '新单位创建成功,点击列表进行查看!'
 
 		$.post(ajax_url,data,(ret)->
 			if ret.success
-				flash_notice()
+				flash_notice(msg)
 		)		
 
-	$('form.new-company input').focus(->
+    	
+
+	$('body').on('click','.tab-nav:last',(e)->
+		$.get("/admin/companies/new",{},->)		
+	)
+
+	$('body').on('click','td a.delete-company',(e)->
+		curr_tr = $(@).parents('tr')
+		cid = $(@).data('cid')
+		$.get("/admin/companies/delete",{id:cid},(ret)->
+			if ret.success
+				curr_tr.remove()
+		)
+	)
+
+	$('body').on('focus','form.new-company input',(e)->
 		$(@).parents('.padded').removeClass('invalid').removeClass('valid')
 	)
 
-	$('.search-manager').click(->
+	$('body').on('click','.search-manager',(e)->
 		$this = $(@)
 		manager = $.trim($('#manager').val())
 		if $.regex.isMobile(manager) or $.regex.isEmail(manager)
@@ -61,38 +76,41 @@ $(->
 						$this.text('匹配成功!')
 					else
 						$this.parents('.padded').addClass('invalid')
-						$this.text('不存在，创建?')
-						
+						$this.text('不存在，创建?')		
 			)
 		else
 			unless $('form.new-company #name').val().indexOf?('其他') >= 0
-				$(@).parents('.padded').addClass('invalid')
+				$(@).parents('.padded').addClass('invalid')		
 	)
 
-	$('form.new-company #manager').keydown((e)->
+
+	$('body').on('keydown','form.new-company #manager',(e)->
 		if e.which == 9
-			$('.search-manager').click();
+			$('.search-manager').click()	
 	)
 
-	$('form.new-company #manager').focusout((e)->
+	
+	$('body').on('focusout','form.new-company #manager',(e)->
 		$('.search-manager').click();
-	)	
+	)
 
-	$('form.new-company .info-submit').bind('click',(e)->
+
+	$('body').on('click','form.new-company .info-submit',(e)->
 		$obj = $(@)
 		e.preventDefault()
 		check_presense($obj)
 	)
 
 
-	$('form.new-company #description').keydown((e)->
+	$('body').on('keydown','form.new-company #description',(e)->
 		if e.which == 13
 			$('form.new-company .info-submit').click()
 	)
 
-	$('a.edit-company').click(->
+
+	$('body').on('click','a.edit-company',(e)->
 		cid = $(@).attr('id')
-		$.get("/admin/companies/#{cid}/edit",{},(ret)->)		
+		$.get("/admin/companies/#{cid}/edit",{},(ret)->)
 	)
 
 )

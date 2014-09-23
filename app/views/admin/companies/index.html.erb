@@ -2,9 +2,6 @@
   <%= stylesheet_link_tag    "pages/admin/companies-bundle" %>
   <%= javascript_include_tag "pages/admin/companies-bundle" %>
   <script type="text/javascript">
-  jQuery(function($) {
-
-  });
   </script>
   <%= yield :head %>
 <% end %>
@@ -15,7 +12,7 @@
 <% end %>
 
 <% content_for :right_side do %>
-  <div class="flash-notice row success double-padded">新单位创建成功,点击列表进行查看!</div>
+  <div class="flash-notice row success double-padded"></div>
   <div class="row right-head triple-pad-left triple-pad-right">
     <span class="fa fa-flag-o"></span><span class="locate">单位管理<i class="fa fa-angle-double-right"></i>单位列表</span>
   </div>
@@ -29,7 +26,10 @@
     <div class="tabs ipad">
       <ul role="tablist">
         <li role="tab" aria-controls="#tab1" class='one fourth tab-nav'>单位列表</li>
-        <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;单位</li>
+        <% if current_user.is_admin? %>
+          <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;单位</li>
+        <% end %>
+        
       </ul>
 
       <div id="tab1" role="tabpanel">
@@ -41,7 +41,7 @@
               <th>合作类型</th>
               <th>等级</th>
               <th>合作状态</th>
-              <th>有效报名人天</th>
+              <th>有效报名<br />人天</th>
               <th>创建时间</th>
               <th>操作</th>
             </tr>
@@ -57,12 +57,20 @@
                   <td><%= Company::STATUS_HASH[company.status]%></td>
                   <td><%= company.enroll_count%></td>
                   <td><%= company.created_at.strftime("%F")%></td>
-                  <td><a href="javascript:void(0);" class='edit-company' id="<%= company.id.to_s %>">修改/查看</a></td>
+                  <td>
+                    <a href="javascript:void(0);" class='edit-company' id="<%= company.id.to_s %>">
+                      修改/查看
+                    </a>
+                    <% if current_user.is_admin? %>
+                      <a href="javascript:void(0)" class="delete-company" data-cid="<%= company.id.to_s %>">终止合作</a>
+                    <% end %>
+                    
+                  </td>
                 </tr>
               <% end %>
             <% else %>
               <tr>
-                <td colspan="4" class='no-data'>您还没有添加任何的单位</td>  
+                <td colspan="8" class='no-data'>您还没有添加任何的单位</td>  
               </tr>  
             <% end %>
           </tbody>
@@ -78,8 +86,7 @@
             </div>
             <button class="block info info-submit">提交</button>
           </fieldset>
-        </form>
-        
+        </form> 
       </div>
   </div>
 <% end %>

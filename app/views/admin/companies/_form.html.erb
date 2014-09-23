@@ -1,13 +1,14 @@
 <div class="row">
   <div class="one half padded">
     <label for="name">单位名称</label>
+    <input type='hidden' name='id' value="<%= company.try(:id).to_s %>" >
     <input id="name" type="text" name='company[name]' placeholder="company name" value="<%= default(company,'name') %>">
   </div>
   <div class="one half padded">
     <div class="row search-container">
       <label for="manager">管理者&nbsp;<span class='error'>(创建新用户时,密码默认6个1)</span></label>
       <div class="three small-tablet fifths">
-        <input id="manager" type="text" name='company[manager_id]' placeholder="manager email or mobile" value="<%= company.try(:manager).try(:name) %>">
+        <input id="manager" type="text" name='company[manager_id]' placeholder="manager email or mobile" value="<%= company.try(:manager).try(:email) || company.try(:manager).try(:mobile) %>">
       </div>
       <div class="two small-tablet fifths">
         <span class="suffix search-manager">search</span>
@@ -15,6 +16,7 @@
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="one half padded">
       <label for="status">合作状态</label>
@@ -37,6 +39,8 @@
       </span>
   </div>            
 </div>
+
+
 <div class="row">
   <div class="one half padded">
       <label for="level">等级</label>
@@ -66,26 +70,29 @@
 <div class="row">
   <div class="one half padded">
       <label for="ax_presales_count">AX售前人员数量</label>
-      <input id="ax_presales_count" name='company[ax_presales_count]' type="number " placeholder="ax pre salesman count" value="<%= default(company,'ax_presales_count') %>">
+      <input id="ax_presales_count" name='company[ax_presales_count]' type="number" placeholder="ax pre salesman count" value="<%= default(company,'ax_presales_count') %>">
   </div>
   <div class="one half padded">
       <label for="crm_presales_count">CRM售前人员数量</label>
       <input id="crm_presales_count" name='company[crm_presales_count]' type="number" placeholder="crm pre calesman count" value="<%= default(company,'crm_presales_count') %>">
   </div>  
+</div>
 <div class="row">
   <div class="one half padded">
-      <label for="ax_consultant_count">AX顾问数量</label>
-      <input id="ax_consultant_count" name='company[ax_consultant_count]' type="number " placeholder="ax consultant count" value="<%= default(company,'ax_consultant_count') %>">
+    <label for="ax_consultant_count">AX顾问数量</label>
+    <input id="ax_consultant_count" name='company[ax_consultant_count]' type="number" placeholder="ax consultant count" value="<%= default(company,'ax_consultant_count') %>">
   </div>
   <div class="one half padded">
       <label for="crm_consultant_count">CRM顾问数量</label>
       <input id="crm_consultant_count" name='company[crm_consultant_count]' type="number" placeholder="crm consultant count" value="<%= default(company,'crm_consultant_count') %>">
   </div>  
-</div>  
+</div>
+
+
 <div class="row">
   <div class="one whole padded">
     <label for="dynamic_count">Dynamics从业人员数量</label>
-    <input id="dynamic_count" name='company[dynamic_count]' type="number " placeholder="dynamic count" value="<%= default(company,'dynamic_count') %>">
+    <input id="dynamic_count" name='company[dynamic_count]' type="number" placeholder="dynamic count" value="<%= default(company,'dynamic_count') %>">
   </div>
 </div> 
 <div class="row">
