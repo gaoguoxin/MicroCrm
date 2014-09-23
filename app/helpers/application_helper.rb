@@ -29,4 +29,11 @@ module ApplicationHelper
   		return ''
   	end	
   end	
+
+
+  def admin_paginator_ajax(items,status,reward_type,point)
+    render :partial => "/admin/partical/paginate_ajax", :locals => {:common => items,:status => status,:reward => reward_type,:point => point}
+  end
+
+
 end

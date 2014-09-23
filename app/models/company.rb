@@ -31,7 +31,6 @@ class Company
   belongs_to :manager, class_name: "User", inverse_of: :company
 
   scope :actived, -> { where(status: STATUS_GOING) }
-
   def self.create_new(opt)
     opt = create_manager(opt)
     self.create(opt)

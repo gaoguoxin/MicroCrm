@@ -1,8 +1,9 @@
 class Admin::CompaniesController < Admin::AdminController
   before_action :set_company, only: [:show, :edit, :update, :delete,:update_info]
-
+  before_action :refuse_viewer, only: [:search_manager,:create,:update_info,:delete]
   def index
-    @companies = Company.all
+    params[:per_page] = 2
+    @companies = auto_paginate(Company.all) 
   end
 
   def new
@@ -12,23 +13,19 @@ class Admin::CompaniesController < Admin::AdminController
   end
 
   def search_manager
-    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto User.search_manager(params) and return
   end
 
 
   def create
-    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto Company.create_new(company_params) and return 
   end
 
   def update_info
-    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto Company.update_info(company_params,@company)
   end
 
   def delete
-    render_json_e('error_authorid') and return if current_user.is_viewer?
     render_json_auto @company.update_attributes(:status => Company::STATUS_FINISHED)
     #render_json_auto @company.destroy
   end

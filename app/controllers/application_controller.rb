@@ -55,6 +55,45 @@ class ApplicationController < ActionController::Base
   end
 
 
+  def page
+    params[:page].to_i == 0 ? 1 : params[:page].to_i
+  rescue
+    1
+  end
+
+  def per_page
+    params[:per_page].to_i == 0 ? 50 : params[:per_page].to_i
+  rescue
+    50
+  end
+
+  def auto_paginate(value, count = nil)
+    retval = {}
+    retval["current_page"] = page
+    retval["per_page"] = per_page
+    retval["previous_page"] = (page - 1 > 0 ? page - 1 : 1)
+    if value.methods.include? :page
+      count ||= value.count
+      value = value.page(retval["current_page"]).per(retval["per_page"])
+    elsif value.is_a?(Array) && value.count > per_page
+      count ||= value.count
+      value = value.slice((page - 1) * per_page, per_page)
+    end
+    
+    if block_given?
+      retval["data"] = yield(value) 
+    else
+      retval["data"] = value
+    end
+
+    retval["total_page"] = ( (count || value.count )/ per_page.to_f ).ceil
+    retval["total_page"] = retval["total_page"] == 0 ? 1 : retval["total_page"]
+    retval["total_number"] = count || value.count
+    retval["next_page"] = (page+1 <= retval["total_page"] ? page+1: retval["total_page"])
+    retval
+  end
+
+
   def render_404
     raise ActionController::RoutingError.new('Not Found')
   end

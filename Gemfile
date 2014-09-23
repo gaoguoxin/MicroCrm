@@ -26,7 +26,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 gem 'ezcrypto', '~> 0.7.2'
-
+gem 'kaminari', '~> 0.14.1'
 # gem 'compass-rails'
 gem 'compass-rails', '~> 1'
 gem 'spreadsheet'

@@ -1,5 +1,5 @@
 class Admin::AdminController < ApplicationController
-  before_action :check_login,:special_style
+  before_action :check_login
   layout "admin"
   def check_login
     unless current_user.present?
@@ -11,9 +11,8 @@ class Admin::AdminController < ApplicationController
     end
   end
 
-  def special_style
-    @special_left  = 'admin-left'
-    @special_right = 'admin-right'
+  def refuse_viewer
+    render_json_e('error_authorid') and return if current_user.is_viewer?
   end
 
 end
