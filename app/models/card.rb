@@ -78,8 +78,11 @@ class Card
     if c.present?
       inst.update(opt)
     end
-    
     return true
+  end
+
+  def self.check_serial(opt)
+    card = Card.where(serial_number:opt[:num]).first
   end
 
 

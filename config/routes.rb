@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         post 'update_info'
         get 'delete'
         get 'search'
+        get 'check_serial'
       end     
     end
   end

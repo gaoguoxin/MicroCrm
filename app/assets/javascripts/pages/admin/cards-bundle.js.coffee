@@ -9,6 +9,16 @@ $(->
 		$("html, body").animate({ scrollTop: 0 }, 500)
 		delay 2000, ->  window.location.reload()
 
+	check_serial = (obj)->
+		serial_number = $.trim($('#serial_number').val())
+		$.get("/admin/cards/check_serial",{num:serial_number},(ret)->
+			if ret.success && ret.value
+				$('#serial_number').parent('.padded').addClass('invalid').removeClass('valid')
+				$("html, body").animate({ scrollTop: 300 }, 500)
+			else
+				submit_card_info(obj)
+		)
+
 	check_presense = (obj)->
 		serial_number = $.trim($('#serial_number').val())
 		quantity_purchased = $.trim($('#quantity_purchased').val())
@@ -18,12 +28,11 @@ $(->
 			v = $.trim($(@).val())
 			if v.length <= 0
 				$(@).parents('.padded').addClass('invalid').removeClass('valid')
-				$("html, body").animate({ scrollTop: 0 }, 500)
+				$("html, body").animate({ scrollTop: 300 }, 500)
 				submit = false
 				return 
 		)
-
-		submit_card_info(obj) if submit
+		check_serial(obj) if submit
 
 	remove_notice = ->
 		$('.flash-notice').removeClass('animated bounceInRight').addClass('animated bounceOutRight')

@@ -10,7 +10,7 @@
     </span>
   </div>  
   <div class="one third padded">
-    <label for="serial_number">学习卡编号</label>
+    <label for="serial_number">学习卡编号(不可重复)</label>
     <input type='hidden' name='id' value="<%= card.try(:id).to_s %>" >
     <input id="serial_number" type="text" name='card[serial_number]' placeholder="card serial number" value="<%= default(card,'serial_number') %>">
   </div>

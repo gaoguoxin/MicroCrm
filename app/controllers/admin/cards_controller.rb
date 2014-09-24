@@ -25,6 +25,10 @@ class Admin::CardsController < Admin::AdminController
     render_json_auto User.search_manager(params) and return
   end
 
+  def check_serial
+    render_json_auto Card.check_serial(params) and return
+  end
+
 
   def create
     render_json_auto Card.create_new(card_params) and return 
