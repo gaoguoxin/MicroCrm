@@ -46,9 +46,11 @@
 		<a href="<%= user_feedbacks_path(:t =>'unfeed')%>" class="triple-pad-left">待反馈</a>
 	</dd>
 </dl>
-<dl class="menu">
-    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>学习卡管理</dt> 
-	<dd class="menu_item double-pad-left  <%= actived('feedbacks')%>">
-		<a href="<%= user_feedbacks_path%>" class="triple-pad-left">学习卡列表</a>
-	</dd>
-</dl>
+<% if current_user.is_admin? %>
+	<dl class="menu">
+	    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>学习卡管理</dt> 
+		<dd class="menu_item double-pad-left  <%= actived('feedbacks')%>">
+			<a href="<%= admin_cards_path%>" class="triple-pad-left">学习卡列表</a>
+		</dd>
+	</dl>
+<% end %>

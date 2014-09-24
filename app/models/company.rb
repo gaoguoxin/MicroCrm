@@ -28,10 +28,11 @@ class Company
   field :description,type:String #描述
 
   has_many :users
+  has_many :cards
   belongs_to :manager, class_name: "User", inverse_of: :company
 
   scope :actived, -> { where(status: STATUS_GOING) }
-
+  scope :except_other, ->{where(:name.ne => '其他')}
   
   def self.create_new(opt)
     opt = create_manager(opt)

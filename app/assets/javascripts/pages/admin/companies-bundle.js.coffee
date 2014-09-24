@@ -1,6 +1,5 @@
 #=require regex
 $(->
-	#$("#search_start,#search_end").datepicker()
 	$("#search_start,#search_end").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
 
 	delay = (ms, func) -> setTimeout func, ms
@@ -72,8 +71,8 @@ $(->
 			status 		   = $(@).data('status')
 			level  		   = $(@).data('level')
 			type   		   = $(@).data('type')
-			search_name    = $(@).data('search_name')
-			search_account = $(@).data('search_account')
+			search_name    = $(@).data('name')
+			search_account = $(@).data('account')
 			g_data = {page:page,search_status:status,search_level:level,search_type:type,search_name:search_name,search_account:search_account}
 			if page
 				$.get("/admin/companies",g_data,->)

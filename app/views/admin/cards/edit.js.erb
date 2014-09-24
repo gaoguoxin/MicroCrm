@@ -1,0 +1,6 @@
+<% if @card.present? %>
+  $('#tab2 form.new-card .form-detail').html("<%= escape_javascript(render :partial => 'form', :locals => { :card => @card }) %>");
+  $('form.new-card .info-submit').addClass('upd');
+  $('.tab-nav:first').removeClass('active').siblings().addClass('active');
+  $('#tab1').hide().siblings('#tab2').show();
+<% end %>

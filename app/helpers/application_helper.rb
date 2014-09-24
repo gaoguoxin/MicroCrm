@@ -30,9 +30,10 @@ module ApplicationHelper
   	end	
   end	
 
-
-  def admin_paginator_ajax(items,status=nil,level=nil,type=nil,name=nil,account=nil)
-    render :partial => "/admin/partical/paginate_ajax", :locals => {:common => items,:status => status,:level => level,:type => type,:name => name,:account => account}
+  def admin_paginator_ajax(ckass,items,opt)
+  #def admin_paginator_ajax(ckass,items,status=nil,level=nil,type=nil,name=nil,account=nil)
+    #render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:status => status,:level => level,:type => type,:name => name,:account => account}
+    render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
   end
 
 

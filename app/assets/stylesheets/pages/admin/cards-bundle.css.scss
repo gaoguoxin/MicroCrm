@@ -1,0 +1,24 @@
+table{
+	font-size:1em;
+	tr{
+		th,td{
+			text-align:center;
+		}
+		td.no-data{
+			text-align:center;
+		}
+		td a{
+			display:block;
+		}		
+	}
+}
+
+
+form{
+	input,select{
+		outline:none;
+	}
+	.search-manager{
+		cursor:pointer;
+	}
+}

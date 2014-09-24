@@ -1,0 +1,25 @@
+<% if cards['data'].length > 0 %>
+  <% cards['data'].each do |card|%>
+    <tr>
+      <td><%= card.serial_number %></td>
+      <td><%= card.try(:company).try(:name) %></td>
+      <td><%= Card::PAY_STATUS_HASH[card.status_payment] %></td>
+      <td><%= card.amount_payable%>/<%= card.amount_paid%></td>
+      <td><%= Card::EXEC_STATUS_HASH[card.status_execution]%></td>
+      <td><%= card.quantity_purchased %>/<%= card.quantity_used %></td>
+      <td><%= Card::TYPE_HASH[card.type]%></td>
+      <td><%= card.buyer %></td>
+      <td><%= card.buyer_mobile %></td>
+      <td>
+        <a href="javascript:void(0);" class='edit-card' id="<%= card.id.to_s %>">
+          修改/查看
+        </a>
+        <a href="javascript:void(0)" class="delete-card" data-cid="<%= card.id.to_s %>">删除</a>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="8" class='no-data'>您还没有添加任何的单位</td>  
+  </tr>  
+<% end %>

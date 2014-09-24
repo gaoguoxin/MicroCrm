@@ -1,0 +1,8 @@
+<% if cards.present? %>
+  $('#tab1 table tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :cards => @cards }) %>");
+  $('#tab1 .page-container').html("<%= escape_javascript(admin_paginator_ajax('card',cards,{:serial => params[:serial],:company => params[:company],:receipt => params[:receipt],:buyer => params[:buyer],:mobile => params[:mobile],:status => params[:status],:type => params[:type],:exec => params[:exec] })) %>");
+  <% if cards['data'].length <= 0 %>
+  	$('td.no-data').text('未查到符合条件的相关信息,请确认查询条件是否正确!');
+  <% end %>  
+<% end %>
+

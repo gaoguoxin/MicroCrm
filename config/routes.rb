@@ -17,6 +17,14 @@ Rails.application.routes.draw do
       end
     end
     resources :courses
+    resources :cards do
+      collection do 
+        get 'search_manager'
+        post 'update_info'
+        get 'delete'
+        get 'search'
+      end     
+    end
   end
 
   namespace :manager do
