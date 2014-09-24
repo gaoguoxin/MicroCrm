@@ -31,8 +31,8 @@ module ApplicationHelper
   end	
 
 
-  def admin_paginator_ajax(items,status,reward_type,point)
-    render :partial => "/admin/partical/paginate_ajax", :locals => {:common => items,:status => status,:reward => reward_type,:point => point}
+  def admin_paginator_ajax(items,status=nil,level=nil,type=nil,name=nil,account=nil)
+    render :partial => "/admin/partical/paginate_ajax", :locals => {:common => items,:status => status,:level => level,:type => type,:name => name,:account => account}
   end
 
 

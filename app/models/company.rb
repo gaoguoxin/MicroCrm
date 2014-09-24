@@ -64,4 +64,38 @@ class Company
     return true
   end
 
+  def self.search(opt)      
+    result = self.all
+    if opt['search_account'].present?
+      manager = User.where(role:User::ROLE_MANAGER,email: /#{opt['search_account'].downcase.strip!}/).first
+      manager = User.where(role:User::ROLE_MANAGER,mobile: /#{opt['search_account'].downcase.strip!}/).first unless manager.present?
+      if manager.present?
+        result = manager.company
+      else
+        result = nil
+      end
+      return result
+    end 
+
+    if opt['search_start'].present?
+      result = result.where(:created_at.gte => DateTime.parse(opt['search_start']))
+    end
+    if opt['search_end'].present?
+      result = result.where(:created_at.lte => DateTime.parse(opt['search_end']))
+    end
+    if opt['search_status'].present?
+      result = result.where(:status => opt['search_status'].to_i)
+    end
+    if opt['search_type'].present?
+      result = result.where(:type => opt['search_type'].to_i)
+    end    
+    if opt['search_level'].present?
+      result = result.where(:level => opt['search_level'].to_s)
+    end           
+    if opt['search_name'].present?    
+      result = result.where(name: /#{opt['search_name']}/)
+    end 
+    return result    
+  end
+
 end

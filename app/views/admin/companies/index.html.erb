@@ -29,9 +29,61 @@
         <% if current_user.is_admin? %>
           <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;单位</li>
         <% end %>
-        
       </ul>
       <div id="tab1" role="tabpanel">
+        <div class="search-container">
+          <form class='info search-form'>
+              <div class="row">
+                <div class="one fourth padded">
+                  <input id="search_name" name='search_name' type="text" placeholder="企业名称">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_account" name='search_account'  type="text" placeholder="管理员邮箱/手机号">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_start" name='search_start' type="text" placeholder="起始时间">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_end" name='search_end' type="text" placeholder="结束时间">
+                </div>                                
+              </div>
+              <div class="row">
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="search_status" id='search_status'>
+                      <option value="" disabled="" selected="">合作状态</option>
+                      <% Company::STATUS_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:status] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                 
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="search_type" id="search_type">
+                      <option value="" disabled="" selected="">合作类型</option>
+                      <% Company::TYPE_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:type] == k %> selected='selected'<% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="search_level" id="search_level">
+                      <option value="" disabled="" selected="">等级</option>
+                      <% Company::LEVEL_ARRAY.each do |level| %>
+                        <option value="<%= level %>" <% if params[:level] == level %>selected='selected'<% end%> ><%= level %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div>
+                <div class="one fourth padded">
+                  <button class="block info search-submit">搜索</button>
+                </div> 
+              </div>
+          </form>
+        </div>
         <table class="responsive responsiveTable  <%= @companies.length > 0 ? 'info' : 'error' %>" data-max="15">
           <thead>
             <tr>
@@ -50,7 +102,7 @@
           </tbody>
         </table>
         <div class="page-container">
-          <%= admin_paginator_ajax(@companies,nil,nil,nil) %>
+          <%= admin_paginator_ajax(@companies,params[:search_status],params[:search_level],params[:search_type],params[:search_name],params[:search_account]) %>
         </div>
       </div>
       <div id="tab2" role="tabpanel">

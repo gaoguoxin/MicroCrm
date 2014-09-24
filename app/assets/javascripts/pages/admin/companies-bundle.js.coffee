@@ -25,8 +25,6 @@ $(->
 
 		submit_company_info(obj)
 
-
-
 	remove_notice = ->
 		$('.flash-notice').removeClass('animated bounceInRight').addClass('animated bounceOutRight')
 
@@ -45,10 +43,15 @@ $(->
 				flash_notice(msg)
 		)		
 
-    	
 
 	$('body').on('click','.tab-nav:last',(e)->
 		$.get("/admin/companies/new",{},->)		
+	)
+
+	$('body').on('click','.search-submit',(e)->
+		e.preventDefault()
+		search_data = $('form.search-form').serialize()
+		$.get("/admin/companies",search_data,->)
 	)
 
 	$('body').on('click','td a.delete-company',(e)->
@@ -62,9 +65,15 @@ $(->
 
 	$('body').on('click','.pagination a',->
 		unless $(@).hasClass('disabled')
-			page = $(@).data('page')
+			page   		   = $(@).data('page')
+			status 		   = $(@).data('status')
+			level  		   = $(@).data('level')
+			type   		   = $(@).data('type')
+			search_name    = $(@).data('search_name')
+			search_account = $(@).data('search_account')
+			g_data = {page:page,search_status:status,search_level:level,search_type:type,search_name:search_name,search_account:search_account}
 			if page
-				$.get("/admin/companies",{page:page},->)
+				$.get("/admin/companies",g_data,->)
 	)
 
 	$('body').on('focus','form.new-company input',(e)->
