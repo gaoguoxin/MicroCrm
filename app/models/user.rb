@@ -87,7 +87,7 @@ class User
     else 
       #用户自己注册
       manager_mobile = company.manager.mobile
-      #SmsWorker.perform_async("user_regist",manager_mobile,{user:user})
+      #SmsWorker.perform_async("user_regist",manager_mobile,{user:user.id.to_s})
     end
     return user
   end
