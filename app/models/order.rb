@@ -18,7 +18,7 @@ class Order
   CANCEL_CODE_1 = 1 #谁取消的报名  企业管理员
   CANCEL_CODE_2 = 2 #谁取消的报名  系统管理员
 
-  field :source, type: Inteter,default: SOURCE_CODE_0 # 报名记录产生的来源
+  field :source, type: Integer,default: SOURCE_CODE_0 # 报名记录产生的来源
   field :status, type: Integer,default: SOURCE_CODE_0 # 企业管理员审核状态  
   field :status_at,type:Array  # 企业管理员审核发生的时间，可能多次改变status值
   field :state, type: Integer,default: STATE_CODE_0  #系统管理员审核状态值

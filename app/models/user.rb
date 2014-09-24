@@ -72,22 +72,22 @@ class User
       if user.mobile.present?
         if user.is_manager?
           #系统管理员添加企业管理员
-          SmsWorker.perform_async("admin_add_manager",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_manager",user.mobile,{password:opt[:password]})
         elsif user.is_viewer?
           #系统管理员添加观察员
-          SmsWorker.perform_async("admin_add_viewer",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_viewer",user.mobile,{password:opt[:password]})
         else
           #系统管理员添加学员
-          SmsWorker.perform_async("admin_add_user",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_user",user.mobile,{password:opt[:password]})
         end
       end      
     elsif is_manager
       #企业管理员添加学员
-      SmsWorker.perform_async("manager_add_user",user.mobile,{password:opt[:password]})
+      #SmsWorker.perform_async("manager_add_user",user.mobile,{password:opt[:password]})
     else 
       #用户自己注册
       manager_mobile = company.manager.mobile
-      SmsWorker.perform_async("user_regist",manager_mobile,{user:user})
+      #SmsWorker.perform_async("user_regist",manager_mobile,{user:user})
     end
     return user
   end
