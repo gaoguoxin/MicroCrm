@@ -2,7 +2,6 @@ class Admin::CompaniesController < Admin::AdminController
   before_action :set_company, only: [:show, :edit, :update, :delete,:update_info]
   before_action :refuse_viewer, only: [:search_manager,:create,:update_info,:delete]
   def index
-    params[:per_page] = 1
     if request.xhr?
       search
       render :partial => 'admin/companies/index.js.erb', :locals => { :companies => @companies }
