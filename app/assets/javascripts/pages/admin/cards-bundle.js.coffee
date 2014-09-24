@@ -1,6 +1,8 @@
-#=require regex
 $(->
-	$("#date_paid,#finished_at").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
+	#$("#date_paid,#finished_at").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
+	$('body').on('focus',"#date_paid,#finished_at", ->
+    	$(@).datepicker({dateFormat: "yy-mm-dd",showAnim:'show'});
+	)
 
 	delay = (ms, func) -> setTimeout func, ms
 

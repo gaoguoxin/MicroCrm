@@ -18,21 +18,15 @@ module ApplicationHelper
     return val
   end
 
-  def actived(c_name,pa=nil,str=nil)
-  	if c_name == controller_name
-  		if pa == str
-  			return 'active'
-  		else
-  			return ''
-  		end
-  	else
-  		return ''
-  	end	
+  def actived(c_name,a_name,param=nil,str=nil)
+    if c_name == controller_name && a_name == action_name && param == str
+      return 'active'
+    else
+      return ''
+    end
   end	
 
   def admin_paginator_ajax(ckass,items,opt)
-  #def admin_paginator_ajax(ckass,items,status=nil,level=nil,type=nil,name=nil,account=nil)
-    #render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:status => status,:level => level,:type => type,:name => name,:account => account}
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
   end
 

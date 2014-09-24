@@ -71,6 +71,17 @@
 </div>
 <div class="row">
   <div class="one half padded">
+    <label for="date_paid">付款日期</label>
+    <input id="date_paid" name='card[date_paid]' type="text" placeholder="select a date..." value="<%= default(card,'date_paid') %>">
+  </div>
+  <div class="one half padded">
+      <label for="finished_at">执行完毕日期</label>
+      <input id="finished_at" name='card[finished_at]' type="text" placeholder="select a date..." value="<%= default(card,'finished_at') %>">
+  </div> 
+</div> 
+
+<div class="row">
+  <div class="one half padded">
       <label for="buyer_voucher">买方付款凭证号</label>
       <input id="buyer_voucher" name='card[buyer_voucher]' type="text" placeholder="Enter something..." value="<%= default(card,'buyer_voucher') %>">
   </div>
@@ -89,17 +100,6 @@
       <input id="buyer_mobile" name='card[buyer_mobile]' type="text" placeholder="mobile number" value="<%= default(card,'buyer_mobile') %>">
   </div>  
 </div>
-
-<div class="row">
-  <div class="one half padded">
-    <label for="date_paid">付款日期</label>
-    <input id="date_paid" name='card[date_paid]' type="text" placeholder="select a date..." value="<%= default(card,'date_paid') %>">
-  </div>
-  <div class="one half padded">
-      <label for="finished_at">执行完毕日期</label>
-      <input id="finished_at" name='card[finished_at]' type="text" placeholder="select a date..." value="<%= default(card,'finished_at') %>">
-  </div> 
-</div> 
 
 <div class="row">
   <div class="one whole padded">
