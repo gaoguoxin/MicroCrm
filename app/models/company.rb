@@ -54,7 +54,7 @@ class Company
         user = User.regist(account,true)
       end
     end
-    opt[:manager_id] = user.id.to_s
+    opt[:manager_id] = user.try(:id).to_s
     return opt    
   end
 

@@ -1,20 +1,9 @@
 <dl class="menu">
-    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>课程管理</dt>
-	<dd class="menu_item double-pad-left <%= actived('courses')%>">
-		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
-	</dd>
-	<dd class="menu_item double-pad-left <%= actived('users')%>">
-		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
-	</dd>	
-</dl>
-
-<dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>单位管理</dt>
 	<dd class="menu_item double-pad-left <%= actived('companies')%>">
 		<a href="<%= admin_companies_path %>" class="triple-pad-left">单位列表</a>
 	</dd>
 </dl>
-
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>会员管理</dt>
 	<dd class="menu_item double-pad-left <%= actived('courses')%>">
@@ -24,8 +13,15 @@
 		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
 	</dd>	
 </dl>
-
-
+<dl class="menu">
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>课程管理</dt>
+	<dd class="menu_item double-pad-left <%= actived('courses')%>">
+		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left <%= actived('users')%>">
+		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
+	</dd>	
+</dl>
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名表管理</dt> 
 	<dd class="menu_item double-pad-left <%= actived('courses')%>">
@@ -41,8 +37,6 @@
 		<a href="<%= user_courses_path(:t =>'actived')%>" class="triple-pad-left">参与过的课程</a>
 	</dd>
 </dl>
-
-
 <dl class="menu">
     <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt> 
 	<dd class="menu_item double-pad-left  <%= actived('feedbacks')%>">
@@ -50,5 +44,11 @@
 	</dd>
 	<dd class="menu_item double-pad-left  <%= actived('courses',params[:t],'unfeed')%>">
 		<a href="<%= user_feedbacks_path(:t =>'unfeed')%>" class="triple-pad-left">待反馈</a>
+	</dd>
+</dl>
+<dl class="menu">
+    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>学习卡管理</dt> 
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks')%>">
+		<a href="<%= user_feedbacks_path%>" class="triple-pad-left">学习卡列表</a>
 	</dd>
 </dl>

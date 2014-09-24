@@ -11,7 +11,6 @@ $(->
 			if obj.siblings('.tooltip').length > 0 
 				obj.siblings('.tooltip').text('').text(msg).removeClass('animated bounceOutRight').addClass('animated bounceInRight').show()
 			else
-				console.log(obj.parents('.ipt-container').find('.tooltip').length)
 				obj.parents('.ipt-container').find('.tooltip').text('').text(msg).removeClass('animated bounceOutRight').addClass('animated bounceInRight').show()
 		else
 			obj.parents('.ipt-container').addClass("valid")
@@ -40,18 +39,17 @@ $(->
 		data = {mobile:value} if col == 'mobile'
 		if value.length > 0
 			$.post("/users/check_exist",data,(ret)->
-				console.log('----------------------------------------')
-				console.log(ret)
-				console.log('----------------------------------------')
 				if ret.success
 					if ret.value
-						$('.account.tooltip').show()
+						if col == 'email'
+							flag_notice(email_ipt,'该邮箱已被使用')
+						else
+							flag_notice(mobile_ipt,'该手机已被占用')
 					else
 						if col == 'email'
 							flag_notice(email_ipt)
 						else
-							flag_notice(mobile_ipt)
-						
+							flag_notice(mobile_ipt)							
 			)		
 
 	check_required = ->
@@ -79,14 +77,19 @@ $(->
 		send_ajax()
 
 	send_ajax = ->
-		account  = account_ipt.val()
-		password = password_ipt.val()
-		$.post("/users",{email_mobile:account,password:password},(ret)->
+		name        = name_ipt.val()
+		r_email  	= email_ipt.val()
+		r_mobile 	= mobile_ipt.val()
+		password 	= password_ipt.val()
+		company_id  = company_ipt.val() 
+		$.post("/users",{name:name,email:r_email,mobile:r_mobile,password:password,company_id:company_id},(ret)->
 			if ret.success
-				window.location.href = "/users/#{ret.value._id.$oid}/edit"
+				window.location.href = "/user/users"
 			else
-				if ret.value.error_code == "error_0"
-					$('.account.tooltip').show()
+				if ret.value.error_code == "error_5"
+					$('.email.tooltip').show()
+				if ret.value.error_code == "error_6"
+					$('.mobile.tooltip').show()
 		)
 
 	$('.form input,.form select').focus(->
@@ -101,8 +104,8 @@ $(->
 
 
 	$('.reg-btn').click((e)->
+		e.preventDefault()
 		check_required()
-		e.preventDefault()		
 		
 	)
 

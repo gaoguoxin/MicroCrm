@@ -1,0 +1,11 @@
+:verbose: false
+:logfile: ./log/sidekiq.log
+:pidfile: tmp/pids/sidekiq.pid
+:concurrency: 5
+development:
+  :concurrency: 5
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20
+

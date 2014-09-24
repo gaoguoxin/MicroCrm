@@ -39,7 +39,9 @@ class User
 
 
   #注册用户
-  def self.regist(opt,is_admin=false)
+  def self.regist(opt,is_admin=false,is_manager=false)
+    #is_admin 标示当前的添加用户行为是否由管理员进行
+    #is_manager 标示当前的添加用户行为是否由企业管理员进行
     account = {}
     account[:name]              = opt[:name]
     account[:email]             = opt[:email].to_s.downcase
@@ -54,25 +56,39 @@ class User
 
     account[:password] = make_encrypt(opt[:password])
 
-    exist_user = false
+    #exist_user = false
 
     user = self.find_by_email(account[:email])
+    return ErrorEnum::EMAIL_EXIST if user.present?
     user = self.find_by_mobile(account[:mobile]) if(!user.present? && account[:mobile].present?)
-    exist_user = true if user.present?
-    return ErrorEnum::USER_EXIST if exist_user
-
+    return ErrorEnum::MOBILE_EXIST if user.present?
+    # exist_user = true if user.present?
+    # return ErrorEnum::USER_EXIST if exist_user
+    company = Company.where(id:opt[:company_id]).first unless is_admin
+    return ErrorEnum::COMPANY_NOT_EXIST unless company.present? unless is_admin
     user = self.create(account)
     
-    # if account[:source] == SOURCE_S #系统管理员添加企业管理员行为
-    #   # if user.mobile.present?
-    #   #   SmsWorker.perform_async("add_manager",user.mobile,opt[:password])
-    #   # end
-    # elsif account[:source] == SOURCE_M #企业管理员添加员工行为
-    #   # if user.mobile.present?
-    #   #   SmsWorker.perform_async("add_employee",user.mobile,opt[:password])
-    #   # end
-    # end
-
+    if is_admin
+      if user.mobile.present?
+        if user.is_manager?
+          #系统管理员添加企业管理员
+          SmsWorker.perform_async("admin_add_manager",user.mobile,{password:opt[:password]})
+        elsif user.is_viewer?
+          #系统管理员添加观察员
+          SmsWorker.perform_async("admin_add_viewer",user.mobile,{password:opt[:password]})
+        else
+          #系统管理员添加学员
+          SmsWorker.perform_async("admin_add_user",user.mobile,{password:opt[:password]})
+        end
+      end      
+    elsif is_manager
+      #企业管理员添加学员
+      SmsWorker.perform_async("manager_add_user",user.mobile,{password:opt[:password]})
+    else 
+      #用户自己注册
+      manager_mobile = company.manager.mobile
+      SmsWorker.perform_async("user_regist",manager_mobile,{user:user})
+    end
     return user
   end
 

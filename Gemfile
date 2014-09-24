@@ -35,6 +35,7 @@ gem 'groundworkcss'
 gem 'autoprefixer-rails'
 gem "font-awesome-rails"
 gem 'mobile-fu', "~> 1.2.2"
+gem 'sidekiq'
 
 gem "unicorn", group: :development
 # Use ActiveModel has_secure_password
