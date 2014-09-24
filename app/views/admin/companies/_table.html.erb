@@ -1,0 +1,25 @@
+<% if companies['data'].length > 0 %>
+  <% companies['data'].each do |company|%>
+    <tr>
+      <td><%= company.name %></td>
+      <td><%= company.try(:manager).try(:name) %></td>
+      <td><%= Company::TYPE_HASH[company.type] %></td>
+      <td><%= company.level %></td>
+      <td><%= Company::STATUS_HASH[company.status]%></td>
+      <td><%= company.enroll_count%></td>
+      <td><%= company.created_at.strftime("%F")%></td>
+      <td>
+        <a href="javascript:void(0);" class='edit-company' id="<%= company.id.to_s %>">
+          修改/查看
+        </a>
+        <% if current_user.is_admin? %>
+          <a href="javascript:void(0)" class="delete-company" data-cid="<%= company.id.to_s %>">终止合作</a>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="8" class='no-data'>您还没有添加任何的单位</td>  
+  </tr>  
+<% end %>

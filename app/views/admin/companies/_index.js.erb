@@ -1,0 +1,4 @@
+<% if companies.present? %>
+  $('#tab1 table tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :companies => @companies }) %>");
+  $('#tab1 .page-container').html("<%= escape_javascript(admin_paginator_ajax(companies,nil,nil,nil)) %>");
+<% end %>

@@ -31,9 +31,8 @@
         <% end %>
         
       </ul>
-
       <div id="tab1" role="tabpanel">
-        <table class="responsive <%= @companies.length > 0 ? 'info' : 'error' %>" data-max="15">
+        <table class="responsive responsiveTable  <%= @companies.length > 0 ? 'info' : 'error' %>" data-max="15">
           <thead>
             <tr>
               <th>名称</th>
@@ -47,37 +46,13 @@
             </tr>
           </thead>
           <tbody>
-            <% if @companies['data'].length > 0 %>
-              <% @companies['data'].each do |company|%>
-                <tr>
-                  <td><%= company.name %></td>
-                  <td><%= company.try(:manager).try(:name) %></td>
-                  <td><%= Company::TYPE_HASH[company.type] %></td>
-                  <td><%= company.level %></td>
-                  <td><%= Company::STATUS_HASH[company.status]%></td>
-                  <td><%= company.enroll_count%></td>
-                  <td><%= company.created_at.strftime("%F")%></td>
-                  <td>
-                    <a href="javascript:void(0);" class='edit-company' id="<%= company.id.to_s %>">
-                      修改/查看
-                    </a>
-                    <% if current_user.is_admin? %>
-                      <a href="javascript:void(0)" class="delete-company" data-cid="<%= company.id.to_s %>">终止合作</a>
-                    <% end %>
-                    
-                  </td>
-                </tr>
-              <% end %>
-            <% else %>
-              <tr>
-                <td colspan="8" class='no-data'>您还没有添加任何的单位</td>  
-              </tr>  
-            <% end %>
+            <%= render :partial => '/admin/companies/table',:locals => {:companies => @companies}%>
           </tbody>
         </table>
-          <%= admin_paginator_ajax@companies,nil,nil,nil) %>
+        <div class="page-container">
+          <%= admin_paginator_ajax(@companies,nil,nil,nil) %>
+        </div>
       </div>
-
       <div id="tab2" role="tabpanel">
         <form class='info new-company'>
           <fieldset>
@@ -88,7 +63,6 @@
             <% if current_user.is_admin? %>
               <button class="block info info-submit">提交</button>
             <% end %>
-            
           </fieldset>
         </form> 
       </div>

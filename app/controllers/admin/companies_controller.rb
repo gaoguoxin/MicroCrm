@@ -3,7 +3,13 @@ class Admin::CompaniesController < Admin::AdminController
   before_action :refuse_viewer, only: [:search_manager,:create,:update_info,:delete]
   def index
     params[:per_page] = 2
-    @companies = auto_paginate(Company.all) 
+    if request.xhr?
+      @companies = auto_paginate(Company.all)
+      render :partial => 'admin/companies/index.js.erb', :locals => { :companies => @companies }
+    else
+      @companies = auto_paginate(Company.all)  
+    end
+     
   end
 
   def new

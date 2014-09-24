@@ -60,6 +60,13 @@ $(->
 		)
 	)
 
+	$('body').on('click','.pagination a',->
+		unless $(@).hasClass('disabled')
+			page = $(@).data('page')
+			if page
+				$.get("/admin/companies",{page:page},->)
+	)
+
 	$('body').on('focus','form.new-company input',(e)->
 		$(@).parents('.padded').removeClass('invalid').removeClass('valid')
 	)

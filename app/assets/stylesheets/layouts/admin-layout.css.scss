@@ -158,4 +158,27 @@ body{
 			}
 		}
 	}
+
+	.pagination{
+		text-align:center;
+		a{
+			display:inline-block;
+			padding: 6px 12px;
+			border: 1px solid #ddd;
+			@include border-radius(4px);
+			background-color: #fff;
+			text-decoration:none;
+			&:hover,&.active{
+				background:#489ac1;
+				color:#fff;
+			}
+			&.disabled{
+				background: #eee;
+				color:#fff;
+				cursor:default;
+			}
+
+		}
+	}
+
 }
