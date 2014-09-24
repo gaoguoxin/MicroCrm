@@ -35,7 +35,7 @@ class User
 
   belongs_to :company
 
-  has_one :company,class_name: "Company",inverse_of: :manager
+  has_many :companies,class_name: "Company",inverse_of: :manager
 
 
   #注册用户

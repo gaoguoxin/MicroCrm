@@ -1,5 +1,8 @@
 #=require regex
 $(->
+	#$("#search_start,#search_end").datepicker()
+	$("#search_start,#search_end").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
+
 	delay = (ms, func) -> setTimeout func, ms
 
 	flash_notice = (msg)->

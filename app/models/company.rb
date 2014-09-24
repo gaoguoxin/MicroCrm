@@ -67,12 +67,12 @@ class Company
   def self.search(opt)      
     result = self.all
     if opt['search_account'].present?
-      manager = User.where(role:User::ROLE_MANAGER,email: /#{opt['search_account'].downcase.strip!}/).first
-      manager = User.where(role:User::ROLE_MANAGER,mobile: /#{opt['search_account'].downcase.strip!}/).first unless manager.present?
+      manager = User.where(role_of_system:User::ROLE_MANAGER,email: /#{opt['search_account'].downcase.strip!}/).first
+      manager = User.where(role_of_system:User::ROLE_MANAGER,mobile: /#{opt['search_account'].downcase.strip!}/).first unless manager.present?
       if manager.present?
-        result = manager.company
+        result = manager.companies || []
       else
-        result = nil
+        result = []
       end
       return result
     end 
