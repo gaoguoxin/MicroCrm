@@ -1,31 +1,127 @@
-<h1>Listing users</h1>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/users-bundle" %>
+  <%= javascript_include_tag "pages/admin/users-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Mobile</th>
-      <th>Company</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.name %></td>
-        <td><%= user.email %></td>
-        <td><%= user.mobile %></td>
-        <td><%= user.company_id %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
 
-<br>
-
-<%= link_to 'New User', new_user_path %>
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span><span class="locate">会员管理<i class="fa fa-angle-double-right"></i>会员列表</span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>增加/删除/修改会员信息</span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+    <div class="tabs ipad">
+      <ul role="tablist">
+        <li role="tab" aria-controls="#tab1" class='one fourth tab-nav'>会员列表</li>
+          <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;会员</li>
+      </ul>
+      <div id="tab1" role="tabpanel">
+        <div class="search-container">
+          <form class='info search-card'>
+              <div class="row">
+                <div class="one fourth padded">
+                  <input id="search_serial_number" name='serial' type="text" placeholder="学习卡编号">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_company" name='company'  type="text" placeholder="单位名称">
+                </div>
+                <div class="one fourth padded">
+                  <input id="receipt_num" name='receipt' type="text" placeholder="发票号">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_buyer" name='buyer' type="text" placeholder="买方联系人">
+                </div>                                
+              </div>
+              <div class="row">
+                <div class="one fourth padded">
+                  <input id="search_buyer_mobile" name='mobile' type="text" placeholder="买方联系人电话">
+                </div>              
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="status" id='search_status'>
+                      <option value="" disabled="" selected="">付款状态</option>
+                      <% Card::PAY_STATUS_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:status] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                 
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="exec" id="search_exec">
+                      <option value="" disabled="" selected="">执行状态</option>
+                      <% Card::EXEC_STATUS_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:type] == k %> selected='selected'<% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="type" id="search_type">
+                      <option value="" disabled="" selected="">类型</option>
+                      <% Card::TYPE_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:type] == k %> selected='selected'<% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div> 
+              </div>
+              <div class="row">
+                <div class="one whole padded">
+                  <button class="block info search_card">搜索</button>
+                </div>
+              </div>
+          </form>
+        </div>
+        <table class="responsive responsiveTable  <%= @cards.length > 0 ? 'info' : 'error' %>" data-max="15">
+          <thead>
+            <tr>
+              <th>编号</th>
+              <th>公司</th>
+              <th>付款状态</th>
+              <th>应付/实付(元)</th>
+              <th>执行状态</th>
+              <th>购买/已用(人天)</th>
+              <th>类型</th>
+              <th>联系人</th>
+              <th>电话</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render :partial => '/admin/cards/table',:locals => {:cards => @cards}%>
+          </tbody>
+        </table>
+        <div class="page-container">
+          <%= admin_paginator_ajax('card',@cards,{:serial => params[:serial],:company => params[:company],:receipt => params[:receipt],:buyer => params[:buyer],:mobile => params[:mobile],:status => params[:status],:type => params[:type],:exec => params[:exec] }) %>
+        </div>
+      </div>
+      <div id="tab2" role="tabpanel">
+        <form class='info new-card'>
+          <fieldset>
+            <legend>information</legend>
+            <div class='form-detail'>
+              <%= render :partial => '/admin/cards/form',:locals => {:card => @card}%>
+            </div>
+            <% if current_user.is_admin? %>
+              <button class="block info info-submit">提交</button>
+            <% end %>
+          </fieldset>
+        </form> 
+      </div>
+  </div>
+<% end %>

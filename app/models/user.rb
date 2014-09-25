@@ -20,8 +20,10 @@ class User
   field :email, type: String
   field :mobile, type: String
   field :password, type: String
-  field :role_of_system, type: Integer,:default => 3
-  field :position, type: String
+  field :role_of_system, type: Integer,:default => 3 #系统角色
+  field :type_of_position, type: String #type_of_position
+  field :city,type: String # 距您最近的城市
+  field :ax,type:Boolean
   field :related, type:Integer #表示该用户主要关联的产品
   field :course_count,type:Integer #该用户有效报名的人天总数
   field :description,type:String #该用户对自己的描述
