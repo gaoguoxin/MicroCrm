@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
 
   namespace :admin do
-    resources :users
+    resources :users do 
+      collection do 
+        post 'check_exist'
+      end
+    end
     resources :orders
     resources :companies do 
       collection do 

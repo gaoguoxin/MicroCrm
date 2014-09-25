@@ -1,5 +1,4 @@
 $(->
-	#$("#date_paid,#finished_at").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
 	$('body').on('focus',"#date_paid,#finished_at", ->
     	$(@).datepicker({dateFormat: "yy-mm-dd",showAnim:'show'});
 	)

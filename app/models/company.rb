@@ -35,12 +35,12 @@ class Company
   scope :except_other, ->{where(:name.ne => '其他')}
   
   def self.create_new(opt)
-    opt = create_manager(opt)
+    opt = create_manager(opt,creater)
     self.create(opt)
     return true
   end
 
-  def self.create_manager(opt)
+  def self.create_manager(opt,creater)
     user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
     user = User.find_by_mobile(opt[:manager_id]) unless user.present?
     unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
@@ -52,15 +52,15 @@ class Company
         account[:mobile]             =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::MobileRexg}/i)
         account[:role_of_system]     =  User::ROLE_MANAGER
         account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
-        user = User.regist(account,true)
+        user = User.regist(account,true,false,creater)
       end
     end
     opt[:manager_id] = user.try(:id).to_s
     return opt    
   end
 
-  def self.update_info(opt,inst)
-    opt = create_manager(opt)
+  def self.update_info(opt,inst,creater)
+    opt = create_manager(opt,creater)
     inst.update(opt)
     return true
   end

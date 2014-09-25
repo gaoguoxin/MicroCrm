@@ -135,6 +135,41 @@ body{
 								}
 							}
 						}
+
+
+						table{
+							tr{
+								th,td{
+									text-align:center;
+									font-size:1em;
+								}
+								td.no-data{
+									text-align:center;
+								}
+								td a{
+									display:block;
+								}		
+							}
+						}
+						
+						
+						
+						form{
+							input,select{
+								outline:none;
+							}	
+							ul{
+								li{
+									display:inline;
+								}
+							}
+						}
+
+
+
+
+
+
 					}
 				}
 			}

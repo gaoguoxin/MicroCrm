@@ -1,0 +1,9 @@
+<% if @user.present? %>
+  $('#tab2 form.new-user .form-detail').html("<%= escape_javascript(render :partial => 'form', :locals => { :user => @user }) %>");
+  $('form.new-user .info-submit').addClass('upd');
+  $('.tab-nav:first').removeClass('active').siblings().addClass('active');
+  $('#tab1').hide().siblings('#tab2').show();
+<% end %>
+<% if current_user.is_viewer? %>
+	$('form input,select,textarea,button').prop('disabled',true);
+<% end %>

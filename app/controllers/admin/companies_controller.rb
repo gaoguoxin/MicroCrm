@@ -27,11 +27,11 @@ class Admin::CompaniesController < Admin::AdminController
 
 
   def create
-    render_json_auto Company.create_new(company_params) and return 
+    render_json_auto Company.create_new(company_params,current_user.id.to_s) and return 
   end
 
   def update_info
-    render_json_auto Company.update_info(company_params,@company)
+    render_json_auto Company.update_info(company_params,@company,current_user.id.to_s)
   end
 
   def delete

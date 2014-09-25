@@ -15,40 +15,58 @@ class User
   ROLE_MANAGER = 2 # 企业管理员
   ROLE_EMPLOYEE = 3 # 普通用户
   ROLE_VIEW     = 4 #查看员
+  ROLE_HASH = {1 => '系统管理员',2 => '企业管理员',3 => '普通用户', 4 => '查看员'}
+  
+  POSITION_HASH = {1 => '销售',2 => '售前顾问',3 => '项目经理', 4 => '应用顾问', 5 => '技术顾问', 6 => '开发顾问', 7 => '其他'}
+
+  CITY_ARRAY = ['上海','北京','广州','其他']
+
+  INTEREST_ARRAY = ['AX培训','CRM培训','软技能培训']
+
+  CREATER_HASH = {1 => '系统管理员',2 => '企业管理员', 3 => '主动注册'}
+    
+
+  STATUS_ACTIVED = 1
+  STATUS_INACTIVED = 0
+
+  STATUS_HASH = { 1 => '活跃', 0 => '停用'}
 
   field :name, type: String
   field :email, type: String
   field :mobile, type: String
   field :password, type: String
   field :role_of_system, type: Integer,:default => 3 #系统角色
-  field :type_of_position, type: String #type_of_position
+  field :type_of_position, type: String #工作类型
   field :city,type: String # 距您最近的城市
-  field :ax,type:Boolean
-  field :related, type:Integer #表示该用户主要关联的产品
-  field :course_count,type:Integer #该用户有效报名的人天总数
-  field :description,type:String #该用户对自己的描述
+  field :ax,type: Boolean #是否对AX培训感兴趣
+  field :crm, type: Boolean #是否对CRM培训感兴趣
+  field :softskill,type: Boolean #是否对软技能培训感兴趣
+  field :status, type: Integer,default:STATUS_ACTIVED #状态
+  field :course_count,type:Integer #有效报名课程数
+  field :course_manday_count,type: Integer # 有效报名人天数
   field :qq, type: String
   field :wechart, type: String
   field :skype, type: String
-  field :gtalk, type: String
-  field :twitter, type: String
-  field :facebook, type: String
-
+  field :creater,type:String # 创建人
+  field :updater,type:String # 最近修改人  
 
   belongs_to :company
 
   has_many :companies,class_name: "Company",inverse_of: :manager
 
-
+  scope :except_admin_and_viewer, ->{ any_of({:role_of_system => ROLE_MANAGER},{:role_of_system => ROLE_EMPLOYEE})}
+  scope :actived, -> {where(:status => STATUS_ACTIVED)}
   #注册用户
-  def self.regist(opt,is_admin=false,is_manager=false)
+  def self.regist(opt,is_admin=false,is_manager=false,creater=nil)
     #is_admin 标示当前的添加用户行为是否由管理员进行
     #is_manager 标示当前的添加用户行为是否由企业管理员进行
+    #creater  表示创建人是谁
     account = {}
     account[:name]              = opt[:name]
     account[:email]             = opt[:email].to_s.downcase
     account[:mobile]            = opt[:mobile]
     account[:role_of_system]    = opt[:role_of_system] || ROLE_EMPLOYEE
+    account[:creater]           = creater
     opt[:password]              = opt[:password].downcase
     
     return ErrorEnum::NAME_BLANK unless account[:name].present? 
@@ -60,9 +78,11 @@ class User
 
     #exist_user = false
 
-    user = self.find_by_email(account[:email])
+    #user = self.find_by_email(account[:email])
+    user = self.where(email:account[:email]).actived.first
     return ErrorEnum::EMAIL_EXIST if user.present?
-    user = self.find_by_mobile(account[:mobile]) if(!user.present? && account[:mobile].present?)
+    #user = self.find_by_mobile(account[:mobile]) if(!user.present? && account[:mobile].present?)
+    user = self.where(mobile:account[:mobile]).actived.first  if(!user.present? && account[:mobile].present?)
     return ErrorEnum::MOBILE_EXIST if user.present?
     # exist_user = true if user.present?
     # return ErrorEnum::USER_EXIST if exist_user
@@ -111,9 +131,9 @@ class User
     email  = opt[:email].to_s.downcase
     mobile = opt[:mobile].to_s.downcase
     if email.present?
-      user = self.find_by_email(email)  
+      user = self.where(email:email).actived.first  
     else
-      user = self.find_by_mobile(mobile) 
+      user = self.where(mobile:mobile).actived.first 
     end
     return user
   end
@@ -133,6 +153,10 @@ class User
     return user
   end
 
+  def self.search(opt)
+    User.except_admin_and_viewer
+  end
+
 
   def update_info(opt)
     opt.each_pair do |k,v|
@@ -141,12 +165,6 @@ class User
       if user.present?
         return ErrorEnum::EMAIL_EXIST    if k == 'email'
         return ErrorEnum::MOBILE_EXIST   if k == 'mobile'
-        return ErrorEnum::QQ_EXIST       if k == 'qq'
-        return ErrorEnum::WECHART_EXIST  if k == 'wechart'
-        return ErrorEnum::SKYPE_EXIST    if k == 'skype'
-        return ErrorEnum::GTALK_EXIST    if k == 'gtalk'
-        return ErrorEnum::TWITTER_EXIST  if k == 'twitter'
-        return ErrorEnum::FACEBOOK_EXIST if k == 'facebook'
       end
     end
   

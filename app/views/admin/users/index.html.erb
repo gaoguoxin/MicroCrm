@@ -30,92 +30,134 @@
       </ul>
       <div id="tab1" role="tabpanel">
         <div class="search-container">
-          <form class='info search-card'>
+          <form class='info search-user'>
               <div class="row">
                 <div class="one fourth padded">
-                  <input id="search_serial_number" name='serial' type="text" placeholder="学习卡编号">
+                  <input id="search_name" name='name' type="text" placeholder="用户名">
                 </div>
                 <div class="one fourth padded">
-                  <input id="search_company" name='company'  type="text" placeholder="单位名称">
+                  <input id="search_email" name='email'  type="text" placeholder="邮箱">
                 </div>
                 <div class="one fourth padded">
-                  <input id="receipt_num" name='receipt' type="text" placeholder="发票号">
+                  <input id="search_mobile" name='mobile' type="text" placeholder="手机号码">
                 </div>
                 <div class="one fourth padded">
-                  <input id="search_buyer" name='buyer' type="text" placeholder="买方联系人">
-                </div>                                
+                  <span class="select-wrap">
+                    <select class="unselected" name="role" id='search_role'>
+                      <option value="" disabled="" selected="">系统角色</option>
+                      <% User::ROLE_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:role] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                 
+                </div>                               
               </div>
               <div class="row">
                 <div class="one fourth padded">
-                  <input id="search_buyer_mobile" name='mobile' type="text" placeholder="买方联系人电话">
-                </div>              
+                  <span class="select-wrap">
+                    <select class="unselected" name="position" id='search_position'>
+                      <option value="" disabled="" selected="">工作类型</option>
+                      <% User::POSITION_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:position] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                 
+                </div>             
                 <div class="one fourth padded">
                   <span class="select-wrap">
-                    <select class="unselected" name="status" id='search_status'>
-                      <option value="" disabled="" selected="">付款状态</option>
-                      <% Card::PAY_STATUS_HASH.each_pair do |k,v| %>
-                        <option value="<%= k %>" <% if params[:status] == k %>selected='selected' <% end %> ><%= v %></option>
+                    <select class="unselected" name="company" id='search_company'>
+                      <option value="" disabled="" selected="">所属单位</option>
+                      <% Company.all.each do |company| %>
+                        <option value="<%= company.id.to_s%>" <% if params[:company] == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
                       <% end %>
                     </select>
                   </span>                 
                 </div>
                 <div class="one fourth padded">
                   <span class="select-wrap">
-                    <select class="unselected" name="exec" id="search_exec">
-                      <option value="" disabled="" selected="">执行状态</option>
-                      <% Card::EXEC_STATUS_HASH.each_pair do |k,v| %>
-                        <option value="<%= k %>" <% if params[:type] == k %> selected='selected'<% end %> ><%= v %></option>
+                    <select class="unselected" name="city" id="search_city">
+                      <option value="" disabled="" selected="">最近城市</option>
+                      <% User::CITY_ARRAY.each do |city| %>
+                        <option value="<%= city %>" <% if params[:city] == city %> selected='selected'<% end %> ><%= city %></option>
                       <% end %>
                     </select>
                   </span>
                 </div>
                 <div class="one fourth padded">
                   <span class="select-wrap">
-                    <select class="unselected" name="type" id="search_type">
-                      <option value="" disabled="" selected="">类型</option>
-                      <% Card::TYPE_HASH.each_pair do |k,v| %>
-                        <option value="<%= k %>" <% if params[:type] == k %> selected='selected'<% end %> ><%= v %></option>
+                    <select class="unselected" name="interest" id="search_interest">
+                      <option value="" disabled="" selected="">课程兴趣</option>
+                      <% User::INTEREST_ARRAY.each do |interest| %>
+                        <option value="<%= interest %>" <% if params[:interest] == interest %> selected='selected'<% end %> ><%= interest %></option>
                       <% end %>
                     </select>
                   </span>
                 </div> 
               </div>
               <div class="row">
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="creater" id="search_creater">
+                      <option value="" disabled="" selected="">创建人</option>
+                      <% User::CREATER_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:creater] == k %> selected='selected'<% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                  
+                </div>  
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="status" id="search_status">
+                      <option value="" disabled="" selected="">状态</option>
+                      <% User::STATUS_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:status] == k %> selected='selected'<% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                  
+                </div> 
+                <div class="one fourth padded">
+                  <input id="search_start" name='start' type="text" placeholder="起始时间">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_end" name='end' type="text" placeholder="结束时间">
+                </div>  
+              </div>
+              <div class="row">
                 <div class="one whole padded">
-                  <button class="block info search_card">搜索</button>
+                  <button class="block info search_user">搜索</button>
                 </div>
               </div>
           </form>
         </div>
-        <table class="responsive responsiveTable  <%= @cards.length > 0 ? 'info' : 'error' %>" data-max="15">
+        <table class="responsive responsiveTable  <%= @users.length > 0 ? 'info' : 'error' %>" data-max="15">
           <thead>
             <tr>
-              <th>编号</th>
-              <th>公司</th>
-              <th>付款状态</th>
-              <th>应付/实付(元)</th>
-              <th>执行状态</th>
-              <th>购买/已用(人天)</th>
-              <th>类型</th>
-              <th>联系人</th>
-              <th>电话</th>
+              <th>用户名</th>
+              <th>邮箱</th>
+              <th>手机号码</th>
+              <th>系统角色</th>
+              <th>工作类型</th>
+              <th>所属单位</th>
+              <th>有效报名课程数</th>
+              <th>有效报名人天数</th>
+              <th>状态</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody>
-            <%= render :partial => '/admin/cards/table',:locals => {:cards => @cards}%>
+            <%= render :partial => '/admin/users/table',:locals => {:users => @users}%>
           </tbody>
         </table>
         <div class="page-container">
-          <%= admin_paginator_ajax('card',@cards,{:serial => params[:serial],:company => params[:company],:receipt => params[:receipt],:buyer => params[:buyer],:mobile => params[:mobile],:status => params[:status],:type => params[:type],:exec => params[:exec] }) %>
+          <%= admin_paginator_ajax('user',@users,{:name => params[:name],:email => params[:email],:mobile => params[:mobile],:role => params[:role],:position => params[:position],:company => params[:company],:city => params[:city],:interest => params[:interest],:creater => params[:creater] }) %>
         </div>
       </div>
       <div id="tab2" role="tabpanel">
-        <form class='info new-card'>
+        <form class='info new-user'>
           <fieldset>
             <legend>information</legend>
             <div class='form-detail'>
-              <%= render :partial => '/admin/cards/form',:locals => {:card => @card}%>
+              <%= render :partial => '/admin/users/form',:locals => {:user => @user}%>
             </div>
             <% if current_user.is_admin? %>
               <button class="block info info-submit">提交</button>
