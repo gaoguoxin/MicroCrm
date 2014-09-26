@@ -158,20 +158,56 @@ class User
   end
 
   def self.search(opt)
+    Rails.logger.info('========================================================')
+    Rails.logger.info(opt)
+    Rails.logger.info('========================================================')
     result = self.all
-    if opt['search_account'].present?
-      manager = User.where(role_of_system:User::ROLE_MANAGER,email: /#{opt['search_account'].downcase.strip!}/).first
-      manager = User.where(role_of_system:User::ROLE_MANAGER,mobile: /#{opt['search_account'].downcase.strip!}/).first unless manager.present?
-      if manager.present?
-        result = manager.companies || []
-      else
-        result = []
+    if opt['name'].present?
+      result = result.where(name:/#{opt['name']}/)
+    end
+    if opt['email'].present?
+      result = result.where(email:/#{opt['email']}/)
+    end
+    if opt['mobile'].present?
+      result = result.where(mobile:/#{opt['mobile']}/)
+    end
+    if opt['role'].present?
+      result = result.where(role_of_system:opt['role'].to_i)
+    end
+    if opt['position'].present?
+      result = result.where(type_of_position:opt['position'])
+    end
+    if opt['company'].present?
+      result = result.where(company_id:opt['company'])
+    end
+    if opt['city'].present?
+      result = result.where(city:opt['city'])
+    end
+    if opt['interest'].present?
+      if opt['interest'] == 'AX培训'
+        result = result.where(ax:true)
+      elsif opt['interest'] == 'CRM培训'
+        result = result.where(crm:true)
+      elsif opt['interest'] == '软技能培训'
+        result = result.where(softskill:true)
       end
-      return result
+    end
+
+    if opt['creater'].present?
+      if opt['creater'] == '1'
+        tmp_id_arr = self.where(role_of_system:User::ROLE_ADMIN).map{|e| e.id.to_s}
+        result = result.where(:creater.in => tmp_id_arr)
+      elsif opt['creater'] == '2'
+        tmp_id_arr = self.where(role_of_system:User::ROLE_MANAGER).map{|e| e.id.to_s}
+        result = result.where(:creater.in => tmp_id_arr)
+      elsif opt['creater'] == '3'
+        result = result.where(:creater => nil)
+      end
+    end
+
+    if opt['status'].present?
+      result = result.where(status:opt['status'].to_i)
     end 
-
-
-
 
     if opt['start'].present?
       result = result.where(:created_at.gte => DateTime.parse(opt['search_start']))
@@ -179,27 +215,8 @@ class User
     if opt['end'].present?
       result = result.where(:created_at.lte => DateTime.parse(opt['search_end']))
     end
-    if opt['status'].present?
-      result = result.where(:status => opt['status'].to_i)
-    end
-    if opt['creater'].present?
-      if opt['creater'].present?
-      end
-      result = result.where(:type => opt['search_type'].to_i)
-    end    
 
-
-
-    if opt['search_level'].present?
-      result = result.where(:level => opt['search_level'].to_s)
-    end           
-    if opt['search_name'].present?    
-      result = result.where(name: /#{opt['search_name']}/)
-    end 
     return result    
-
-
-
 
   end
 

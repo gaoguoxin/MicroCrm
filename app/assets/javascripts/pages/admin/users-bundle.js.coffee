@@ -94,15 +94,22 @@ $(->
 
 	$('body').on('click','.pagination a',->
 		unless $(@).hasClass('disabled')
-			page   		   = $(@).data('page')
-			status 		   = $(@).data('status')
-			level  		   = $(@).data('level')
-			type   		   = $(@).data('type')
-			search_name    = $(@).data('name')
-			search_account = $(@).data('account')
-			g_data = {page:page,search_status:status,search_level:level,search_type:type,search_name:search_name,search_account:search_account}
+			page   		= $(@).data('page')
+			name       	= $(@).data('name')	
+			email       = $(@).data('email')
+			role		= $(@).data('role')
+			position    = $(@).data('position')
+			company     = $(@).data('company')
+			city        = $(@).data('city')
+			interest    = $(@).data('interest')
+			creater     = $(@).data('creater')
+			status      = $(@).data('status')
+			start       = $(@).data('start')
+			end         = $(@).data('end')
+
+			g_data = {page:page,name:name,email:email,role:role,position:position,company:company,city:city,interest:interest,creater:creater,status:status,start:start,end:end}
 			if page
-				$.get("/admin/companies",g_data,->)
+				$.get("/admin/users",g_data,->)
 	)
 
 

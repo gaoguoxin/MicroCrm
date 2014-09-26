@@ -149,7 +149,7 @@
           </tbody>
         </table>
         <div class="page-container">
-          <%= admin_paginator_ajax('user',@users,{:name => params[:name],:email => params[:email],:mobile => params[:mobile],:role => params[:role],:position => params[:position],:company => params[:company],:city => params[:city],:interest => params[:interest],:creater => params[:creater] }) %>
+          <%= admin_paginator_ajax('user',@users,{:name => params[:name],:email => params[:email],:role => params[:role],:position => params[:position],:company => params[:company],:city => params[:city],:interest => params[:interest],:creater => params[:creater],:status => params[:status],:start => params[:start],:end => params[:end]}) %>
         </div>
       </div>
       <div id="tab2" role="tabpanel">
