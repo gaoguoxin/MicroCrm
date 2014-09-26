@@ -2,7 +2,6 @@ class Admin::UsersController < Admin::AdminController
   before_action :set_user, only: [:show, :edit, :update_info, :destroy]
   #before_action :refuse_viewer, only: [:search_manager,:create,:update_info,:delete]
   def index
-    params[:per_page] = 1
     if request.xhr?
       search
       render :partial => 'admin/users/index.js.erb', :locals => { :users => @users }

@@ -158,9 +158,6 @@ class User
   end
 
   def self.search(opt)
-    Rails.logger.info('========================================================')
-    Rails.logger.info(opt)
-    Rails.logger.info('========================================================')
     result = self.all
     if opt['name'].present?
       result = result.where(name:/#{opt['name']}/)
