@@ -38,8 +38,8 @@
       <label for="type_of_position">工作类型</label>
       <span class="select-wrap">
         <select class="unselected" id='type_of_position' name='user[type_of_position]'>
-          <% User::POSITION_HASH.each_pair do |k,v| %>
-            <option value="<%= k %>" <% if user.try(:type_of_position) == k %>selected='selected'<% end%> ><%= v %></option>
+          <% User::POSITION_ARRAY.each do |position| %>
+            <option value="<%= position %>" <% if user.try(:type_of_position) == position %>selected='selected'<% end%> ><%= position %></option>
           <% end %>
         </select>
       </span>      
@@ -76,8 +76,23 @@
         </select>
       </span>
   </div>   
-
 </div>
+<div class="row">
+  <div class="one third padded">
+      <label for="company_id">QQ</label>
+      <input id="qq" type="text" name='user[qq]' placeholder="user qq" value="<%= default(user,'qq') %>">
+  </div>
+  <div class="one third padded">
+      <label for="wechart">微信号</label>
+      <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(user,'wechart') %>">
+  </div>   
+  <div class="one third padded">
+      <label for="skype">状态</label>
+      <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(user,'skype') %>">
+  </div>   
+</div>
+
+
 
 <div class="row">
   <div class="one third padded">

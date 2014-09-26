@@ -22,6 +22,7 @@ $(->
 	check_exist = (obj)->
 		data = {email:obj.val()} if obj.attr('id') == 'email'
 		data = {mobile:obj.val()} if obj.attr('id') == 'mobile'
+		data.id = $('input[name="id"]').val()
 		$.post("/admin/users/check_exist",data,(ret)->
 			if ret.success
 				if ret.value
@@ -33,7 +34,12 @@ $(->
 
 	check_presense = (obj)->
 		submit = true
-		$('#name,#email,#mobile,#password').each(->
+		if obj.hasClass('upd')
+			check_obj = $('#name,#email,#mobile')
+		else
+			check_obj = $('#name,#email,#mobile,#password')
+
+		check_obj.each(->
 			v = $.trim($(@).val())
 			if v.length <= 0
 				$(@).parents('.padded').addClass('invalid').removeClass('valid')

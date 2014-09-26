@@ -17,7 +17,7 @@ class User
   ROLE_VIEW     = 4 #查看员
   ROLE_HASH = {1 => '系统管理员',2 => '企业管理员',3 => '普通用户', 4 => '查看员'}
   
-  POSITION_HASH = {1 => '销售',2 => '售前顾问',3 => '项目经理', 4 => '应用顾问', 5 => '技术顾问', 6 => '开发顾问', 7 => '其他'}
+  POSITION_ARRAY = ['销售', '售前顾问', '项目经理', '应用顾问',  '技术顾问',  '开发顾问', '其他']
 
   CITY_ARRAY = ['上海','北京','广州','其他']
 
@@ -42,20 +42,22 @@ class User
   field :crm, type: Boolean #是否对CRM培训感兴趣
   field :softskill,type: Boolean #是否对软技能培训感兴趣
   field :status, type: Integer,default:STATUS_ACTIVED #状态
-  field :course_count,type:Integer #有效报名课程数
-  field :course_manday_count,type: Integer # 有效报名人天数
+  field :course_count,type:Integer,default:0 #有效报名课程数
+  field :course_manday_count,type: Integer,default:0 # 有效报名人天数
   field :qq, type: String
   field :wechart, type: String
   field :skype, type: String
-  field :creater,type:String # 创建人
+  field :creater,type:String # 创建人 如果是自己注册，这个字段的值为空，否则为创建人的id
   field :updater,type:String # 最近修改人  
 
-  belongs_to :company
+  belongs_to :company,class_name: "Company",inverse_of: :user
 
   has_many :companies,class_name: "Company",inverse_of: :manager
 
   scope :except_admin_and_viewer, ->{ any_of({:role_of_system => ROLE_MANAGER},{:role_of_system => ROLE_EMPLOYEE})}
-  scope :actived, -> {where(:status => STATUS_ACTIVED)}
+
+  scope :actived, -> {where(status:STATUS_ACTIVED)}
+
   #注册用户
   def self.regist(opt,is_admin=false,is_manager=false,creater=nil)
     #is_admin 标示当前的添加用户行为是否由管理员进行
@@ -130,11 +132,13 @@ class User
   def self.check_exist(opt)
     email  = opt[:email].to_s.downcase
     mobile = opt[:mobile].to_s.downcase
+    id     = opt[:id].to_s
     if email.present?
-      user = self.where(email:email).actived.first  
+      user = self.where(email:email).actived.first
     else
       user = self.where(mobile:mobile).actived.first 
     end
+    user = nil if id.present? && user.try(:id).to_s == id  
     return user
   end
 
@@ -154,22 +158,61 @@ class User
   end
 
   def self.search(opt)
-    User.except_admin_and_viewer
+    result = self.all
+    if opt['search_account'].present?
+      manager = User.where(role_of_system:User::ROLE_MANAGER,email: /#{opt['search_account'].downcase.strip!}/).first
+      manager = User.where(role_of_system:User::ROLE_MANAGER,mobile: /#{opt['search_account'].downcase.strip!}/).first unless manager.present?
+      if manager.present?
+        result = manager.companies || []
+      else
+        result = []
+      end
+      return result
+    end 
+
+
+
+
+    if opt['start'].present?
+      result = result.where(:created_at.gte => DateTime.parse(opt['search_start']))
+    end
+    if opt['end'].present?
+      result = result.where(:created_at.lte => DateTime.parse(opt['search_end']))
+    end
+    if opt['status'].present?
+      result = result.where(:status => opt['status'].to_i)
+    end
+    if opt['creater'].present?
+      if opt['creater'].present?
+      end
+      result = result.where(:type => opt['search_type'].to_i)
+    end    
+
+
+
+    if opt['search_level'].present?
+      result = result.where(:level => opt['search_level'].to_s)
+    end           
+    if opt['search_name'].present?    
+      result = result.where(name: /#{opt['search_name']}/)
+    end 
+    return result    
+
+
+
+
   end
 
 
-  def update_info(opt)
-    opt.each_pair do |k,v|
-      k = v.downcase.strip!
-      user = User.find_by_col("#{k}",v,self.id.to_s)
-      if user.present?
-        return ErrorEnum::EMAIL_EXIST    if k == 'email'
-        return ErrorEnum::MOBILE_EXIST   if k == 'mobile'
-      end
+  def self.update_info(opt,inst,updater)  
+    opt[:updater]  = updater  
+    if opt[:password].present?
+      opt[:password] =  self.make_encrypt(opt[:password]) 
+    else
+      opt.delete('password')
     end
-  
-    self.update_attributes(opt)
-    return self
+    inst.update(opt)
+    return inst
   end
 
   def is_admin?

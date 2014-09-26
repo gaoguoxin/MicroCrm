@@ -57,8 +57,8 @@
                   <span class="select-wrap">
                     <select class="unselected" name="position" id='search_position'>
                       <option value="" disabled="" selected="">工作类型</option>
-                      <% User::POSITION_HASH.each_pair do |k,v| %>
-                        <option value="<%= k %>" <% if params[:position] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% User::POSITION_ARRAY.each do |position| %>
+                        <option value="<%= position %>" <% if params[:position] == position %>selected='selected' <% end %> ><%= position %></option>
                       <% end %>
                     </select>
                   </span>                 
