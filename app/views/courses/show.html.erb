@@ -1,14 +1,47 @@
-<p id="notice"><%= notice %></p>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/course-bundle" %>
+  <%= javascript_include_tag "pages/default/course-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
 
-<p>
-  <strong>Title:</strong>
-  <%= @course.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @course.description %>
-</p>
-
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+<div class="row triple-gap-top triple-pad-top triple-pad-bottom">
+    <div class="container main triple-padded">
+      <article class="pagement">
+        <div class="four fifths">
+          <h2>
+            <b>
+              <span class="code">80539AE:</span>
+              <span class="title">
+                Installation and Deployment In Microsoft Dynamics CRM 2014
+              </span>
+            </b>          
+          </h2>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <span class="commont-count">(927份评价)</span>
+          </div>
+          <div class="category">分类： <span>CRM</span></div>
+          
+        </div>
+        <div class="one fifth">
+          
+        </div>
+      </article>
+      <article class="description">
+        
+      </article>                        
+    </div>
+</div>

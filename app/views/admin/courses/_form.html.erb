@@ -1,184 +1,270 @@
-<%= form_for(@course) do |f| %>
+<%= form_for(@course, multipart: true) do |f| %>
   <fieldset>
     <legend>information</legend>
     <div class="row">
       <div class="one half padded">
-        <label for=""></label>
+        <label for="course_name_cn">课程名(中文)</label>
+        <%= f.text_field :name_cn %>
       </div>
+      <div class="one half padded">
+        <label for="course_name_en">课程名(英文)(中文)</label>
+        <%= f.text_field :name_en %>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_code">课程编码</label>
+        <%= f.text_field :code %>
+      </div>
+      <div class="one half padded">
+        <label for="course_audience">受众对象</label>
+        <%= f.text_field :audience %>
+      </div>      
+    </div> 
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_difficulty_level">难易程度</label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_difficulty_level' name='course[difficulty_level]'>
+            <% Course::LEVEL_CODE.each do |level| %>
+              <option value="<%= level %>" <% if f.try(:level) == level %>selected='selected' <% end %> ><%= level %></option>
+            <% end %>
+          </select>
+        </span>        
+      </div>
+      <div class="one half padded">
+        <label for="course_delivery_type">课程类型</label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_delivery_type' name='course[delivery_type]'>
+            <% Course::TYPE_HASH.each_pair do |k,v| %>
+              <option value="<%= k %>" <% if f.try(:delivery_type) == k %>selected='selected' <% end %> ><%= v %></option>
+            <% end %>
+          </select>
+        </span>        
+      </div>       
+    </div>      
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_instructor">教师姓名</label>
+        <%= f.text_field :instructor %>
+      </div>
+      <div class="one half padded">
+        <div class="row">
+          <label for="course_instructor_avatar">教师头像</label>
+          <div>
+            <%= f.file_field :instructor_avatar %>
+          </div>
+        </div>
+      </div>     
+    </div>    
+    <div class="row">
+      <div class="one whole padded">
+        <label for="course_instructor_desc">教师描述</label>
+        <%= f.text_area :instructor_desc %>
+      </div>      
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_charge_category">是否收费</label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_charge_category' name='course[charge_category]'>
+            <% Course::CHARGE_TYPE_HASH.each do |k,v| %>
+              <option value="<%= k %>" <% if f.try(:charge_category) == k %>selected='selected' <% end %> ><%= v %></option>
+            <% end %>
+          </select>
+        </span>        
+      </div>
+      <div class="one half padded">
+        <label for="course_delivery_type">内容类型</label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_content_type' name='course[content_type]'>
+            <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
+              <option value="<%= k %>" <% if f.try(:content_type) == k %>selected='selected' <% end %> ><%= k %></option>
+            <% end %>
+          </select>
+        </span>        
+      </div>      
+    </div>
+    <div class="row">
+      <div class="one third padded">
+        <label for="course_price_level1">Managed伙伴价格(元)</label>
+        <%= f.number_field :price_level1,step: 0.1 %>
+      </div>
+      <div class="one third padded">
+        <label for="course_price_level2">Un-managed伙伴价格(元)</label>
+        <%= f.number_field :price_level2,step: 0.1 %>
+      </div>
+      <div class="one third padded">
+        <label for="course_price_level3">公众价格(元)</label>
+        <%= f.number_field :price_level3,step: 0.1 %>
+      </div>              
+    </div> 
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_start_date">开课日期</label>
+        <%= f.text_field :start_date %>
+      </div>
+      <div class="one half padded">
+        <label for="course_start_time">开课时间</label>
+        <%= f.text_field :start_time %>
+      </div>      
+    </div>        
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_end_date">结课日期</label>
+        <%= f.text_field :end_date %>
+      </div>
+      <div class="one half padded">
+        <label for="course_end_time">结课时间</label>
+        <%= f.text_field :end_time %>
+      </div>      
+    </div> 
+    <div class="row">
+      <div class="one half padded">
+        <div class="row">
+          <label for="course_duration">课程持续时间</label>
+          <div class="four mobile fifths">
+            <%= f.number_field :duration %>
+          </div>
+          <div class="one mobile fifth"><span class="suffix">天</span></div>
+        </div>
+      </div>
+      <div class="one half padded">
+        <label for="course_lim_num">最多容纳人数</label>
+        <%= f.number_field :lim_num %>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="one fifth padded">
+        <label for="course_charge_category">城市</label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_city' name='course[city]'>
+            <% Course::CITY_ARRAY.each do |city| %>
+              <option value="<%= city %>" <% if f.try(:city) == city %>selected='selected' <% end %> ><%= city %></option>
+            <% end %>
+          </select>
+        </span>
+      </div>  
+      <div class="three fifths padded">
+        <label for="course_address">具体地址</label>
+        <%= f.text_field :address %>
+      </div>
+      <div class="one fifth padded">
+        <label for="course_classroom">课室</label>
+        <%= f.text_field :classroom %>
+      </div>      
+    </div>  
+    <div class="row">
+      <div class="one whole padded">
+        <label for="course_description">课程描述</label>
+        <%= f.text_area :description %>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_evaluation_general">课程总评分</label>
+        <%= f.number_field :evaluation_general,step:0.1 %>
+      </div>
+      <div class="one half padded">
+        <label for="course_evaluation_instructor">讲师评分</label>
+        <%= f.number_field :evaluation_instructor,step:0.1 %>
+      </div>      
+    </div>  
+    <div class="row">
+      <div class="one half padded">
+        <label for="course_waiting_acctadmin_approval_num">等待单位同意的人数</label>
+        <%= f.number_field :waiting_acctadmin_approval_num,{:disabled => true} %>
+      </div>
+      <div class="one half padded">
+        <label for="course_waiting_sysadmin_approval_num">单位已同意、等系统管理员接受的人数</label>
+        <%= f.number_field :waiting_sysadmin_approval_num,{:disabled => true} %>
+      </div>      
+    </div>   
+    <div class="row">
+      <div class="one third padded">
+        <label for="course_valid_registration_num">当前有效报名人数</label>
+        <%= f.number_field :valid_registration_num,{:disabled => true} %>
+      </div>
+      <div class="one third padded">
+        <label for="course_canceled_num">已取消报名的人数</label>
+        <%= f.number_field :canceled_num,{:disabled => true} %>
+      </div> 
+      <div class="one third padded">
+        <label for="course_attendee_num">实际参训人数</label>
+        <%= f.number_field :attendee_num,{:disabled => true} %>
+      </div>           
+    </div>   
+    <div class="row">
+      <div class="one whole padded">
+        <label for="course_status">课程状态<span class="error">(规划中:暂不发布，发布中:立即发布)</span></label>
+        <span class="select-wrap">
+          <select class="unselected" id='course_status' name='course[status]'>
+            <% Course::STATUS_CODE_HASH.each_pair do |k,v| %>
+              <option value="<%= k %>" <% if f.try(:status) == k %>selected='selected' <% end %> ><%= v %></option>
+            <% end %>
+          </select>
+        </span>        
+      </div>      
+    </div>
+    <div class="row">
+      <div class="one whole padded">
+        <button class="info block submit">提交</button>      
+      </div>      
     </div>
   </fieldset>
-  <div class="field">
-    <%= f.label :name_cn %><br>
-    <%= f.text_field :name_cn %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>
 
-
-<form action="#" method="post">
-  <fieldset>
-    <legend>Example HTML5 Form</legend>
+<article class="msg-box row"> 
+  <div class="one whole padded">
+    <h4 class='box info align-center'>添加短信通知匹配条件</h4>
+    <div class="row padded">
+      <div class="one third half-pad-top"><span>匹配企业管理员:</span></div>
+      <div class="one third">
+        <span class="select-wrap">
+          <select class="unselected" id='match_content_type' name='match_content_type'>
+            <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
+              <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>
+            <% end %>
+          </select>
+        </span>          
+      </div>
+      <div class="one third half-pad-top align-center">
+        <%= image_tag 'loading.gif'%>
+        <span class="num"></span>
+      </div>
+    </div>
+    <div class="row padded">
+      <div class="one third half-pad-top"><span>匹配学员:</span></div>
+      <div class="one third">
+        <span class="select-wrap">
+          <select class="unselected" id='match_content_type' name='match_content_type'>
+            <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
+              <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>
+            <% end %>
+          </select>
+        </span>          
+      </div>
+      <div class="one third half-pad-top align-center">
+        <%= image_tag 'loading.gif'%>
+        <span class="num"></span>
+      </div>
+    </div>    
+  </div>
+  <div class="one whole padded">
+    <h4 class="box info align-center">设置上课提醒短信</h4>
     <div class="row">
-      <div class="one half padded">
-        <label for="name">Text Field</label>
-        <input id="name" type="text" placeholder="First & Last Name">
-      </div>
-      <div class="one half padded">
-        <label for="email">Email Field</label>
-        <input id="email" type="email" placeholder="you@example.com">
-      </div>
+      <div class="one whole padded">
+        <label for="course_notice_content">短信内容</label>
+        <textarea id="description" name='course[notice_content]' placeholder="Enter message content... " ><%= @course.try(:notice_content) %></textarea>
+      </div>      
     </div>
     <div class="row">
       <div class="one whole padded">
-        <label for="address">Address</label>
-        <input id="address" type="text" placeholder="Street Address">
-      </div>
-    </div>
-    <div class="row">
-      <div class="two fourths padded">
-        <input type="text" placeholder="City">
-      </div>
-      <div class="one fourth padded"><span class="select-wrap">
-          <select class="unselected">
-            <option value="" disabled="" selected="">State</option>
-            <option value="AL">Alabama</option>
-            <option value="AK">Alaska</option>
-            <option value="AZ">Arizona</option>
-            <option value="AR">Arkansas</option>
-            <option value="CA">California</option>
-            <option value="CO">Colorado</option>
-            <option value="CT">Connecticut</option>
-            <option value="DE">Delaware</option>
-            <option value="FL">Florida</option>
-            <option value="GA">Georgia</option>
-            <option value="HI">Hawaii</option>
-            <option value="ID">Idaho</option>
-            <option value="IL">Illinois</option>
-            <option value="IN">Indiana</option>
-            <option value="IA">Iowa</option>
-            <option value="KS">Kansas</option>
-            <option value="KY">Kentucky</option>
-            <option value="LA">Louisiana</option>
-            <option value="ME">Maine</option>
-            <option value="MD">Maryland</option>
-            <option value="MA">Massachusetts</option>
-            <option value="MI">Michigan</option>
-            <option value="MN">Minnesota</option>
-            <option value="MS">Mississippi</option>
-            <option value="MO">Missouri</option>
-            <option value="MT">Montana</option>
-            <option value="NE">Nebraska</option>
-            <option value="NV">Nevada</option>
-            <option value="NH">New Hampshire</option>
-            <option value="NJ">New Jersey</option>
-            <option value="NM">New Mexico</option>
-            <option value="NY">New York</option>
-            <option value="NC">North Carolina</option>
-            <option value="ND">North Dakota</option>
-            <option value="OH">Ohio</option>
-            <option value="OK">Oklahoma</option>
-            <option value="OR">Oregon</option>
-            <option value="PA">Pennsylvania</option>
-            <option value="RI">Rhode Island</option>
-            <option value="SC">South Carolina</option>
-            <option value="SD">South Dakota</option>
-            <option value="TN">Tennessee</option>
-            <option value="TX">Texas</option>
-            <option value="UT">Utah</option>
-            <option value="VT">Vermont</option>
-            <option value="VA">Virginia</option>
-            <option value="WA">Washington</option>
-            <option value="WV">West Virginia</option>
-            <option value="WI">Wisconsin</option>
-            <option value="WY">Wyoming</option>
-            <option value="AS">American Samoa</option>
-            <option value="DC">District of Columbia</option>
-            <option value="FM">Federated States of Micronesia</option>
-            <option value="GU">Guam</option>
-            <option value="MH">Marshall Islands</option>
-            <option value="MP">Northern Mariana Islands</option>
-            <option value="PW">Palau</option>
-            <option value="PR">Puerto Rico</option>
-            <option value="VI">Virgin Islands</option>
-            <option value="AE">Armed Forces Africa</option>
-            <option value="AA">Armed Forces Americas</option>
-            <option value="AE">Armed Forces Canada</option>
-            <option value="AE">Armed Forces Europe</option>
-            <option value="AE">Armed Forces Middle East</option>
-            <option value="AP">Armed Forces Pacific</option>
-            <option value="AB">Alberta</option>
-            <option value="BC">British Columbia</option>
-            <option value="MB">Manitoba</option>
-            <option value="NB">New Brunswick</option>
-            <option value="NL">Newfoundland and Labrador</option>
-            <option value="NS">Nova Scotia</option>
-            <option value="NT">Northwest Territories</option>
-            <option value="NU">Nunavut</option>
-            <option value="ON">Ontario</option>
-            <option value="PE">Prince Edward Island</option>
-            <option value="QC">Quebec</option>
-            <option value="SK">Saskatchewan</option>
-            <option value="YT">Yukon Territory</option>
-          </select></span></div>
-      <div class="one fourth padded">
-        <input type="text" placeholder="Zip Code">
-      </div>
-    </div>
-    <div class="row">
-      <div class="one whole padded">
-        <label for="message">Special Instructions</label>
-        <textarea id="message" placeholder="Enter your message..."></textarea>
-      </div>
-    </div>
-    <div class="row">
-      <div class="one whole pad-left">
-        <label for="twitter">Prefixed & Suffixed</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="one half padded">
-        <div class="row">
-          <div class="one mobile sixth"><span class="prefix">@</span></div>
-          <div class="five mobile sixths">
-            <input id="twitter" type="text" name="twitter" placeholder="twitter handle">
-          </div>
-        </div>
-      </div>
-      <div class="one half padded">
-        <div class="row">
-          <div class="three mobile fifths">
-            <input type="text" name="sidereel" placeholder="desired username">
-          </div>
-          <div class="two mobile fifths"><span class="suffix">@example.com</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="one whole padded">
-        <label for="thing1">Radio Buttons:</label>
-        <ul class="unstyled zero">
-          <li>
-            <input id="thing1" type="radio" name="things" checked="">
-            <label for="thing1" class="inline">Thing one</label>
-          </li>
-          <li>
-            <input id="thing2" type="radio" name="things">
-            <label for="thing2" class="inline">Thing two</label>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="row">
-      <div class="one whole padded">
-        <input id="allthings" type="checkbox" name="things" checked="">
-        <label for="allthings" class="inline"> I want all the things!</label>
-      </div>
-    </div>
-  </fieldset>
-</form>
+        <label for="course_notice_at">提前N天发送</label>
+        <input id="course_notice_at"  name='course[notice_at]' type="text" placeholder="3,2,1 数字代表提前几天发送，可以输入多个值，表示可以发送多次" value="<%= @course.notice_at %>">
+      </div>      
+    </div> 
+    <div class="row double-pad-top double-pad-bottom">
+      <button class="info block">确定</button>
+    </div>   
+  </div>
+</article>

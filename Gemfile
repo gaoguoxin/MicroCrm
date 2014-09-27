@@ -37,6 +37,9 @@ gem "font-awesome-rails"
 gem 'mobile-fu', "~> 1.2.2"
 gem 'sidekiq'
 
+gem 'mini_magick'
+gem 'carrierwave'
+
 gem "unicorn", group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
