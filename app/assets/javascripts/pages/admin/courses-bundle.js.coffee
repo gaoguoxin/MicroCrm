@@ -24,8 +24,8 @@ $(->
 		})		
 
 	check_present = ->
-		$('#course_name_cn,#course_name_en,#course_code,#course_audience,#course_instructor,#course_instructor_desc,')
-
+		#$('#course_name_cn,#course_name_en,#course_code,#course_audience,#course_instructor,#course_instructor_desc,')
+		open_box()
 
 	$('button.submit').click((e)->
 		e.preventDefault()
