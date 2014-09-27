@@ -28,3 +28,13 @@
 		@include border-radius(0px);
 	}
 }
+
+.paginate{
+	.center{
+		text-align:center;
+	}
+	button{
+		background:#fff;
+		outline:none;
+	}
+}
