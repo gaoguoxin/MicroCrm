@@ -49,12 +49,6 @@ Rails.application.routes.draw do
     resources :feedbacks
   end
 
-  resources :orders
-
-  resources :courses
-
-  resources :companies
-
   resources :users do 
     collection do 
       post  'check_exist'
@@ -62,6 +56,14 @@ Rails.application.routes.draw do
   end
 
   resources :sessions
+
+  resources :category
+
+  resources :orders
+
+  resources :courses
+
+
   
 
   # The priority is based upon order of creation: first created -> highest priority.

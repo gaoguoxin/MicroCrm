@@ -19,37 +19,67 @@
 	height: $height;
 }
 
-
-.logo-container{
-	display:inline-block;
-	width:100%;
-	&.mobile{
-		text-align:center;
-	}
-}
-
-.search-container{
-	position:relative;
-	.fa-search{
-		@include square(32px);
-	}
-}
-.login-container{
-	a{
-		display:inline-block;
-		@include one-line(32px);
-		text-align:center;
-		text-decoration: none;
-	}
-}
-.nav{
-	ul{
-		li{
-			text-align:center;
+body{
+	background:#e7e8eb;
+	header{
+		background:#fff;
+		.logo-container{
+			display:inline-block;
+			&.mobile{
+				text-align:center;
+			}
+		}
+		
+		.search-container{
+			margin-top:1em;
+			input{
+				outline:none;
+			}
+		}
+		.login-container{
 			a{
 				display:inline-block;
-				width:100%;
+				@include one-line(32px);
+				text-align:center;
+				text-decoration: none;
+			}
+		}
+
+		.nav{
+			border:0px;
+			background:#fff;
+			a{
+				background:#fff;
+				&:hover{
+					background:#fff;
+				}
+				&:visited{
+					background:#fff;
+				}
+			}
+			ul{
+				li{
+					text-align:center;
+					a{
+						display:inline-block;
+						padding:1em;
+						width:100%;
+						&:hover{
+							background:#e7e8eb;
+						}
+					}
+				}
+				li[aria-selected="true"]{
+					a{
+						background:#e7e8eb;	
+					}
+					
+				}
 			}
 		}
 	}
+	.container.main{
+		background:#fff;
+	}
 }
+

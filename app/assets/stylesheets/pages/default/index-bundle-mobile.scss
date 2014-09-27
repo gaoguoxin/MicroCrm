@@ -34,36 +34,37 @@
 		display: block;
 		padding-top: 100%;
 	}
-	&.purple{
+	&:nth-child(1){
 		background:#8f4bab;
 	}
-	&.charcoal{
+	&:nth-child(2){
 		background:#2b2929;
 	}
-	&.asphalt{
+	&:nth-child(3){
 		background:#2b3c4e;
 	}
-	&.green{
+	&:nth-child(4){
 		background:#29b765;
 	}
-	&.blue{
+	&:nth-child{5}{
 		background:#258cd1;
 	}
-	&.yellow{
-		background: #f1c40f;
+	&:nth-child(6){
+		background:#f1c40f;
 	}
-	&.orange{
-		background:#d67118;
+	&:nth-child(7){
+		background: #d67118;
 	}
-	&.red{
+	&:nth-child(8){
 		background:#e74c3c;
 	}
-	&.pink{
+	&:nth-child(9){
 		background:#ea1067;
 	}
-	&.turquoise{
+	&:nth-child(10){
 		background:#17a689;
 	}
+
 	h3{
 		position:absolute;
 		padding:10px;

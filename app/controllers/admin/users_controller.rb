@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::AdminController
   before_action :set_user, only: [:show, :edit, :update_info, :destroy]
-  #before_action :refuse_viewer, only: [:search_manager,:create,:update_info,:delete]
+  before_action :refuse_viewer, only: [:create,:update_info,:delete]
   def index
     if request.xhr?
       search

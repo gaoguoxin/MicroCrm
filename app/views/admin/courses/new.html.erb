@@ -1,5 +1,33 @@
-<h1>New course</h1>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/companies-bundle" %>
+  <%= javascript_include_tag "pages/admin/companies-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<%= render 'form' %>
 
-<%= link_to 'Back', courses_path %>
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span><span class="locate">单位管理<i class="fa fa-angle-double-right"></i>单位列表</span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>增加/删除/修改单位，请确认是否已增加了“其他”这个特殊的单位</span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+	<%= render 'form' %>
+  </div>
+<% end %>
+
+
+
+
+

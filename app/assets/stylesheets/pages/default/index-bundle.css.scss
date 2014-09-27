@@ -1,4 +1,58 @@
 @import "compass/css3/border-radius";
+article.row{
+	>div{
+		&:nth-child(1){
+			a{
+				background:#8f4bab;	
+			}
+		}
+		&:nth-child(2){
+			a{
+				background:#2b2929;	
+			}
+		}
+		&:nth-child(3){
+			a{
+				background:#2b3c4e;	
+			}
+		}
+		&:nth-child(4){
+			a{
+				background:#29b765;	
+			}
+		}
+		&:nth-child(5){
+			a{
+				background:#258cd1;	
+			}
+		}
+		&:nth-child(6){
+			a{
+				background:#f1c40f;	
+			}
+		}						
+		&:nth-child(7){
+			a{
+				background:#d67118;	
+			}
+		}
+		&:nth-child(8){
+			a{
+				background:#e74c3c;	
+			}
+		}
+		&:nth-child(9){
+			a{
+				background:#ea1067;	
+			}
+		}
+		&:nth-child(10){
+			a{
+				background:#17a689;	
+			}
+		}		
+	}
+}
 .nav-box{
 	display:inline-block;
 	position: relative;
@@ -9,37 +63,7 @@
 		display: block;
 		padding-top: 100%;
 	}
-	&.purple{
-		background:#8f4bab;
-	}
-	&.charcoal{
-		background:#2b2929;
-	}
-	&.asphalt{
-		background:#2b3c4e;
-	}
-	&.green{
-		background:#29b765;
-	}
-	&.blue{
-		background:#258cd1;
-	}
-	&.yellow{
-		background: #f1c40f;
-	}
-	&.orange{
-		background:#d67118;
-	}
-	&.red{
-		background:#e74c3c;
-	}
-	&.pink{
-		background:#ea1067;
-	}
-	&.turquoise{
-		background:#17a689;
-	}
-	h3{
+	h1{
 		position:absolute;
 		padding:10px;
 		width:100%;
@@ -61,9 +85,12 @@
 			top:-6px;
 			right:10px;
 			font-size:22px;
+			&.fa-phone{
+				right: 0px;
+				left: 10px;
+				top: 10px;
+			}			
 		}
-		&.tel{
-			text-align:center;
-		}
+
 	}
 }

@@ -12,12 +12,24 @@
 </dl>
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>课程管理</dt>
-	<dd class="menu_item double-pad-left <%#= actived('courses')%>">
-		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
+	<dd class="menu_item double-pad-left <%= actived('courses','new')%>">
+		<a href="<%=  new_admin_course_path %>" class="triple-pad-left">新建课程</a>
 	</dd>
-	<dd class="menu_item double-pad-left <%#= actived('users')%>">
-		<a href="<%= user_users_path %>" class="triple-pad-left">新建课程</a>
+	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'0')%>">
+		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_0) %>" class="triple-pad-left">规划中的课程</a>
 	</dd>	
+	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'1')%>">
+		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_1) %>" class="triple-pad-left">已发布的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'2')%>">
+		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_2) %>" class="triple-pad-left">授课中的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'3')%>">
+		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_3) %>" class="triple-pad-left">已交付的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'4')%>">
+		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_4) %>" class="triple-pad-left">已交付的课程</a>
+	</dd>				
 </dl>
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名表管理</dt> 

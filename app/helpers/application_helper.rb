@@ -24,6 +24,22 @@ module ApplicationHelper
     else
       return ''
     end
+  end
+
+  def nav_actived?(cont,act_arr,para=nil)
+    res = false
+    if cont == controller_name
+      if act_arr.include?(action_name)
+        if para.present?
+          if para == params[:t]
+            res = true
+          end
+        else
+          res = true
+        end
+      end
+    end
+    return res
   end	
 
   def admin_paginator_ajax(ckass,items,opt)

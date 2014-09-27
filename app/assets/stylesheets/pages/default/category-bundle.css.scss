@@ -1,0 +1,30 @@
+@import "compass/css3/border-radius";
+ @import "compass/utilities/general/clearfix";
+.tool{
+	.blue{
+		@include clearfix;
+		background:#3498db;
+
+		ul{
+			li{
+				display:inline;
+				color:#fff;
+			}
+		}
+	}
+
+}
+.avatar{
+	border:1px solid #ddd;
+}
+.audience{
+	color:#999;
+}
+.pagement{
+	color:#999;
+	position:relative;
+	button{
+		border:0px;
+		@include border-radius(0px);
+	}
+}
