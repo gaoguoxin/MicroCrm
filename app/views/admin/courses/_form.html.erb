@@ -1,6 +1,9 @@
-<%= form_for(@course, multipart: true) do |f| %>
+<%= form_for([:admin,@course], multipart: true) do |f| %>
   <fieldset>
     <legend>information</legend>
+    <%= f.hidden_field :manager_condition%>
+    <%= f.hidden_field :trainee_condition%>
+    <%= f.hidden_field :notice_at%>
     <div class="row">
       <div class="one half padded">
         <label for="course_name_cn">课程名(中文)</label>
@@ -107,7 +110,8 @@
         <label for="course_start_time">开课时间</label>
         <%= f.text_field :start_time %>
       </div>      
-    </div>        
+    </div>  
+
     <div class="row">
       <div class="one half padded">
         <label for="course_end_date">结课日期</label>
@@ -159,6 +163,7 @@
         <%= f.text_area :description %>
       </div>
     </div> 
+
     <div class="row">
       <div class="one half padded">
         <label for="course_evaluation_general">课程总评分</label>
@@ -192,7 +197,10 @@
         <label for="course_attendee_num">实际参训人数</label>
         <%= f.number_field :attendee_num,{:disabled => true} %>
       </div>           
-    </div>   
+    </div>  
+    <div class="row">
+      <%= f.text_area :notice_content %>
+    </div> 
     <div class="row">
       <div class="one whole padded">
         <label for="course_status">课程状态<span class="error">(规划中:暂不发布，发布中:立即发布)</span></label>
@@ -220,7 +228,8 @@
       <div class="one third half-pad-top"><span>匹配企业管理员:</span></div>
       <div class="one third">
         <span class="select-wrap">
-          <select class="unselected" id='match_content_type' name='match_content_type'>
+          <select class="unselected" id='match_content_manager' name='match_content_type'>
+            <option value="" disabled="" selected="">业务偏好</option>
             <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
               <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>
             <% end %>
@@ -228,7 +237,6 @@
         </span>          
       </div>
       <div class="one third half-pad-top align-center">
-        <%= image_tag 'loading.gif'%>
         <span class="num"></span>
       </div>
     </div>
@@ -236,7 +244,8 @@
       <div class="one third half-pad-top"><span>匹配学员:</span></div>
       <div class="one third">
         <span class="select-wrap">
-          <select class="unselected" id='match_content_type' name='match_content_type'>
+          <select class="unselected" id='match_content_student' name='match_content_type'>
+            <option value="" disabled="" selected="">兴趣偏好</option>
             <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
               <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>
             <% end %>
@@ -244,7 +253,6 @@
         </span>          
       </div>
       <div class="one third half-pad-top align-center">
-        <%= image_tag 'loading.gif'%>
         <span class="num"></span>
       </div>
     </div>    
@@ -253,18 +261,18 @@
     <h4 class="box info align-center">设置上课提醒短信</h4>
     <div class="row">
       <div class="one whole padded">
-        <label for="course_notice_content">短信内容</label>
-        <textarea id="description" name='course[notice_content]' placeholder="Enter message content... " ><%= @course.try(:notice_content) %></textarea>
+        <label for="course_notice_content">短信内容(建议72字以内,剩余<i class='remain error'>12</i>)</label>
+        <textarea id="box_notice_content" name='course[notice_content]' placeholder="Enter message content... " ><%= @course.try(:notice_content) %></textarea>
       </div>      
     </div>
     <div class="row">
       <div class="one whole padded">
-        <label for="course_notice_at">提前N天发送</label>
-        <input id="course_notice_at"  name='course[notice_at]' type="text" placeholder="3,2,1 数字代表提前几天发送，可以输入多个值，表示可以发送多次" value="<%= @course.notice_at %>">
+        <label for="box_course_notice_at">提前N天发送(多个天数用逗号隔开)</label>
+        <input id="box_course_notice_at"  name='course[notice_at]' type="text" placeholder="3,2,1 数字代表提前几天发送，可以输入多个值，表示可以发送多次" value="<%= @course.notice_at %>">
       </div>      
     </div> 
     <div class="row double-pad-top double-pad-bottom">
-      <button class="info block">确定</button>
+      <button class="info block box_button">确定</button>
     </div>   
   </div>
 </article>

@@ -21,7 +21,12 @@ Rails.application.routes.draw do
         get 'search'
       end
     end
-    resources :courses
+    resources :courses do 
+      collection do 
+        get 'match_manager'
+        get 'match_student'
+      end
+    end
     resources :cards do
       collection do 
         get 'search_manager'

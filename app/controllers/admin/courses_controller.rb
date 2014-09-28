@@ -21,20 +21,31 @@ class Admin::CoursesController < Admin::AdminController
   def edit
   end
 
+  def match_manager
+    render_json_auto Company.match_course_manager(params[:data])
+  end
+
+  def match_student
+    render_json_auto User.match_course_student(params[:data])
+  end
+
   # POST /courses
   # POST /courses.json
   def create
-    @course = Course.new(course_params)
+    Rails.logger.info('------------------------------------')
+    Rails.logger.info(course_params.inspect)
+    Rails.logger.info('------------------------------------')
+    # @course = Course.new(course_params)
 
-    respond_to do |format|
-      if @course.save
-        format.html { redirect_to @course, notice: 'Course was successfully created.' }
-        format.json { render :show, status: :created, location: @course }
-      else
-        format.html { render :new }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @course.save
+    #     format.html { redirect_to @course, notice: 'Course was successfully created.' }
+    #     format.json { render :show, status: :created, location: @course }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @course.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /courses/1
@@ -69,6 +80,6 @@ class Admin::CoursesController < Admin::AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :description)
+      params.require(:course).permit(:manager_condition, :trainee_condition,:notice_at,:name_cn,:name_en,:code,:audience,:difficulty_level,:delivery_type,:instructor,:instructor_avatar,:instructor_desc,:charge_category,:content_type,:price_level1,:price_level2,:price_level3,:start_date,:start_time,:end_date,:end_time,:duration,:lim_num,:city,:address,:classroom,:description,:evaluation_general,:evaluation_instructor,:waiting_acctadmin_approval_num,:waiting_sysadmin_approval_num,:valid_registration_num,:canceled_num,:attendee_num,:notice_content,:status)
     end
 end

@@ -99,4 +99,8 @@ class Company
     return result    
   end
 
+  def self.match_course_manager(content_type)
+    self.where(pri_serv:/#{content_type}/).actived.count
+  end
+
 end

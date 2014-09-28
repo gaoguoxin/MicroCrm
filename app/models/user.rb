@@ -38,9 +38,9 @@ class User
   field :role_of_system, type: Integer,:default => 3 #系统角色
   field :type_of_position, type: String #工作类型
   field :city,type: String # 距您最近的城市
-  field :ax,type: Boolean #是否对AX培训感兴趣
-  field :crm, type: Boolean #是否对CRM培训感兴趣
-  field :softskill,type: Boolean #是否对软技能培训感兴趣
+  field :ax,type: Boolean,default:true #是否对AX培训感兴趣
+  field :crm, type: Boolean,default:true #是否对CRM培训感兴趣
+  field :softskill,type: Boolean,default:true #是否对软技能培训感兴趣
   field :status, type: Integer,default:STATUS_ACTIVED #状态
   field :course_count,type:Integer,default:0 #有效报名课程数
   field :course_manday_count,type: Integer,default:0 # 有效报名人天数
@@ -57,6 +57,9 @@ class User
   scope :except_admin_and_viewer, ->{ any_of({:role_of_system => ROLE_MANAGER},{:role_of_system => ROLE_EMPLOYEE})}
 
   scope :actived, -> {where(status:STATUS_ACTIVED)}
+  scope :ax, -> {where(ax:true)}
+  scope :crm, -> {where(crm:true)}
+  scope :softskill, ->{where(softskill:true)}
 
   #注册用户
   def self.regist(opt,is_admin=false,is_manager=false,creater=nil)
@@ -227,6 +230,12 @@ class User
     end
     inst.update(opt)
     return inst
+  end
+
+  def self.match_course_student(content_type)
+    return self.where(role_of_system:ROLE_EMPLOYEE).actived.ax.count if content_type == 'AX'
+    return self.where(role_of_system:ROLE_EMPLOYEE).actived.crm.count if content_type == 'CRM'
+    return self.where(role_of_system:ROLE_EMPLOYEE).actived.ax.crm.count if content_type == 'AX+CRM'
   end
 
   def is_admin?
