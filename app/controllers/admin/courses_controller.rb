@@ -32,20 +32,15 @@ class Admin::CoursesController < Admin::AdminController
   # POST /courses
   # POST /courses.json
   def create
-    Rails.logger.info('------------------------------------')
-    Rails.logger.info(course_params.inspect)
-    Rails.logger.info('------------------------------------')
-    # @course = Course.new(course_params)
-
-    # respond_to do |format|
-    #   if @course.save
-    #     format.html { redirect_to @course, notice: 'Course was successfully created.' }
-    #     format.json { render :show, status: :created, location: @course }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @course.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    course_params['notice_at'] = course_params['notice_at'].gsub('，',',')
+    @course = Course.new(course_params)
+    respond_to do |format|
+      if @course.save
+        format.html { redirect_to admin_courses_url(status:@course.status) }
+      else
+        format.html { render :new }
+      end
+    end
   end
 
   # PATCH/PUT /courses/1

@@ -53,7 +53,7 @@
       </div>
       <div class="one half padded">
         <div class="row">
-          <label for="course_instructor_avatar">教师头像</label>
+          <label for="course_instructor_avatar">教师头像(jpg,jpeg,gif,png)</label>
           <div>
             <%= f.file_field :instructor_avatar %>
           </div>
@@ -228,7 +228,7 @@
       <div class="one third half-pad-top"><span>匹配企业管理员:</span></div>
       <div class="one third">
         <span class="select-wrap">
-          <select class="unselected" id='match_content_manager' name='match_content_type'>
+          <select class="unselected" id='match_content_manager' name=''>
             <option value="" disabled="" selected="">业务偏好</option>
             <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
               <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>
@@ -244,7 +244,7 @@
       <div class="one third half-pad-top"><span>匹配学员:</span></div>
       <div class="one third">
         <span class="select-wrap">
-          <select class="unselected" id='match_content_student' name='match_content_type'>
+          <select class="unselected" id='match_content_student' name=''>
             <option value="" disabled="" selected="">兴趣偏好</option>
             <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
               <option value="<%= k %>" <% if @course.try(:manager_condition) == k %>selected='selected' <% end %> ><%= k %></option>

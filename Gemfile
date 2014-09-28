@@ -39,7 +39,7 @@ gem 'sidekiq'
 
 gem 'mini_magick'
 gem 'carrierwave'
-
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem "unicorn", group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

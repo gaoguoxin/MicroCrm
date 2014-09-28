@@ -84,7 +84,6 @@ class SmsApi # 短信接口
                          :message  => message,
                          :seqid => seqid
                       }) 
-    #status = get_sent_status
     SmsHistory.create(mobile:phone,type:type,seqid:seqid)
     return result
   end
@@ -113,125 +112,170 @@ class SmsApi # 短信接口
 
 
   ################### different types of sms ########################
+  #开课通知短信到学员
+  def self.lesson_published_to_student(type,slist,opt)
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_student.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
 
-  def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)
-    survey = Survey.find(survey_id)
-    @survey_title = survey.title
-    @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
-    @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
+
+    group_size = 100
+    groups = []
+    while mlist.size >= group_size
+      temp_group = mobile_list[0..group_size-1]
+      groups << temp_group
+      mobile_list = mobile_list[group_size..-1]
+    end
+    groups << mobile_list
+
+    groups.each do |group|
+      self.send_sms("massive_#{type}",slist, sms_text)
+    end
+  end
+
+  # 开课通知短信到管理员
+  def self.lesson_published_to_manager(type,mlist,opt)
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_manater.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    group_size = 100
+    groups = []
+    while mlist.size >= group_size
+      temp_group = mobile_list[0..group_size-1]
+      groups << temp_group
+      mobile_list = mobile_list[group_size..-1]
+    end
+    groups << mobile_list
+
+    groups.each do |group|
+      self.send_sms("massive_#{type}",slist, sms_text)
+    end
+  end 
+
+  #上课提醒短信
+  def self.lesson_published_specify_time(type,mlist,opt)
+
+  end 
+
+
+  # def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)
+  #   survey = Survey.find(survey_id)
+  #   @survey_title = survey.title
+  #   @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
+  #   @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
     
-    @reward = ""
-    reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
-    if reward_scheme && reward_scheme.rewards[0].present?
-      case reward_scheme.rewards[0]["type"]
-      when RewardScheme::MOBILE
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元手机话费奖励"
-      when RewardScheme::ALIPAY
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元支付宝奖励"
-      when RewardScheme::JIFENBAO
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元集分宝奖励"
-      when RewardScheme::POINT
-          @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
-      when RewardScheme::LOTTERY
-          @reward = "一次抽奖机会"
-      end
-    end
+  #   @reward = ""
+  #   reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
+  #   if reward_scheme && reward_scheme.rewards[0].present?
+  #     case reward_scheme.rewards[0]["type"]
+  #     when RewardScheme::MOBILE
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元手机话费奖励"
+  #     when RewardScheme::ALIPAY
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元支付宝奖励"
+  #     when RewardScheme::JIFENBAO
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元集分宝奖励"
+  #     when RewardScheme::POINT
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
+  #     when RewardScheme::LOTTERY
+  #         @reward = "一次抽奖机会"
+  #     end
+  #   end
 
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/pre_survey_invitation_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms('pre_survey_invitation', mobile, text)
-  end
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/pre_survey_invitation_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms('pre_survey_invitation', mobile, text)
+  # end
 
-  def self.invitation_sms(survey_id, sample_id, callback, opt = {})
-    sample = User.find_by_id(sample_id)
-    return if sample.nil? || sample.mobile.blank?
-    mobile = sample.mobile
-    survey = Survey.find_by_id(survey_id)
-    @survey_title = survey.title
-    reward_scheme_id = survey.sms_promote_info["reward_scheme_id"]
-    @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
-    if sample.status == User::REGISTERED
-      sample.auth_key = Encryption.encrypt_auth_key("#{sample._id}&#{Time.now.to_i.to_s}")
-      sample.auth_key_expire_time =  -1
-      sample.save
-      @survey_link += "?auth_key=#{sample.auth_key}"
-    end
-    @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
-    unsubscribe_key = CGI::escape(Encryption.encrypt_activate_key({"email_mobile" => mobile}.to_json))
-    @unsubscribe_link = "#{Rails.application.config.quillme_host}/surveys/cancel_subscribe?key=#{unsubscribe_key}"
-    @unsubscribe_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@unsubscribe_link)
+  # def self.invitation_sms(survey_id, sample_id, callback, opt = {})
+  #   sample = User.find_by_id(sample_id)
+  #   return if sample.nil? || sample.mobile.blank?
+  #   mobile = sample.mobile
+  #   survey = Survey.find_by_id(survey_id)
+  #   @survey_title = survey.title
+  #   reward_scheme_id = survey.sms_promote_info["reward_scheme_id"]
+  #   @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
+  #   if sample.status == User::REGISTERED
+  #     sample.auth_key = Encryption.encrypt_auth_key("#{sample._id}&#{Time.now.to_i.to_s}")
+  #     sample.auth_key_expire_time =  -1
+  #     sample.save
+  #     @survey_link += "?auth_key=#{sample.auth_key}"
+  #   end
+  #   @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
+  #   unsubscribe_key = CGI::escape(Encryption.encrypt_activate_key({"email_mobile" => mobile}.to_json))
+  #   @unsubscribe_link = "#{Rails.application.config.quillme_host}/surveys/cancel_subscribe?key=#{unsubscribe_key}"
+  #   @unsubscribe_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@unsubscribe_link)
 
-    @reward = ""
-    reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
-    if reward_scheme && reward_scheme.rewards[0].present?
-      case reward_scheme.rewards[0]["type"]
-      when RewardScheme::MOBILE
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-      when RewardScheme::ALIPAY
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-      when RewardScheme::JIFENBAO
-          @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-      when RewardScheme::POINT
-          @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
-      when RewardScheme::LOTTERY
-          @reward = "一次抽奖机会"
-      end
-    end
+  #   @reward = ""
+  #   reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
+  #   if reward_scheme && reward_scheme.rewards[0].present?
+  #     case reward_scheme.rewards[0]["type"]
+  #     when RewardScheme::MOBILE
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
+  #     when RewardScheme::ALIPAY
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
+  #     when RewardScheme::JIFENBAO
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
+  #     when RewardScheme::POINT
+  #         @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
+  #     when RewardScheme::LOTTERY
+  #         @reward = "一次抽奖机会"
+  #     end
+  #   end
 
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/invitation_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms('invitation',mobile, text)
-  end
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/invitation_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms('invitation',mobile, text)
+  # end
 
-  def self.find_password_sms(type, mobile, callback, opt)
-    @code = opt["code"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/find_password_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
-  end
+  # def self.find_password_sms(type, mobile, callback, opt)
+  #   @code = opt["code"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/find_password_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(type,mobile, text)
+  # end
 
-  def self.change_mobile_sms(mobile, callback, opt)
-    @code = opt["code"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/change_mobile_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(mobile, text)
-  end
+  # def self.change_mobile_sms(mobile, callback, opt)
+  #   @code = opt["code"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/change_mobile_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(mobile, text)
+  # end
   
-  def self.rss_subscribe_sms(type, mobile, callback, opt)
-    @code = opt["code"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/rss_subscribe_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
-  end
+  # def self.rss_subscribe_sms(type, mobile, callback, opt)
+  #   @code = opt["code"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/rss_subscribe_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(type,mobile, text)
+  # end
 
-  def self.activate_sms(type, mobile, callback, opt)
-    @code = opt["code"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/activate_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
-  end
+  # def self.activate_sms(type, mobile, callback, opt)
+  #   @code = opt["code"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/activate_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(type,mobile, text)
+  # end
 
-  def self.welcome_sms(type, mobile, callback, opt)
-    @code = opt["active_code"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/welcome_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
-  end
+  # def self.welcome_sms(type, mobile, callback, opt)
+  #   @code = opt["active_code"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/welcome_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(type,mobile, text)
+  # end
 
-  def self.charge_confirm_sms(type, mobile, callback, opt)
-    @gift_name = opt["gift_name"].to_s
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/charge_confirm_sms.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type, mobile, text)
-  end
+  # def self.charge_confirm_sms(type, mobile, callback, opt)
+  #   @gift_name = opt["gift_name"].to_s
+  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/charge_confirm_sms.text.erb"
+  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+  #   text = text_template.result(binding)
+  #   self.send_sms(type, mobile, text)
+  # end
 
   # def self.carnival_re_invitation(type, mobile, callback, opt)
   #   answer_id = opt["answer_id"]

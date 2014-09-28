@@ -20,9 +20,9 @@ $(->
 			    }
 			  }
 			},
-			afterClose:-> 
-				$('body').on('#match_content_manager,#match_content_student,#box_notice_content,box_course_notice_at',(e)->
-					$(e).parents('.one').removeClass('invalid')
+			afterShow:-> 
+				$('#match_content_manager,#match_content_student,#box_notice_content,#box_course_notice_at').focus(->
+					$(this).parents('.one').removeClass('invalid')
 				)
 		})
 
@@ -45,11 +45,10 @@ $(->
 
 	check_msg_info = ->
 		going = true
-		$('#box_notice_content,#box_course_notice_at,#match_content_manager,#match_content_student').each(->
+		$('#match_content_manager,#match_content_student,#box_notice_content,#box_course_notice_at').each(->
 			unless $.trim($(@).val()).length > 0
-				$(@).parents('.one').addClass('invalid').removeClass('valid')
+				$(@).closest('.one').addClass('invalid').removeClass('valid')
 				going = false
-				return false
 				
 		)
 

@@ -19,6 +19,12 @@ class SmsWorker
     when 'user_regist'
       Rails.logger.info('----in user regist action ----------') 
       retval = SmsApi.user_regist_sms(sms_type, mobile, opt)
+    when 'lesson_published_to_student'
+      retval = SmsApi.lesson_published_to_student(sms_type, mobile, opt)
+    when 'lesson_published_to_manager'
+      retval = SmsApi.lesson_published_to_manager(sms_type, mobile, opt)
+    when 'lesson_published_specify_time'
+      retval = SmsApi.lesson_published_specify_time(sms_type, mobile, opt)
     end
     return true
   end

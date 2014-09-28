@@ -1,6 +1,8 @@
 class Course
   include Mongoid::Document
   include Mongoid::Timestamps
+  
+  mount_uploader :instructor_avatar, AvatarUploader
 
   STATUS_CODE_0 = 0 #课程状态 规划中      
   STATUS_CODE_1 = 1 #课程状态 已发布
@@ -64,7 +66,26 @@ class Course
   field :manager_condition,type:String # 匹配短信通知管理员的条件  
   field :trainee_condition,type:String # 匹配短信通知学员的条件
   field :notice_content,type:String # 管理员自定义提醒短信内容
-  field :notice_at,type:Array #上课提醒短信提前多少天发送，可以指定很多个，元素代表提前多少天
+  field :notice_at,type:String #上课提醒短信提前多少天发送，可以指定很多个，元素代表提前多少天
 
   has_many :orders
+
+
+  after_save :send_publish_msg
+
+  def send_publish_msg
+    if self.status_changed?
+      if self.status == STATUS_CODE_1
+        mlist = Company.where(pri_serv:/#{content_type}/).actived.map{|e| e.manager.mobile}
+        slist = User.where(role_of_system:ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
+        slist = User.where(role_of_system:ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
+        slist = User.where(role_of_system:ROLE_EMPLOYEE).actived.ax.crm.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
+        #SmsWorker.perform_async("lesson_published_to_manager",mlist,{})
+        #SmsWorker.perform_async("lesson_published_to_student",slist,{})
+        #SmsWorker.perform_async("lesson_published_specify_time",slist,{})
+      end
+    end
+  end
+
+
 end
