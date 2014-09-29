@@ -1,4 +1,15 @@
 <%= form_for([:admin,@course], multipart: true) do |f| %>
+  <% if @course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@course.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% @course.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <fieldset>
     <legend>information</legend>
     <%= f.hidden_field :manager_condition%>
@@ -261,7 +272,7 @@
     <h4 class="box info align-center">设置上课提醒短信</h4>
     <div class="row">
       <div class="one whole padded">
-        <label for="course_notice_content">短信内容(建议72字以内,剩余<i class='remain error'>12</i>)</label>
+        <label for="course_notice_content">短信内容(建议72字以内,剩余<i class='remain error'>72</i>)</label>
         <textarea id="box_notice_content" name='course[notice_content]' placeholder="Enter message content... " ><%= @course.try(:notice_content) %></textarea>
       </div>      
     </div>

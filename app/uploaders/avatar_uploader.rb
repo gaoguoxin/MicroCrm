@@ -46,8 +46,20 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #   process :resize_to_fit => [50, 50]
   # end
 
+  version :banner do
+    process :resize_to_fit => [450,250]
+  end
+
   version :thumb do
-    process :resize_to_fit => [180,180]
+    process :resize_to_fill => [180,180]
+  end
+
+  version :minum do
+    process :resize_to_fill => [120,120]
+  end  
+
+  version :small do
+    process :resize_to_fill => [90,90]
   end
 
 

@@ -44,9 +44,9 @@ class Course
   field :instructor_avatar,type:String # 教师头像
   field :instructor_desc,type:String #教师简介 limit 1024 letter  
   field :start_date,type:Date
-  field :start_time,type:Time
+  field :start_time,type:String
   field :end_date,type:Date
-  field :end_time,type:Time
+  field :end_time,type:String
   field :duration,type:String #课程持续时间,以天我为单位
   field :lim_num,type:Integer #最多容纳人数
   field :description, type: String # 课程描述 2048 leter
@@ -85,6 +85,14 @@ class Course
         #SmsWorker.perform_async("lesson_published_specify_time",slist,{})
       end
     end
+  end
+
+  def show_content_type
+    self.content_type
+  end
+
+  def self.search(opt)
+    self.all
   end
 
 

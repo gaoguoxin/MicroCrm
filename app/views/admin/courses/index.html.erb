@@ -26,21 +26,23 @@
       <span><%= course_notice(params[:status])%></span>
     </div>
   </div>
-  <table class="responsive responsiveTable  <%= @companies.length > 0 ? 'info' : 'error' %>" data-max="15">
-    <thead>
-      <tr>
-        <th>名称</th>
-        <th>管理员</th>
-        <th>合作类型</th>
-        <th>等级</th>
-        <th>合作状态</th>
-        <th>有效报名<br />人天</th>
-        <th>创建时间</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render :partial => '/admin/companies/table',:locals => {:companies => @companies}%>
-    </tbody>
-  </table>  
+  <div class="row triple-pad-left triple-pad-right">
+    <table class="responsive responsiveTable  <%= @courses.length > 0 ? 'info' : 'error' %>" data-max="15">
+      <thead>
+        <tr>
+          <th>编码</th>
+          <th>名称</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>城市</th>
+          <th>内容类型</th>
+          <th>教师姓名</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => '/admin/courses/table',:locals => {:cousrses => @courses}%>
+      </tbody>
+    </table>   
+  </div>   
 <% end %>

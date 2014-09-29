@@ -1,10 +1,25 @@
 class Admin::CoursesController < Admin::AdminController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
-
+  before_action :refuse_viewer, only: [:new,:edit,:match_manager,:match_student,:create,:delete,:destroy]
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    @courses = Course.where(status:params[:status])
+  end
+
+
+  def index
+    if request.xhr?
+      search
+      render :partial => 'admin/courses/index.js.erb', :locals => { :courses => @courses }
+    else
+      search
+    end
+     
+  end
+
+  def search
+    @courses = auto_paginate(Course.search(params))
   end
 
   # GET /courses/1
@@ -62,8 +77,7 @@ class Admin::CoursesController < Admin::AdminController
   def destroy
     @course.destroy
     respond_to do |format|
-      format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to admin_courses_url(status:@course.status)}
     end
   end
 

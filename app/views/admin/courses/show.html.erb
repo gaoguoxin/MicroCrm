@@ -1,14 +1,60 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @course.title %>
-</p>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/courses-bundle" %>
+  <%= javascript_include_tag "pages/admin/courses-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
 
-<p>
-  <strong>Description:</strong>
-  <%= @course.description %>
-</p>
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span>
+    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i>查看课程</span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>查看课程</span>
+    </div>
+  </div>
+  <div class="row triple-pad-left triple-pad-right">
+    <div class="show-top one whole double-padded">
+      <div class="one half"><%=image_tag(@course.instructor_avatar.banner.url)%></div>
+      <div class="one half double-pad-left">
+        <h2><%= @course.code%>:<%=@course.name_en%></h2>
+        <h5><%= @course.code%>:<%=@course.name_cn%></h5>
+        <p class='rating'>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star-half-full"></i>
+        </p>
+        <p class="instructor">讲师:<%=@course.instructor%></p>
+        <p class="content_type">课程类型:<%= Course::TYPE_HASH[@course.content_type] %></p>
+        <p class="content_type">neirong类型:<%= Course::TYPE_HASH[@course.content_type] %></p>
+      </div>
+    </div>
+    <div class="show-bottom one whole double-padded double-gap-top">
+      <div class="bottom-left three fourths double-gap-right">
+        <div class="one whole box success">适用人群:<%= @course.audience%></div>
+        <div class="one whole double-pad-top">
+          <h5>课程简介:</h5>
+          <div class="description"><%=@course.description%></div>
+        </div>
+      </div>
+      <div class="bottom-right one fourth">
+        
+      </div>
+    </div>
+  </div>   
+<% end %>

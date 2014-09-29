@@ -79,6 +79,12 @@ $(->
 		$(@).parent('.padded').removeClass('invalid')
 	)
 
+	$('body').on('change','#course_instructor_avatar',->
+		console.log(this.files)
+	)
+
+
+
 	$('button.submit').click((e)->
 		e.preventDefault()
 		check_present();
