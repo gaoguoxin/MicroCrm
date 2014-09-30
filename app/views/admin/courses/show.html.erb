@@ -18,7 +18,7 @@
 <% content_for :right_side do %>
   <div class="row right-head triple-pad-left triple-pad-right">
     <span class="fa fa-flag-o"></span>
-    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i>查看课程</span>
+    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i><%=sub_bread(@course.status)%><i class="fa fa-angle-double-right"></i>查看课程</span>
   </div>
   <div class="row right-notice triple-pad-left triple-pad-right">
     <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
@@ -26,7 +26,7 @@
       <span>查看课程</span>
     </div>
   </div>
-  <div class="row triple-pad-left triple-pad-right">
+  <div class="row triple-padded">
     <div class="show-top one whole double-padded">
       <div class="one half"><%=image_tag(@course.instructor_avatar.banner.url)%></div>
       <div class="one half double-pad-left">
@@ -44,17 +44,33 @@
         <p class="content_type">neirong类型:<%= Course::TYPE_HASH[@course.content_type] %></p>
       </div>
     </div>
-    <div class="show-bottom one whole double-padded double-gap-top">
-      <div class="bottom-left three fourths double-gap-right">
-        <div class="one whole box success">适用人群:<%= @course.audience%></div>
-        <div class="one whole double-pad-top">
-          <h5>课程简介:</h5>
-          <div class="description"><%=@course.description%></div>
+    <div class="show-bottom one whole double-pad-left  double-pad-bottom double-pad-top  double-gap-top">
+      <div class="row">
+        <div class="bottom-left three fourths">
+          <div class="one whole box success">适用人群:<%= @course.audience%></div>
+          <div class="one whole double-pad-top">
+            <h5>课程简介:</h5>
+            <div class="description"><%=@course.description%></div>
+          </div>
+          <div class="one whole double-pad-top">
+            <a href='<%= edit_admin_course_path(@course)%>'>修改</a>
+            <a href='<%= admin_courses_path(:status => @course.status)%>'>返回</a>
+          </div>
         </div>
+        <div class="bottom-right one fourth double-pad-left">
+          <div class="right-cont">
+            <div class="img-container align-center">
+              <%= image_tag(@course.instructor_avatar.small.url)%>  
+            </div>
+            <div class="constructor-desc padded align-center">
+              <%= @course.instructor_desc%>
+            </div> 
+            <div class="coourse-address padded">
+              地址:<%= @course.show_city %>
+            </div>           
+          </div>
+        </div>        
       </div>
-      <div class="bottom-right one fourth">
-        
-      </div>
-    </div>
+    </div> 
   </div>   
 <% end %>

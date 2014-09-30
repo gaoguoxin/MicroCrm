@@ -154,7 +154,7 @@ class SmsApi # 短信接口
 
   #上课提醒短信
   def self.lesson_published_specify_time(type,mlist,opt)
-
+    opt[:stime]
   end 
 
 

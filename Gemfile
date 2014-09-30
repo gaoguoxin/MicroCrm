@@ -40,6 +40,9 @@ gem 'sidekiq'
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+
+# gem 'ckeditor'
+gem 'ckeditor_rails'
 gem "unicorn", group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

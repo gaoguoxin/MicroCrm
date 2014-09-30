@@ -1,6 +1,32 @@
-<h1>Editing course</h1>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/courses-bundle" %>
+  <%= javascript_include_tag "pages/admin/courses-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<%= render 'form' %>
 
-<%= link_to 'Show', @course %> |
-<%= link_to 'Back', courses_path %>
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+
+    <span class="fa fa-flag-o"></span>
+    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i>
+      <%=sub_bread(@course.status)%><i class="fa fa-angle-double-right"></i>编辑课程
+    </span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>增加新课程，发布意味着开始接受报名</span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+	<%= render 'form' %>
+  </div>
+<% end %>

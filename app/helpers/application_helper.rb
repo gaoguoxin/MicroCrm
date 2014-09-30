@@ -50,6 +50,14 @@ module ApplicationHelper
     return '已取消的课程' if status.to_i == 4
   end
 
+  def sub_bread(status)
+    return '规划中的课程' if status.to_i == 0
+    return '已发布的课程' if status.to_i == 1
+    return '授课中的课程' if status.to_i == 2
+    return '已交付的课程' if status.to_i == 3
+    return '已取消的课程' if status.to_i == 4
+  end
+
   def course_notice(status)
     return '规划中的课程，可以随意修改和删除' if status.to_i == 0
     return '涉及到上课时间、地点的变更，或者取消课程，会发短信通知与课人员' if status.to_i == 1

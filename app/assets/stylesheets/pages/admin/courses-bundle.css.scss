@@ -1,3 +1,4 @@
+//=require 'jquery.timepicker'
 @import "compass/css3/border-radius";
 .right-main{
 	input,textarea,select{
@@ -31,6 +32,14 @@ table{
 			border:0px;
 			@include border-radius(0px);
 			color:#222;
+		}
+	}
+	.bottom-right{
+		.right-cont{
+			border-left:1px solid #ddd;
+			.coourse-address{
+				border-top:1px solid #ddd;
+			}
 		}
 	}
 }
