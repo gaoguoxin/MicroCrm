@@ -1,8 +1,14 @@
 #=require jquery.timepicker.min
+
+
 $(->
-	$("#course_start_date,#course_end_date").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
+	$("#course_start_date,#course_end_date").datepicker({dateFormat: "yy-mm-dd",showAnim:'show',minDate:0})
 	$('#course_start_time').timepicker({ 'timeFormat': 'h:i A','step': 5 })
 	$('#course_end_time').timepicker({ 'timeFormat': 'h:i A','step': 5 })
+
+	
+	$('#course_description').ckeditor({})
+
 
 	open_box = ->
 		$.fancybox.open($('.msg-box'),{
@@ -49,15 +55,13 @@ $(->
 			unless $.trim($(@).val()).length > 0
 				$(@).closest('.one').addClass('invalid').removeClass('valid')
 				going = false
-				
 		)
-
 		submit_info() if going
 
 
 	submit_info = ->
 		$.fancybox.close()
-		$('form.new_course').submit()
+		$('form').submit()
 
 
 	check_present = ->
@@ -77,10 +81,6 @@ $(->
 
 	$('form.new_course input,select,textarea').focus(->
 		$(@).parent('.padded').removeClass('invalid')
-	)
-
-	$('body').on('change','#course_instructor_avatar',->
-		console.log(this.files)
 	)
 
 

@@ -40,7 +40,7 @@ class User
   field :city,type: String # 距您最近的城市
   field :ax,type: Boolean,default:true #是否对AX培训感兴趣
   field :crm, type: Boolean,default:true #是否对CRM培训感兴趣
-  field :softskill,type: Boolean,default:true #是否对软技能培训感兴趣
+  field :softskill,type: Boolean,default:true #是否对软技能培训感兴趣(AX+CRM)
   field :status, type: Integer,default:STATUS_ACTIVED #状态
   field :course_count,type:Integer,default:0 #有效报名课程数
   field :course_manday_count,type: Integer,default:0 # 有效报名人天数
@@ -59,7 +59,7 @@ class User
   scope :actived, -> {where(status:STATUS_ACTIVED)}
   scope :ax, -> {where(ax:true)}
   scope :crm, -> {where(crm:true)}
-  scope :softskill, ->{where(softskill:true)}
+  scope :qt, -> {where(crm:false,ax:false,softskill:false)}#其他课程
 
   #注册用户
   def self.regist(opt,is_admin=false,is_manager=false,creater=nil)

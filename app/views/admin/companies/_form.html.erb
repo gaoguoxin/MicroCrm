@@ -54,7 +54,13 @@
   </div>
   <div class="one half padded">
       <label for="pri_serv">主要业务</label>
-      <input id="pri_serv"  name='company[pri_serv]' type="text" placeholder="primary service" maxlength=64 value="<%= default(company,'pri_serv') %>">
+      <span class="select-wrap">
+        <select class="unselected" id='level' name='company[pri_serv]'>
+          <% Course::CONTENT_TYPE_ARRAY.each do |type| %>
+            <option value="<%= type %>" <% if company.try(:pri_serv) == type %>selected='selected'<% end%> ><%= type %></option>
+          <% end %>
+        </select>
+      </span>
   </div>            
 </div>
 <div class="row">

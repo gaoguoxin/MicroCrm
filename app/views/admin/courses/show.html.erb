@@ -18,7 +18,7 @@
 <% content_for :right_side do %>
   <div class="row right-head triple-pad-left triple-pad-right">
     <span class="fa fa-flag-o"></span>
-    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i>查看课程</span>
+    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i><%=sub_bread(@course.status)%><i class="fa fa-angle-double-right"></i>查看课程</span>
   </div>
   <div class="row right-notice triple-pad-left triple-pad-right">
     <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
@@ -26,7 +26,7 @@
       <span>查看课程</span>
     </div>
   </div>
-  <div class="row triple-pad-left triple-pad-right">
+  <div class="row triple-padded">
     <div class="show-top one whole double-padded">
       <div class="one third">
         <%=image_tag(@course.instructor_avatar.banner.url)%>  
@@ -37,43 +37,83 @@
         <div class="row">
           <div class="one third">
             <p class='rating'>
+              <span>总体评分:</span>
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
               <i class="fa fa-star-half-full"></i>
-            </p>  
+            </p> 
+            <p class="rating">
+              <span>讲师评分:</span>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-half-full"></i>              
+            </p>
             <p class="instructor">讲师:<%=@course.instructor%></p>
             <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
             <p class="content_type">内容类型:<%= @course.content_type %></p>
             <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
           </div>
           <div class="one third">
-            <p class="city">城市:<%=@course.city%></p>
-            <p class="start_time">开始时间:<%= @course.start_date%>&nbsp;<%=@course.start_time%></p>
-            <p class="start_time">结束时间:<%= @course.end_date%>&nbsp;<%=@course.end_time%></p>
-            <p class="start_time">持续时间:<%= @course.duration%>天</p>
+            <p class='status'>课程状态:<%=Course::STATUS_CODE_HASH[@course.status]%></p>
+            <p class="charge_category">是否收费:<%= Course::CHARGE_TYPE_HASH[@course.charge_category] %></p>
+            <p class="price1">Managed价格:<%=@course.price_level1%>(元)</p>
+            <p class="price2">Un-managed价格:<%=@course.price_level2%>(元)</p>
+            <p class="price3">公众价格:<%=@course.price_level3%>(元)</p>
           </div>
           <div class="one third">
             <p class="city">最多容纳:<%=@course.lim_num%>人</p>
-            <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>           
+            <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
+            <p class="canceled_num">已取消报名的人数:<%= @course.canceled_num%>人</p>
+            <p class="waiting_acctadmin_approval_num">等待单位同意的人数:<%=@course.waiting_acctadmin_approval_num%>人</p>   
+            <p class="waiting_sysadmin_approval_num">等系统管理员接受的人数:<%= @course.waiting_sysadmin_approval_num%>人</p>
+            <p class='attendee_num'>实际参训人数:<%=@course.attendee_num%>人</p>
+          </div>
+        </div>    
+      </div>
+    </div>
+    <div class="show-bottom one whole double-pad-left  double-pad-bottom double-pad-top  double-gap-top">
+      <div class="row">
+        <div class="bottom-left three fourths">
+          <div class="one whole box success">受众对象:<%= @course.audience%></div>
+          <div class="one whole double-pad-top">
+            <h5>课程简介:</h5>
+            <div class="description"><%=raw @course.description%></div>
+          </div>
+          <div class="one whole double-pad-top">
+            <a href='<%= admin_courses_path(:status => @course.status)%>'>返回</a>
+            <a href='<%= edit_admin_course_path(@course)%>'>修改</a>
           </div>
         </div>
-
-                 
+        <div class="bottom-right one fourth double-pad-left">
+          <div class="right-cont">
+            <div class="img-container align-center">
+              <%= image_tag(@course.instructor_avatar.small.url)%>  
+            </div>
+            <div class="constructor-desc padded align-center">
+              <%= @course.instructor_desc%>
+            </div> 
+            <div class="course-stard-end padded">
+              Start:&nbsp;<%=@course.start_date%>&nbsp;<%= @course.start_time%>
+            </div>
+            <div class="course-stard-end padded">
+              End:&nbsp;<%=@course.end_date%>&nbsp;<%= @course.end_time%>
+            </div>    
+            <div class="course-stard-end padded">
+              duration:<%= @course.duration%>天
+            </div>   
+            <div class="course-city padded">
+              城市:<%=@course.show_city%>
+            </div>                     
+            <div class="course-address padded">
+              地址:<%= @course.show_address %>
+            </div>           
+          </div>
+        </div>        
       </div>
-    </div>
-    <div class="show-bottom one whole double-padded double-gap-top">
-      <div class="bottom-left three fourths double-gap-right">
-        <div class="one whole box success">适用人群:<%= @course.audience%></div>
-        <div class="one whole double-pad-top">
-          <h5>课程简介:</h5>
-          <div class="description"><%=@course.description%></div>
-        </div>
-      </div>
-      <div class="bottom-right one fourth">
-        
-      </div>
-    </div>
+    </div> 
   </div>   
 <% end %>

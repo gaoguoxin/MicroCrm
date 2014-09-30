@@ -6,9 +6,30 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
+  # validate :validate_minimum_image_size
+
+  # def validate_minimum_image_size
+  #   if  image_width > 250 || image_height > 250 || image_width != image_height 
+  #     errors.add :image, "should be 400x400px maxmum!" 
+  #   end
+  # end
+  
+
+
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
+  def image
+    @image ||= MiniMagick::Image.open( model.send(mounted_as).path )
+  end
+
+  def image_width 
+     image[:width]
+  end
+
+  def image_height
+    image[:height]
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -47,7 +68,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # end
 
   version :banner do
-    process :resize_to_fit => [450,250]
+    process :resize_to_fill => [250,250]
   end
 
   version :thumb do

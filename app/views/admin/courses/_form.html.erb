@@ -1,4 +1,4 @@
-<%= form_for([:admin,@course], multipart: true) do |f| %>
+<%= form_for([:admin,@course], multipart: true,:html =>{:class => 'info'}) do |f| %>
   <% if @course.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@course.errors.count, "error") %> prohibited this order from being saved:</h2>
@@ -172,6 +172,7 @@
       <div class="one whole padded">
         <label for="course_description">课程描述</label>
         <%= f.text_area :description %>
+
       </div>
     </div> 
 
