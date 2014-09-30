@@ -28,20 +28,39 @@
   </div>
   <div class="row triple-pad-left triple-pad-right">
     <div class="show-top one whole double-padded">
-      <div class="one half"><%=image_tag(@course.instructor_avatar.banner.url)%></div>
-      <div class="one half double-pad-left">
+      <div class="one third">
+        <%=image_tag(@course.instructor_avatar.banner.url)%>  
+      </div>
+      <div class="two thirds">
         <h2><%= @course.code%>:<%=@course.name_en%></h2>
         <h5><%= @course.code%>:<%=@course.name_cn%></h5>
-        <p class='rating'>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star-half-full"></i>
-        </p>
-        <p class="instructor">讲师:<%=@course.instructor%></p>
-        <p class="content_type">课程类型:<%= Course::TYPE_HASH[@course.content_type] %></p>
-        <p class="content_type">neirong类型:<%= Course::TYPE_HASH[@course.content_type] %></p>
+        <div class="row">
+          <div class="one third">
+            <p class='rating'>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-half-full"></i>
+            </p>  
+            <p class="instructor">讲师:<%=@course.instructor%></p>
+            <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
+            <p class="content_type">内容类型:<%= @course.content_type %></p>
+            <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
+          </div>
+          <div class="one third">
+            <p class="city">城市:<%=@course.city%></p>
+            <p class="start_time">开始时间:<%= @course.start_date%>&nbsp;<%=@course.start_time%></p>
+            <p class="start_time">结束时间:<%= @course.end_date%>&nbsp;<%=@course.end_time%></p>
+            <p class="start_time">持续时间:<%= @course.duration%>天</p>
+          </div>
+          <div class="one third">
+            <p class="city">最多容纳:<%=@course.lim_num%>人</p>
+            <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>           
+          </div>
+        </div>
+
+                 
       </div>
     </div>
     <div class="show-bottom one whole double-padded double-gap-top">

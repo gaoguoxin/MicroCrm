@@ -27,7 +27,9 @@ class Course
   CONTENT_TYPE_AX  = 'AX'
   CONTENT_TYPE_CRM = 'CRM'
   CONTENT_TYPE_AX_CRM = 'AX+CRM'
-  CONTENT_TYPE_ARRAY = %w(AX CRM AX+CRM)
+  CONTENT_TYPE_QT     = '其他'
+
+  CONTENT_TYPE_ARRAY = %w(AX CRM AX+CRM 其他)
 
   CITY_ARRAY = %w(上海 北京 广州 其他城市 在线)
 
