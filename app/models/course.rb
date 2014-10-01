@@ -39,13 +39,8 @@ class Course
 
   field :difficulty_level,type:String #难易程度 Level 100, Level 200, Level 300, Level 400
   field :delivery_type,type:Integer,default:TYPE_CODE_0 # 课程类型
-
   field :charge_category,type:Integer,default:CHARGE_TYPE_0 #收费
-
-
   field :content_type,type:String,default:CONTENT_TYPE_AX # 内容类型
-
-
   field :status,type:Integer,default:STATUS_CODE_0 #课程状态
   field :audience,type:String # 受众对象  limit 64 letter 
   field :instructor,type:String   # 教师姓名 limit 12 letter  

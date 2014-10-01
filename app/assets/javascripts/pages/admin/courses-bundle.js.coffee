@@ -1,6 +1,4 @@
 #=require jquery.timepicker.min
-
-
 $(->
 	$("#course_start_date,#course_end_date").datepicker({dateFormat: "yy-mm-dd",showAnim:'show',minDate:0})
 	$('#course_start_time').timepicker({ 'timeFormat': 'h:i A','step': 5 })
