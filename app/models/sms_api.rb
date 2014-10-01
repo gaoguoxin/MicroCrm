@@ -135,6 +135,10 @@ class SmsApi # 短信接口
 
   # 开课通知短信到管理员
   def self.lesson_published_to_manager(type,mlist,opt)
+    @start_date = opt[:start_date].strftime('')
+    @city = 
+    @lesson_name = 
+
     text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_manater.text.erb"
     text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
     text = text_template.result(binding)
