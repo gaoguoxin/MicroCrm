@@ -25,6 +25,8 @@ class SmsWorker
       retval = SmsApi.lesson_published_to_manager(sms_type, mobile, opt)
     when 'lesson_published_specify_time'
       retval = SmsApi.lesson_published_specify_time(sms_type, mobile, opt)
+    when 'lesson_canceled_to_student'
+      retval = SmsApi.lesson_canceled_to_student(sms_type, mobile, opt)
     end
     return true
   end

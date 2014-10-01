@@ -77,25 +77,47 @@ class Course
   has_many :orders
 
 
-  after_save :send_publish_msg
+  after_save :send_msg
 
-  def send_publish_msg
+  def send_msg
     if self.status_changed?
-      if self.status == STATUS_CODE_1
-        mlist = Company.where(pri_serv:/#{content_type}/).actived.map{|e| e.manager.mobile}
-        slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
-        slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
-        slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.crm.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
-        slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他'
-        #SmsWorker.perform_async("lesson_published_to_manager",mlist,{})
-        #SmsWorker.perform_async("lesson_published_to_student",slist,{})
-        self.notice_at.split(',').each do |d|
-          send_time = (self.start_date - d).strftime('%Y%m%d100000') # 指定10点发送
-          #SmsWorker.perform_async("lesson_published_specify_time",slist,{stime:send_time})  
+      if self.status == STATUS_CODE_1  # 发布新课程
+        send_new_lesson_msg
+      elsif self.status ==  STATUS_CODE_4 && self.status_was == STATUS_CODE_1 #取消课程
+        send_cancel_msg
+      end
+    else
+      if self.start_date_changed? # 上课时间发生了变更
+        send_time_changed_msg
+      else
+        if self.address_changed? || self.classroom_changed?
+          send_address_and_classroom_changed_msg
         end
-        
       end
     end
+  end
+
+
+  def send_new_lesson_msg
+    mlist = Company.where(pri_serv:/#{content_type}/).actived.map{|e| e.manager.mobile}
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
+    SmsWorker.perform_async("lesson_published_to_manager",mlist,{date:self.start_date,city:self.city,name:self.name_cn})
+    SmsWorker.perform_async("lesson_published_to_student",slist,{date:self.start_date,city:self.city,name:self.name_cn})
+    self.notice_at.split(',').each do |d|
+      send_time = (self.start_date - d.to_i.day).strftime('%Y%m%d600000') # 指定6点发送
+      #这里有个bug，就是第一次的时候指定了发送时间，但是上课时间变更了，那么这个时候，新的指定时间又产生了
+      SmsWorker.perform_async("lesson_published_specify_time",slist,{time:send_time,content:self.notice_content})  
+    end       
+  end
+
+  #取消课程短信
+  def send_cancel_msg
+    Order.cancel(self.id.to_s)
+    slist = self.orders.map{|e| e.user.mobile}
+    SmsWorker.perform_async("lesson_canceled_to_student",slist,{date:self.start_date,city:self.city,name:self.name_en})
   end
 
   def show_content_type

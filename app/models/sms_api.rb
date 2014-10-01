@@ -113,31 +113,33 @@ class SmsApi # 短信接口
 
   ################### different types of sms ########################
   #开课通知短信到学员
-  def self.lesson_published_to_student(type,slist,opt)
+  def self.lesson_published_to_student(type,mlist,opt)
+    @start_date = opt[:date].strftime('%Y年%m月%d日')
+    @city = opt[:city]
+    @lesson_name = opt[:name]    
     text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_student.text.erb"
     text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
     text = text_template.result(binding)
 
-
     group_size = 100
     groups = []
     while mlist.size >= group_size
-      temp_group = mobile_list[0..group_size-1]
+      temp_group = mlist[0..group_size-1]
       groups << temp_group
-      mobile_list = mobile_list[group_size..-1]
+      mlist = mlist[group_size..-1]
     end
     groups << mobile_list
 
     groups.each do |group|
-      self.send_sms("massive_#{type}",slist, sms_text)
+      self.send_sms("massive_#{type}",mlist, text)
     end
   end
 
   # 开课通知短信到管理员
   def self.lesson_published_to_manager(type,mlist,opt)
-    @start_date = opt[:start_date].strftime('')
-    @city = 
-    @lesson_name = 
+    @start_date = opt[:date].strftime('%Y年%m月%d日')
+    @city = opt[:city]
+    @lesson_name = opt[:name]
 
     text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_manater.text.erb"
     text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
@@ -152,7 +154,7 @@ class SmsApi # 短信接口
     groups << mobile_list
 
     groups.each do |group|
-      self.send_sms("massive_#{type}",slist, sms_text)
+      self.send_sms("massive_#{type}",slist, text)
     end
   end 
 
@@ -160,6 +162,30 @@ class SmsApi # 短信接口
   def self.lesson_published_specify_time(type,mlist,opt)
     opt[:stime]
   end 
+
+  #课程取消短信
+  def self.lesson_canceled_to_student(type,mlist,opt)
+    @start_date = opt[:date].strftime('%Y年%m月%d日')
+    @city = opt[:city]
+    @lesson_name = opt[:name]  
+
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_canceled_to_student.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+
+    group_size = 100
+    groups = []
+    while mlist.size >= group_size
+      temp_group = mobile_list[0..group_size-1]
+      groups << temp_group
+      mobile_list = mobile_list[group_size..-1]
+    end
+    groups << mobile_list
+
+    groups.each do |group|
+      self.send_sms("massive_#{type}",slist, text)
+    end    
+  end
 
 
   # def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)

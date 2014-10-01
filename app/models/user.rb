@@ -54,11 +54,14 @@ class User
 
   has_many :companies,class_name: "Company",inverse_of: :manager
 
+  has_many :orders,class_name: "Order",inverse_of: :user
+
   scope :except_admin_and_viewer, ->{ any_of({:role_of_system => ROLE_MANAGER},{:role_of_system => ROLE_EMPLOYEE})}
 
   scope :actived, -> {where(status:STATUS_ACTIVED)}
   scope :ax, -> {where(ax:true)}
   scope :crm, -> {where(crm:true)}
+  scope :softskill, -> {where(softskill:true)}
   scope :qt, -> {where(crm:false,ax:false,softskill:false)}#其他课程
 
   #注册用户

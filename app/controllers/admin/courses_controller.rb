@@ -62,13 +62,29 @@ class Admin::CoursesController < Admin::AdminController
   # PATCH/PUT /courses/1.json
   def update
     respond_to do |format|
-      if @course.update(course_params)
-        format.html { redirect_to admin_courses_url(status:@course.status) }
+      course_params['notice_at'] = course_params['notice_at'].gsub('，',',')
+      if course_params[:status] != @course.status
+        #课程的状态发生了变化
+        @course.update(course_params)
+        redirect_to admin_courses_url(status:@course.status)
       else
-        format.html { render :edit }
+        if course_params[:city] != @course.city
+          #课程状态没有发生变化并且上课的城市发生了变更，要将原来的课程取消，并用现在的数据创建一个新的课程
+          @new_course = Course.create(course_params)
+          course_params[:status] = Course::STATUS_CODE_4
+          @course.update(course_params)
+          redirect_to admin_courses_url(status:@new_course.status)
+        else
+          #课程状态和城市都没有发生变化，但是其他的内容发生了变化。
+          @course.update(course_params)
+          redirect_to admin_courses_url(status:@course.status)
+        end
       end
     end
   end
+
+
+
 
   # DELETE /courses/1
   # DELETE /courses/1.json

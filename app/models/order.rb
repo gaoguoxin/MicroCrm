@@ -19,7 +19,7 @@ class Order
   CANCEL_CODE_2 = 2 #谁取消的报名  系统管理员
 
   field :source, type: Integer,default: SOURCE_CODE_0 # 报名记录产生的来源
-  field :status, type: Integer,default: SOURCE_CODE_0 # 企业管理员审核状态  
+  field :status, type: Integer,default: STATUS_CODE_0 # 企业管理员审核状态  
   field :status_at,type:Array  # 企业管理员审核发生的时间，可能多次改变status值
   field :state, type: Integer,default: STATE_CODE_0  #系统管理员审核状态值
   field :state_at,type:Array #系统管理员审核发生的时间，可能多次改变state值
@@ -28,7 +28,14 @@ class Order
   field :cancel_at,type:DateTime # 取消报名的时间
   field :presence,type: Float #出勤的概率
 
-
-  has_many :users
+  belongs_to :user
   belongs_to :course
+
+  scope :effective, -> {where(state:STATE_CODE_1,is_cancel:false)}#有效报名,指的是系统管理员审核通过，并且没有被取消的报名
+
+  def self.cancel(course_id)
+    self.where(course_id:course_id).update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
+  end
+
+
 end

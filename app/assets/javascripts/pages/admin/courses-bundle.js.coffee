@@ -64,7 +64,8 @@ $(->
 
 	check_present = ->
 		go = true
-		$('form.new_course input,select,textarea').each(->
+		pulish = parseInt($('#course_status').val())
+		$('form.info input,select,textarea').each(->
 			unless $(@).attr('id') == 'course_instructor_avatar'
 				if $(@).is(":visible")
 					if $.trim($(@).val()).length <= 0
@@ -75,13 +76,15 @@ $(->
 						go = false
 						return false
 		)
-		open_box() if go
+		if go 
+			if publish == 1
+				open_box() # 所有的表单验证通过，并且该课程被设置为发布的时候才会有弹出层
+			else
+				$('form').submit() # 如果一个课程不是被设置为了发布中，那么不需要填写短息提醒内容，直接提交表单。
 
-	$('form.new_course input,select,textarea').focus(->
+	$('form.info input,select,textarea').focus(->
 		$(@).parent('.padded').removeClass('invalid')
 	)
-
-
 
 	$('button.submit').click((e)->
 		e.preventDefault()
