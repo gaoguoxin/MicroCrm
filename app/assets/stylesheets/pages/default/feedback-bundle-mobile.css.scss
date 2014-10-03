@@ -1,0 +1,11 @@
+@import "compass/css3/border-radius";
+ul.button-group li:first-child a, ol.button-group li:first-child a, ul.button-group li:first-child button, ol.button-group li:first-child button{
+	@include border-radius(0px);
+}
+ul.button-group li:last-child a, ol.button-group li:last-child a, ul.button-group li:last-child button, ol.button-group li:last-child button{
+	@include border-radius(0px);
+}
+.box{
+	@include border-radius(0px);
+	background:#fff;
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>个人信息页</title>     
+    <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
+    <%= javascript_include_tag 'layouts/app-layout' %>
+    <%= stylesheet_link_tag "pages/default/user-bundle-mobile", :media => "all" %>
+    <%= javascript_include_tag "pages/default/user-bundle-mobile", :media => "all" %>      
+    <%= csrf_meta_tags %> 
+    <script type="text/javascript">
+      jQuery(function($) {
+        window.u_id = "<%= current_user.id.to_s%>"
+        $('input,textarea').placeholder();
+      });
+    </script>
+  </head>
+<body>
+  <div class="container">
+  <article class="row">
+    <div class="one whole mobile half-padded">
+      <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <%= image_tag('mobile/logo.png')%>
+      </a>
+    </div>
+  </article>  
+    <form action="#" method="post">
+      <fieldset>
+        <div class="row">
+          <div class="one whole padded">
+            <label for="name">用户名</label>
+            <input id="name" name='user[name]' type="text" placeholder="Enter your name " value="<%= @user.name %>" >
+          </div>
+          <div class="one whole padded">
+            <label for="name">密码</label>
+            <input id="name" name='user[password]' type="text" placeholder="Enter your name " value="<%= @user['password'] %>" >
+          </div>          
+          <div class="one whole padded">
+            <label for="email">Email</label>
+            <input id="email" type="user[email]" placeholder="you@example.com",value="<%= @user.email%>" disabled='disabled' >
+          </div>
+        </div>
+        <div class="row">
+          <div class="one whole padded">
+            <label for="address">Mobile</label>
+            <input id="address"  name="userr[mobile]" type="text" placeholder="Enter your mobile" value="<%= @user.mobile%>" disabled='disabled'>
+          </div>
+        </div>
+        <div class="row">
+          <div class="one whole padded">
+              <label for="type_of_position">工作类型</label>
+              <span class="select-wrap">
+                <select class="unselected" id='type_of_position' name='user[type_of_position]'>
+                  <% User::POSITION_ARRAY.each do |position| %>
+                    <option value="<%= position %>" <% if @user.try(:type_of_position) == position %>selected='selected'<% end%> ><%= position %></option>
+                  <% end %>
+                </select>
+              </span>      
+          </div>  
+        </div>
+        <div class="row">
+          <div class="one whole padded">
+              <label for="city">距您最近的城市</label>
+              <span class="select-wrap">
+                <select class="unselected" id='city' name='user[city]'>
+                  <% User::CITY_ARRAY.each do |city| %>
+                    <option value="<%= city %>" <% if @user.try(:city) == city %> selected='selected'<% end %> ><%= city %></option>
+                  <% end %>         
+                </select>
+              </span>
+          </div>           
+        </div>
+
+        <div class="row">
+          <div class="one whole padded">
+              <label for="company_id">QQ</label>
+              <input id="qq" type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
+          </div>
+          <div class="one whole padded">
+              <label for="wechart">微信号</label>
+              <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
+          </div>   
+          <div class="one whole padded">
+              <label for="skype">Skype</label>
+              <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
+          </div>   
+        </div>
+
+        <div class="row">
+          <div class="one whole padded">
+            <label for="ax">是否对AX培训感兴趣</label>
+            <ul class="unstyled">
+              <li class='double-gap-right double-gap-left pull-left'>
+                <input id="ax_1" type="radio" name="user[ax]"  value='1' <% if @user.ax %> checked='checked'<%end%> >
+                <label for="ax_1" class="inline">是</label>
+              </li>
+              <li class='pull-left'>
+                <input id="ax_2" type="radio" name="user[ax]" value='0' <% unless @user.ax %> checked='checked'<%end%>>
+                <label for="ax_2" class="inline" value=false>否</label>
+              </li>
+            </ul>
+          </div>
+          <div class="one whole padded">
+            <label for="ax">是否对CRM培训感兴趣</label>
+            <ul class="unstyled">
+              <li class='double-gap-right double-gap-left pull-left'>
+                <input id="crm_1" type="radio" name="user[crm]"  value='1' <% if @user.crm %> checked='checked'<%end%>>
+                <label for="crm_1" class="inline">是</label>
+              </li>
+              <li class='pull-left'>
+                <input id="crm_2" type="radio" name="user[crm]" value='0' <% unless @user.crm %> checked='checked'<%end%>>
+                <label for="crm_2" class="inline">否</label>
+              </li>
+            </ul>
+          </div>  
+          <div class="one whole padded">
+            <label for="ax">是否对软技能培训感兴趣</label>
+            <ul class="unstyled">
+              <li class='double-gap-right double-gap-left pull-left'>
+                <input id="softskill_1" type="radio" name="user[softskill]" value='1' <% if @user.softskill %> checked='checked'<%end%>>
+                <label for="softskill_1" class="inline">是</label>
+              </li>
+              <li class='pull-left'>
+                <input id="softskill_2" type="radio" name="user[softskill]" value='0' <% unless @user.softskill %> checked='checked'<%end%> >
+                <label for="softskill_2" class="inline">否</label>
+              </li>
+            </ul>
+          </div>    
+        </div>
+        <div class="row">
+          <button class="block info one whole info-sub">提交</button>
+        </div>
+        
+      </fieldset>
+    </form>         
+  </div>
+</body>

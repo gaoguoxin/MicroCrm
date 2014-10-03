@@ -56,6 +56,8 @@ class User
 
   has_many :orders,class_name: "Order",inverse_of: :user
 
+  has_many :feedbacks
+
   scope :except_admin_and_viewer, ->{ any_of({:role_of_system => ROLE_MANAGER},{:role_of_system => ROLE_EMPLOYEE})}
 
   scope :actived, -> {where(status:STATUS_ACTIVED)}
@@ -255,6 +257,9 @@ class User
 
 
   def self.update_info(opt,inst,updater)  
+    Rails.logger.info('=============================')
+    Rails.logger.info(opt)
+    Rails.logger.info('=============================')
     opt[:updater]  = updater  
     if opt[:password].present?
       opt[:password] =  self.make_encrypt(opt[:password]) 
@@ -284,6 +289,17 @@ class User
       result = self.orders.where(state:Order::STATE_CODE_1,is_cancel:true)
     end
     return result
+  end
+
+  #查询某个用户的反馈
+  def get_feedbacks(params)
+    if params[:t] == 'w' #等待填写的反馈
+      course_id = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map(&:course_id).map{|e| e.to_s}
+      courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
+    else #已经填写的反馈
+      courses = self.feedbacks.map{|f| f.course}
+    end
+    return courses
   end
 
 

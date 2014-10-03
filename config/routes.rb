@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   resources :users do 
     collection do 
       post  'check_exist'
+      post  'update_info'
     end
   end
 

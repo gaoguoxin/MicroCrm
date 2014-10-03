@@ -1,4 +1,11 @@
+require 'encryption'
 class UsersController < ApplicationController
+  before_action :check_login,only: [:index]
+
+  def index
+    @user = current_user
+    @user.write_attribute(:password,Encryption.decrypt_password(@user.password))
+  end
 
   def new
     @companis = Company.actived
@@ -29,15 +36,18 @@ class UsersController < ApplicationController
   end
 
   #更新个人信息
-  def update
-    user = current_user.update_info(user_params)
+  def update_info
+    user_params[:ax] = user_params[:ax] == 'true' ? true :false
+    user_params[:crm] = user_params[:crm] == 'true' ? true :false
+    user_params[:softskill] = user_params[:softskill] == 'true' ? true :false
+    user = User.update_info(user_params,current_user,current_user.id.to_s)
     render_json_auto user and return
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name,:email,:mobile,:password,:age,:position)
+    params.require(:user).permit(:name,:email,:mobile,:password,:type_of_position,:city,:qq,:wechart,:skype,:ax,:crm,:softskill)
   end
 
 

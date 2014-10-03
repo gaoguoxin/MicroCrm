@@ -1,0 +1,17 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/course-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/course-bundle-mobile" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+    
+  });
+  </script>
+  <%= yield :head %>
+<% end %>  
+<article class="row">
+  <div class="one whole mobile half-padded bounceInLeft animated box info">
+    <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
+      <%= image_tag('mobile/logo.png')%>
+    </a>
+  </div>
+</article>

@@ -2,19 +2,13 @@ class FeedbacksController < ApplicationController
   before_action :set_feedback, only: [:show, :edit, :update, :destroy]
   before_action :check_login
   def index
-   
+    params[:t] ||= 'w'
+    @courses = current_user.get_feedbacks(params)
   end
 
   def show
   end
 
-  def new
-    @feedback = Feedback.new
-  end
-
-
-  def edit
-  end
 
 
   def create
@@ -27,26 +21,6 @@ class FeedbacksController < ApplicationController
     
   end
 
-
-  def update
-    respond_to do |format|
-      if @feedback.update(feedback_params)
-        format.html { redirect_to @feedback, notice: 'Feedback was successfully updated.' }
-        format.json { render :show, status: :ok, location: @feedback }
-      else
-        format.html { render :edit }
-        format.json { render json: @feedback.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def destroy
-    @feedback.destroy
-    respond_to do |format|
-      format.html { redirect_to feedbacks_url, notice: 'Feedback was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
     def set_feedback
