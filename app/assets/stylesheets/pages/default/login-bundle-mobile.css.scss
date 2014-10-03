@@ -1,0 +1,17 @@
+@import "compass/css3/border-radius";
+body,html{
+		background:#630460;
+		.wraper{
+			input,button{
+				@include border-radius(0px);
+			}
+			.align-center{
+				color:#fff;
+			}
+			ul{
+				li{
+					color:#fff;
+				}
+			}
+		}		
+}

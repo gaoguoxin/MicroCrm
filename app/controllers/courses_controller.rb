@@ -1,5 +1,11 @@
 class CoursesController < ApplicationController
-  #before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :set_course, only: [:show]
+  before_action :check_login
+
+  def index # 我的课程
+  	#@courses = current_user.my_course(params)
+    @courses = Course.all
+  end
 
   def show
 

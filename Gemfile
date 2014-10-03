@@ -36,7 +36,7 @@ gem 'autoprefixer-rails'
 gem "font-awesome-rails"
 gem 'mobile-fu', "~> 1.2.2"
 gem 'sidekiq'
-
+gem 'whenever', :require => false
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'

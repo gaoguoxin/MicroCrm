@@ -8,78 +8,87 @@
   </script>
   <%= yield :head %>
 <% end %>
-
-
-<header class="padded">
-    <div class="container">
-      <div class="row">
-        <div>
-          <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo responsive',:alt => "logo" %></a>
-        </div>     
-      </div>
-    </div>
-  </header>
-
 <div class="container">
   <article class="row">
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInLeft animated">
-      <a href="/"class="nav-box block purple">
-        <h3 class="">Welcome</h3>
+    <div class="one whole mobile half-padded bounceInLeft animated">
+      <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <%= image_tag('mobile/logo.png')%>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInDownLeft animated">
-      <a href="/category?t=crm" class="nav-box block charcoal">
-       <h3 class="">Responsive Heading</h3>
-       <h5>Shadn.D.Xiao</h5>
+  </article>
+  <article class="row">
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="<%=category_index_path(:t => 'crm')%>" title="View Larger Image" class="block crm blue align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom ">CRM培训课</h6>
+        <%= image_tag('mobile/icon1.png')%>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInDown animated">
-      <a href="" class="nav-box block asphalt">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="<%=category_index_path(:t => 'ax')%>" title="View Larger Image" class="block ax blue align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom ">AX培训课</h6>
+        <%= image_tag('mobile/icon2.png') %>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInUp animated">
-      <a href="" class="nav-box block green">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="<%=category_index_path(:t => 'ax+crm')%>" title="View Larger Image" class="block softkill blue align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom ">软技能培训</h6>
+        <%= image_tag('mobile/icon3.png') %>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInUpRight animated">
-      <a href="" class="nav-box block blue">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+  </article>
+  <article class="row">
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="<%=category_index_path(:f => true)%>" title="View Larger Image" class="block free blue align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom ">免费研讨班</h6>
+        <%= image_tag('mobile/icon4.png') %>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInLeft animated">
-      <a href="" class="nav-box block yellow">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="<%= courses_path(:w => true)%>" title="View Larger Image" class="block blue align-center mycourse pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom">我的报名</h6>
+        <%= image_tag('mobile/icon5.png') %>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInDownLeft animated">
-      <a href="" class="nav-box block orange">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="" title="View Larger Image" class="block feedback blue align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="pad-bottom ">我的反馈</h6>
+        <%= image_tag('mobile/icon6.png') %>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInDown animated">
-      <a href="" class="nav-box block red">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+  </article>
+  <article class="row">
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="http://www.microsoft.com/zh-cn/dynamics/default.aspx" title="View Larger Image" class="block net blue align-center pad-top half-pad-left half-pad-right triple-pad-bottom">
+        <h6 class="triple-pad-bottom" data-truncate="2">中国官网</h6>
+        <%= image_tag('mobile/icon9.png',:class => 'gap-top half-gap-bottom')%>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded bounceInUp animated">
-      <a href="" class="nav-box block pink">
-        <h3 class="">Responsive Heading</h3>
-        <h5>Shadn.D.Xiao</h5>
+    <div class="one third mobile half-padded bounceInLeft animated">
+      <a href="https://mbspartner.microsoft.com/Landing" title="View Larger Image" class="block noicon cill  blue align-center pad-top half-pad-left half-pad-right triple-pad-bottom">
+        <h6 class="triple-pad-bottom">自学门户</h6>
+        <%= image_tag('mobile/icon10.png',:class => 'gap-top half-gap-bottom')%>
       </a>
     </div>
-    <div class="one fifth two-up-small-tablet two-up-mobile padded rotateInUpRight animated">
-      <a href="tel:15210427877" class="nav-box turquoise noicon">
-        <h3 class="">联系电话</h3>
-        <h5 class='tel'>15210427877</h5>
-      </a>
+    <div class="one third mobile half-pad-right half-pad-left bounceInLeft animated">
+      <div class="one whole mobile half-pad-top half-pad-bottom">
+        <a href="" title="View Larger Image" class="block personal blue align-center pad-top half-pad-left half-pad-right half-pad-bottom">
+          <h6 class="pad-bottom">个人中心</h6>
+          <%= image_tag('mobile/icon7.png') %>
+       </a>
+      </div>
+      <div class="one whole mobile half-pad-bottom half-pad-top">
+        <a href="tel:010-85892607" title="View Larger Image" class="block tel noicon blue align-center pad-top half-pad-left half-pad-right half-pad-bottom">
+         <h6 class="pad-bottom">致电客服</h6>
+          <%= image_tag('mobile/icon8.png') %>
+        </a>
+      </div>
     </div>
-  </article>  
+  </article>
+  <article>
+    <div class="one whole mobile half-padded bounceInLeft animated">
+      <a href="<%=search_courses_path%>" title="View Larger Image" class="block blue search align-center pad-top half-pad-left half-pad-right pad-bottom">
+        <h6 class="padded">课程检索</h6>
+      </a>
+    </div>    
+  </article>
 </div>

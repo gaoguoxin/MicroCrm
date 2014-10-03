@@ -76,6 +76,9 @@ class Course
 
   has_many :orders
 
+  scope :published, -> {where(status:STATUS_CODE_1)}
+  scope :charge, -> {where(charge_category:CHARGE_TYPE_0)}
+  scope :uncharge, -> {where(charge_category:CHARGE_TYPE_1)}
 
   after_save :send_msg
 
@@ -106,11 +109,15 @@ class Course
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
     SmsWorker.perform_async("lesson_published_to_manager",mlist,{date:self.start_date,city:self.city,name:self.name_cn})
     SmsWorker.perform_async("lesson_published_to_student",slist,{date:self.start_date,city:self.city,name:self.name_cn})
-    self.notice_at.split(',').each do |d|
-      send_time = (self.start_date - d.to_i.day).strftime('%Y%m%d600000') # 指定6点发送
-      #这里有个bug，就是第一次的时候指定了发送时间，但是上课时间变更了，那么这个时候，新的指定时间又产生了
-      SmsWorker.perform_async("lesson_published_specify_time",slist,{time:send_time,content:self.notice_content})  
-    end       
+    # self.notice_at.split(',').each do |d|
+    #   send_time = (self.start_date - d.to_i.day).strftime('%Y%m%d600000') # 指定6点发送
+    #   #这里有个bug，就是第一次的时候指定了发送时间，但是上课时间变更了，那么这个时候，新的指定时间又产生了
+    #   SmsWorker.perform_async("lesson_published_specify_time",slist,{time:send_time,content:self.notice_content})  
+    # end
+    # job_identifier = MyWorker.perform_at(3.hours.from_now, 'mike', 1)
+    # Sidekiq::Status.unschedule job_identifier
+
+
   end
 
   #取消课程短信
@@ -149,7 +156,39 @@ class Course
   end
 
   def self.search(opt)
-    self.where(status:opt[:status])
+    if opt[:m] #标识手机请求　
+      if opt[:f] #标识是否免费
+        result = self.published.uncharge
+      else
+        opt[:t] ||= 'crm'
+        result = self.where(content_type:/#{opt[:t].upcase}/).published.charge
+      end
+    else
+      self.where(content_type:/#{opt[:t].upcase}/).published
+    end
+    return result 
+  end
+
+
+  def self.check_and_send_notice
+    self.where(status:STATUS_CODE_1).each do |course|
+      d_arr = course.notice_at.split(',').each do |d|
+        if Date.day == (course.start_date - d.to_i.day)
+          slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if course.trainee_condition == 'AX'
+          slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if course.trainee_condition == 'CRM'
+          slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if course.trainee_condition == 'AX+CRM'
+          slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if course.trainee_condition == '其他'          
+          SmsWorker.perform_async("lesson_published_specify_time",slist,{content:course.notice_content})
+
+        end 
+      end
+    end
+  end
+
+  def say_abc
+    Rails.logger.info('-------------------------------')
+    Rails.logger.info('------- say abc -------------')
+    Rails.logger.info('-------------------------------')
   end
 
 

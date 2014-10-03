@@ -27,6 +27,8 @@ class SmsWorker
       retval = SmsApi.lesson_published_specify_time(sms_type, mobile, opt)
     when 'lesson_canceled_to_student'
       retval = SmsApi.lesson_canceled_to_student(sms_type, mobile, opt)
+    when 'find_password'
+      retval = SmsApi.find_password(sms_type, mobile, opt)
     end
     return true
   end

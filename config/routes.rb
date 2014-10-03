@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get '/regist' => 'users#new'
   get '/login'  => 'sessions#new'
   delete '/logout' => 'sessions#destroy'
-
+  get '/fpwd'  => 'sessions#fpwd'
 
   namespace :admin do
     resources :users do 
@@ -60,13 +60,24 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :sessions
+  resources :sessions do 
+    collection do
+     get 'fpwd'
+     post 'fpwd' 
+    end
+  end
 
   resources :category
 
   resources :orders
 
-  resources :courses
+  resources :courses do 
+    collection do 
+      get 'search'
+    end
+  end
+  
+  resources :feedbacks
 
 
   

@@ -1,0 +1,25 @@
+@import "compass/css3/border-radius";
+@import "compass/utilities/general/clearfix";
+.container{
+	article.row{
+		ul.button-group.row{
+			li{
+				a{
+					@include border-radius(0px);
+				}
+			}
+		}		
+	}
+	article.row.box{
+		@include border-radius(0px);
+	}		
+
+}
+
+.show-info{
+	button{
+		border-bottom: 3px #759a51 solid;	
+		@include border-radius(0px);
+	}
+	
+}

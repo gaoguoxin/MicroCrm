@@ -27,9 +27,10 @@ $(->
 		account  = account_ipt.val()
 		password = password_ipt.val()
 		rem      = $('.remember-me').attr('aria-checked')
+		ref      = window.location.href.split('ref=')[1]
 		$.post("/sessions",{email_mobile:account,password:password,remember:rem},(ret)->
 			if ret.success
-				window.location.href = ret.value.ref
+				window.location.href = decodeURIComponent(ret.value.ref)
 			else
 				if ret.value.error_code == "error_3"
 					flag_notice(account_ipt,'该用户不存在')

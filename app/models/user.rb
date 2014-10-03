@@ -125,14 +125,44 @@ class User
   #登录用户
   def self.login(opt)
     email_mobile =  opt[:email_mobile].to_s.downcase
-    password     =  opt[:password].downcase
+    password     =  opt[:password].to_s.downcase
     user = self.find_by_email_or_mobile(email_mobile)
     return ErrorEnum::USER_NOT_EXIST unless user.present?
     return ErrorEnum::PASSWORD_ERROR if user.password != make_encrypt(password)
-    user.write_attribute(:ref,'/admin/courses') if user.is_admin? || user.is_viewer?
-    user.write_attribute(:ref,'/manager/users') if user.is_manager?
-    user.write_attribute(:ref,'/user/users') if user.is_employee?
+    if user.is_admin? || user.is_viewer?
+      unless opt[:ref].present?
+        user.write_attribute(:ref,'/admin/courses')  
+      else
+        user.write_attribute(:ref,opt[:ref])  
+      end
+      
+    end
+    
+    if user.is_manager?
+      unless opt[:ref].present?
+        user.write_attribute(:ref,'/manager/users') 
+      else
+        user.write_attribute(:ref,opt[:ref])  
+      end
+    end
+    if user.is_employee?
+      unless opt[:ref].present?
+        user.write_attribute(:ref,'/user/users')
+      else
+        user.write_attribute(:ref,opt[:ref])  
+      end      
+    end
+    
     return user
+  end
+
+  def self.find_pwd(mobile)
+    u = User.where(mobile:mobile).first
+    return ErrorEnum::USER_NOT_EXIST unless u.present? 
+    new_pwd = Random.rand(999999)
+    #SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
+    new_pwd = make_encrypt(new_pwd)
+    u.update_attributes(password:new_pwd)
   end
 
   def self.check_exist(opt)
@@ -240,6 +270,23 @@ class User
     return self.where(role_of_system:ROLE_EMPLOYEE).actived.crm.count if content_type == 'CRM'
     return self.where(role_of_system:ROLE_EMPLOYEE).actived.ax.crm.count if content_type == 'AX+CRM'
   end
+
+  #我的课程
+  def my_course(opt)
+    if opt[:w] # 我等待上的课
+      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1,passed:false)
+    elsif opt[:p] #我上过的课
+      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1,passed:true)
+    elsif opt[:n]#我正在上的课
+      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map do |order|
+        order.course.where(:start_date.lte => Date.today,:end_date.gte => Date.today)
+      end
+    else #我取消的课
+      result = self.orders.where(state:Order::STATE_CODE_1,is_cancel:true)
+    end
+    return result
+  end
+
 
   def is_admin?
     return self.role_of_system == ROLE_ADMIN

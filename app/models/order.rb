@@ -27,6 +27,7 @@ class Order
   field :cancel_type, type:Integer #谁取消的报名
   field :cancel_at,type:DateTime # 取消报名的时间
   field :presence,type: Float #出勤的概率
+  field :passed,type: Boolean,default: false #该订单是否已经过期
 
   belongs_to :user
   belongs_to :course

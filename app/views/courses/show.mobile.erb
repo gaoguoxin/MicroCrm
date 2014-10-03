@@ -1,0 +1,66 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/course-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/course-bundle-mobile" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+<div class="show-info double-padded">
+  <h3 class="name"><strong>Microsoft development and manager tooles </strong></h3>
+  <%= image_tag(@course.instructor_avatar.banner.url,:class => 'whole')%>
+  <button class="whole block success">马上报名</button>
+
+<div class="tabs ipad">
+  <ul role="tablist">
+    <li role="tab" aria-controls="#tab1">基本信息</li>
+    <li role="tab" aria-controls="#tab2">教师信息</li>
+    <li role="tab" aria-controls="#tab3">时间/地点</li>
+    <% unless current_user.present? %>
+        <li role="tab" aria-controls="#tab4"></li>
+    <% else %>
+    
+    <% end %>
+    
+  </ul>
+  <div id="tab1" role="tabpanel">
+    <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
+    <p class="content_type">内容类型:<%= @course.content_type %></p>
+    <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
+    <p class="city">最多容纳:<%=@course.lim_num%>人</p>
+    <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
+    <p>受众对象:<%= @course.audience%></p>
+    <p class="one whole">
+      <h5>课程简介:</h5>
+      <div class="description"><%=raw @course.description%></div>
+    </p>    
+  </div>
+  <div id="tab2" role="tabpanel">
+    <p class="instructor">讲师:<%=@course.instructor%></p>
+    <p class="one whole">
+      <h5>讲师简介:</h5>
+      <div class="description"><%= @course.instructor_desc%></div>
+    </p>     
+  </div>
+  <div id="tab3" role="tabpanel">
+    <p class="course-stard-end">
+      Start:&nbsp;<%=@course.start_date%>&nbsp;<%= @course.start_time%>
+    </p>
+    <p class="course-stard-end">
+      End:&nbsp;<%=@course.end_date%>&nbsp;<%= @course.end_time%>
+    </p>    
+    <p class="course-stard-end">
+      Duration:<%= @course.duration%>天
+    </p>   
+    <p class="course-city">
+      城市:<%=@course.show_city%>
+    </p>                     
+    <p class="course-address">
+      地址:<%= @course.show_address %>
+    </p>
+  </div>
+
+
+</div>

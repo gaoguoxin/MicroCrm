@@ -70,5 +70,23 @@ module ApplicationHelper
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
   end
 
+  def change_bg(para)
+    if para[:w].present?
+      return 'yellow'
+    elsif para[:p]
+      return 'orange'
+    else
+      return 'red'
+    end
+  end
+
+  def show_small_avatar(course)
+    if course.instructor_avatar.small.url
+      return course.instructor_avatar.small.url
+    else
+      return 'assets/avatar.jpg'
+    end
+  end
+
 
 end

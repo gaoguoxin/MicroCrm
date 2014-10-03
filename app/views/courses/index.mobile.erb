@@ -1,0 +1,43 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/course-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/course-bundle-mobile" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+<div class="container">
+  <article class="row pad-bottom">
+    <div class="one whole">
+      <ul class="button-group row">
+        <li class='one third mobile'>
+          <a class="yellow" href="<%=courses_path(:w => true)%>" aria-selected=true>当前报名</a>
+        </li>
+        <li class='one third mobile'>
+          <a href="<%=courses_path(:p => true)%>" class="orange block">往期报名</a>
+        </li>
+        <li class='one third mobile'>
+          <a href="<%=courses_path(:c => true)%>" class="red block">取消报名</a>
+        </li>
+      </ul>
+    </div>
+  </article>
+  <%@courses.each do |course|%>
+    <article class="row <%=change_bg(params)%> box">
+      <a href="<%=course_path(course)%>" class='block'>
+        <div class="one fourth mobile">
+          <%= image_tag(show_small_avatar(course))%>  
+        </div>
+        <div class="three fourths mobile pad-left">
+          <p class="name"><strong><%= course.name_en %></strong></p>
+          <p class="other">
+            <span class="city pad-right">城市:<%= course.show_city%></span>
+            <span class="city">日期:<%= course.start_date.strftime('%Y年%m月%d日')%></span>
+          </p>
+        </div>      
+      </a>
+    </article>    
+  <%end%>             
+</div>

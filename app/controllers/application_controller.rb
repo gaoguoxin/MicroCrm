@@ -8,11 +8,16 @@ class ApplicationController < ActionController::Base
 
   before_filter :init
   before_filter :force_tablet_html
-
+  before_filter :check_devise
   has_mobile_fu 
   helper_method :current_user
   
 
+  def check_devise
+    if is_mobile_device?
+      params[:m] = true
+    end
+  end
 
   def force_tablet_html
     session[:tablet_view] = false
@@ -22,6 +27,17 @@ class ApplicationController < ActionController::Base
   def init
     refresh_session(cookies[:auth_key])
   end
+
+  def check_login
+    unless current_user.present?
+      if params[:m]
+        redirect_to login_url(:ref => "#{request.protocol}#{request.host_with_port}#{request.fullpath}")
+      else
+        redirect_to login_url(:ref => "#{request.protocol}#{request.host_with_port}#{request.fullpath}")
+      end
+    end
+  end
+
 
   def render_json(is_success = true, &block)
     @is_success = is_success.present?

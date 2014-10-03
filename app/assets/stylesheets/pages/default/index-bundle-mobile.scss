@@ -1,5 +1,5 @@
 @import "compass/css3/border-radius";
-
+@import "compass/css3/box-shadow";
 @mixin one-line($height) {
 	height: $height;
 	line-height: $height;
@@ -16,80 +16,57 @@
 	width: $width;
 	height: $height;
 }
-.logo-container{
-	display:inline-block;
-	background:#008287;
-	width:100%;
-	img{
-		width:100%;
-		height:auto;
+
+article.row{
+	>div{
+		a{
+			@include box-shadow(#eee 1px 1px 5px);	
+		}
+		
 	}
 }
-.nav-box{
-	display:inline-block;
-	position: relative;
-	width:100%;
-	&:before{
-		content: "";
-		display: block;
-		padding-top: 100%;
-	}
-	&:nth-child(1){
-		background:#8f4bab;
-	}
-	&:nth-child(2){
-		background:#2b2929;
-	}
-	&:nth-child(3){
-		background:#2b3c4e;
-	}
-	&:nth-child(4){
-		background:#29b765;
-	}
-	&:nth-child{5}{
-		background:#258cd1;
-	}
-	&:nth-child(6){
-		background:#f1c40f;
-	}
-	&:nth-child(7){
-		background: #d67118;
-	}
-	&:nth-child(8){
-		background:#e74c3c;
-	}
-	&:nth-child(9){
-		background:#ea1067;
-	}
-	&:nth-child(10){
-		background:#17a689;
-	}
+.logoimg{
+	border-radius: 0px;
+	background:#2d89ef;
+}
 
-	h3{
-		position:absolute;
-		padding:10px;
-		width:100%;
-		text-align: center;
-		font-weight:bold;
-		color:#fff;
-		top:0px;
-		left:0px;
-	}
-	h5{
-		position:absolute;
-		padding:10px;
-		width:100%;	
-		color:#fff;
-		bottom:0px;
-		left:0px;		
-		span.fa{
-			position: absolute;
-			top:-6px;
-			right:10px;
-			font-size:22px;
-		}
-		&.tel{
-			text-align:center;
-		}
-	}
+.blue:hover{
+	text-decoration:none;
+}
+.blue h6{
+	color:#fff;
+	margin:0;
+}
+.crm{
+	background:#ba141a;
+}
+.ax{
+	background:#2d89ef;
+}
+.softkill{
+	background:#9f00a7;
+}
+.free{
+	background:#b91d47;
+}
+.mycourse{
+	background:#00d8cc;
+}
+.feedback{
+	background:#b4009e;
+}
+.net{
+	background:#009e49;
+}
+.cill{
+	background:#7fba00;
+}
+.personal{
+	background:#ffb900;
+}
+.tel{
+	background:#fcd116;
+}
+.search{
+	background:#17a689;
 }

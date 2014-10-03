@@ -160,7 +160,23 @@ class SmsApi # 短信接口
 
   #上课提醒短信
   def self.lesson_published_specify_time(type,mlist,opt)
-    opt[:stime]
+    @content = opt[:content]
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_specify_time.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    group_size = 100
+    groups = []
+    while mlist.size >= group_size
+      temp_group = mobile_list[0..group_size-1]
+      groups << temp_group
+      mobile_list = mobile_list[group_size..-1]
+    end
+    groups << mobile_list
+
+    groups.each do |group|
+      self.send_sms("massive_#{type}",slist, text)
+    end
+
   end 
 
   #课程取消短信
@@ -187,6 +203,14 @@ class SmsApi # 短信接口
     end    
   end
 
+  def self.find_password(type, mobile, opt)
+    @code = opt[:pwd]
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/find_password.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)
+  end
+  
 
   # def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)
   #   survey = Survey.find(survey_id)
@@ -259,13 +283,6 @@ class SmsApi # 短信接口
   #   self.send_sms('invitation',mobile, text)
   # end
 
-  # def self.find_password_sms(type, mobile, callback, opt)
-  #   @code = opt["code"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/find_password_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type,mobile, text)
-  # end
 
   # def self.change_mobile_sms(mobile, callback, opt)
   #   @code = opt["code"].to_s
