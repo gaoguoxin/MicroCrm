@@ -75,11 +75,11 @@ class Course
   field :notice_at,type:String #上课提醒短信提前多少天发送，可以指定很多个，元素代表提前多少天
 
   has_many :orders
-
+  has_many :feedbacks
   scope :published, -> {where(status:STATUS_CODE_1)}
   scope :charge, -> {where(charge_category:CHARGE_TYPE_0)}
   scope :uncharge, -> {where(charge_category:CHARGE_TYPE_1)}
-
+  scope :going, -> {where(:start_date.lte => Date.today,:end_date.gte => Date.today)}
   after_save :send_msg
 
   def send_msg
@@ -167,6 +167,16 @@ class Course
       self.where(content_type:/#{opt[:t].upcase}/).published
     end
     return result 
+  end
+
+  #判断某个用户对某个课程是否可以提交反馈
+  def can_feed(user)
+    return false unless user.present?
+    order = self.orders.where(user_id:user.id.to_s,state:Order::STATE_CODE_1,is_cancel:false,:start_date.lte => Date.today).first
+    return false unless order.present?
+    feed = self.feedbacks.where(user_id:user.id.to_s,:status.ne => Feedback::STATUS_UN_CHECK).first
+    rturn false if feed.present?
+    return true
   end
 
 

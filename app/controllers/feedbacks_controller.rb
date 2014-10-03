@@ -1,6 +1,6 @@
 class FeedbacksController < ApplicationController
   before_action :set_feedback, only: [:show, :edit, :update, :destroy]
-
+  before_action :check_login
   def index
    
   end
@@ -18,17 +18,13 @@ class FeedbacksController < ApplicationController
 
 
   def create
-    @feedback = Feedback.new(feedback_params)
-
-    respond_to do |format|
-      if @feedback.save
-        format.html { redirect_to @feedback, notice: 'Feedback was successfully created.' }
-        format.json { render :show, status: :created, location: @feedback }
-      else
-        format.html { render :new }
-        format.json { render json: @feedback.errors, status: :unprocessable_entity }
-      end
+    feedback = Feedback.where(course_id:params[:c_id],user_id:current_user.id.to_s).first
+    if feedback
+      render_json_auto feedback.update_point(params,current_user.id.to_s)
+    else
+      render_json_auto Feedback.create_new(params,current_user.id.to_s)
     end
+    
   end
 
 

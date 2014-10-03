@@ -274,13 +274,12 @@ class User
   #我的课程
   def my_course(opt)
     if opt[:w] # 我等待上的课
-      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1,passed:false)
+      result = self.orders.where(is_cancel:false,passed:false)
     elsif opt[:p] #我上过的课
-      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1,passed:true)
+      result = self.orders.where(is_cancel:false,passed:true)
     elsif opt[:n]#我正在上的课
-      result = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map do |order|
-        order.course.where(:start_date.lte => Date.today,:end_date.gte => Date.today)
-      end
+      c_id_arr = Course.where(:start_date.lte => Date.today,:end_date.gte => Date.today).map(&:id)
+      result = self.orders.where(is_cancel:false,:course_id.in => c_id_arr)
     else #我取消的课
       result = self.orders.where(state:Order::STATE_CODE_1,is_cancel:true)
     end

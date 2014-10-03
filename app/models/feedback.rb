@@ -13,7 +13,24 @@ class Feedback
   field :question_4,type: Integer
   field :question_5,type: Integer
   field :score,type:Float
+  field :creater_id,type: String
+  field :modifier_id,type: String
   belongs_to :course
   belongs_to :user
+
+  before_save :count_score
+
+  def self.create_new(params,u_id)
+    return self.create(question_1:params[:data][0],question_2:params[:data][1],question_3:params[:data][2],question_4:params[:data][3],question_5:params[:data][4],course_id:params[:c_id],user_id:u_id,modifier_id:u_id,creater_id:u_id)
+  end
+
+  def update_point(params,u_id)
+    return self.update_attributes(question_1:params[:data][0],question_2:params[:data][1],question_3:params[:data][2],question_4:params[:data][3],question_5:params[:data][4],modifier_id:u_id)
+  end
+
+  private
+  def count_score
+    self.score = (question_1 + question_2 + question_3 + question_4 + question_5) / 5.0
+  end
 
 end

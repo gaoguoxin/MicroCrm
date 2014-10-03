@@ -9,7 +9,8 @@ $(->
 		ref      = window.location.href.split('ref=')[1]
 		$.post("/sessions",{email_mobile:account,password:password,remember:rem,ref:ref},(ret)->
 			if ret.success
-				window.location.href = decodeURIComponent(ret.value.ref)
+				window.location.href = '/after_sign_in?ref=' + decodeURIComponent(ret.value.ref)
+				# window.location.href = decodeURIComponent(ret.value.ref)
 			else
 				$('.align-center').text('用户名或密码错误')
 				

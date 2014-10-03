@@ -38,5 +38,18 @@ class Order
     self.where(course_id:course_id).update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
   end
 
+  def self.create_new(params,user_id)
+    source = params[:source] || SOURCE_CODE_0
+    state  = params[:state]  || STATE_CODE_0
+    status = params[:status] || STATUS_CODE_0
+    params[:data].each do |course_id|
+      order = Order.where(course_id:course_id.to_s,user_id:user_id).first
+      unless order.present?
+        Order.create(user_id:user_id,course_id:course_id)
+      end
+    end
+    return true
+  end
+
 
 end

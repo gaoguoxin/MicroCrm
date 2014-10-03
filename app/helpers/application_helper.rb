@@ -80,11 +80,28 @@ module ApplicationHelper
     end
   end
 
+
   def show_small_avatar(course)
     if course.instructor_avatar.small.url
       return course.instructor_avatar.small.url
     else
       return 'assets/avatar.jpg'
+    end
+  end
+
+  def can_feed?(course)
+    if course.start_date <= Date.today
+      return true
+    else
+      return false
+    end
+  end
+
+  def checked?(v,s)
+    if v.to_i == s.to_i
+      return true
+    else
+      return false
     end
   end
 

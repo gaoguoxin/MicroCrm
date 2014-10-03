@@ -12,11 +12,7 @@
 	}
 	article.row.box{
 		@include border-radius(0px);
-		background:#fff;	
-	}
-	button#multip-start{
-		@include border-radius(0px);
-	}			
+	}		
 
 }
 
@@ -35,6 +31,7 @@
 		@include border-radius(0px);
 	}
 	.box{
-		@include border-radius(0px);	
+		@include border-radius(0px);
 	}
+	
 }

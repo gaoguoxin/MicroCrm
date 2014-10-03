@@ -1,14 +1,14 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show]
-  before_action :check_login
+  before_action :check_login,only: [:index]
 
   def index # 我的课程
-  	#@courses = current_user.my_course(params)
-    @courses = Course.all
+  	@courses = current_user.my_course(params)
+    #@courses = Course.all
   end
 
   def show
-
+    @feedback = @course.feedbacks.where(user_id:current_user.try(:id).to_s).first
   end
 
   private

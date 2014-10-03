@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/login'  => 'sessions#new'
   delete '/logout' => 'sessions#destroy'
   get '/fpwd'  => 'sessions#fpwd'
+  get '/after_sign_in' => 'sessions#after_sign_in'
 
   namespace :admin do
     resources :users do 
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
     collection do
      get 'fpwd'
      post 'fpwd' 
+     get 'after_sign_in'
     end
   end
 

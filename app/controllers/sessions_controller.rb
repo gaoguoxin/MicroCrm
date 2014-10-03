@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
 
+  before_filter :check_login, :only => [:after_sign_in]
   def new
     redirect_to root_url if current_user.present?
   end
@@ -9,6 +10,16 @@ class SessionsController < ApplicationController
     user = User.login(params)
     refresh_session(user.id.to_s,params[:remember]) if user.present? && user.class == User
     render_json_auto user and return
+  end
+
+  #登录进来后处理新那些在登录之前定的报名记录
+  def after_sign_in
+    if cookies[:order_c_ids].blank?
+      redirect_to (params[:ref].blank? ? root_path : params[:ref])
+    else
+      Order.create_new({data:cookies[:order_c_ids].split(',')},current_user.id.to_s)
+      redirect_to orders_path
+    end    
   end
 
 
