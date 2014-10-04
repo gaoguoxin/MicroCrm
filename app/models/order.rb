@@ -1,7 +1,7 @@
 class Order
   include Mongoid::Document
   include Mongoid::Timestamps
-  
+
   SOURCE_CODE_0 = 0 #报名记录产生自学员自主报名
   SOURCE_CODE_1 = 1 #报名记录产生自企业管理员代报名
   SOURCE_CODE_2 = 2 #报名记录产生自系统管理员代报名
@@ -34,9 +34,9 @@ class Order
 
   scope :effective, -> {where(state:STATE_CODE_1,is_cancel:false)}#有效报名,指的是系统管理员审核通过，并且没有被取消的报名
 
-  def self.cancel(course_id)
-    self.where(course_id:course_id).update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
-  end
+  # def self.cancel(course_id)
+  #   self.where(course_id:course_id).update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
+  # end
 
   def self.create_new(params,user_id)
     source = params[:source] || SOURCE_CODE_0
@@ -51,6 +51,23 @@ class Order
     return true
   end
 
+  def self.cancel(id,user_id)
+    order = self.find(id)
+    if order
+      u = User.find(user_id)
+      if u.is_admin?
+        ct = CANCEL_CODE_2
+      elsif u.is_manager?
+        ct = CANCEL_CODE_1
+      else
+        ct = CANCEL_CODE_0
+      end
+      return order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
+    else
+
+    end
+  end
+
 
   def show_state
     return '待审核'   if self.state == STATE_CODE_0
@@ -62,6 +79,10 @@ class Order
     return '待审核'   if self.status == STATUS_CODE_0
     return '审核通过' if self.status == STATUS_CODE_1
     return '审核拒绝' if self.status == STATUS_CODE_2   
+  end
+
+  def can_cancel
+    self.course.start_date - Date.today >= 3
   end
 
 

@@ -276,7 +276,6 @@ class User
   #我的课程
   def my_course(opt)
     if opt[:t] == 'w' # 我等待上的课
-      Rails.logger.info('ddddddddddddddd')
       result = self.orders.where(is_cancel:false,passed:false)
     elsif opt[:t] == 'p' #我上过的课
       result = self.orders.where(is_cancel:false,passed:true,state:Order::STATE_CODE_1)

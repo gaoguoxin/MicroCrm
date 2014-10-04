@@ -51,7 +51,11 @@ Rails.application.routes.draw do
         post 'update_pwd'
       end
     end
-    resources :orders
+    resources :orders do 
+      member do 
+        get 'cancel'
+      end
+    end 
     resources :feedbacks
   end
 

@@ -22,10 +22,10 @@
 </dl>
 <dl class="menu">
     <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt> 
-	<dd class="menu_item double-pad-left  <%#= actived('feedbacks')%>">
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'w')%>">
 		<a href="<%= user_feedbacks_path%>" class="triple-pad-left">我的反馈</a>
 	</dd>
-	<dd class="menu_item double-pad-left  <%#= actived('courses',params[:t],'unfeed')%>">
-		<a href="<%= user_feedbacks_path(:t =>'unfeed')%>" class="triple-pad-left">待反馈</a>
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'p')%>">
+		<a href="<%= user_feedbacks_path(:t =>'p')%>" class="triple-pad-left">待反馈</a>
 	</dd>
 </dl>

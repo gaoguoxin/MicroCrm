@@ -1,6 +1,4 @@
 <% content_for :app_head do %>
-  <%= stylesheet_link_tag    "pages/user/orders-bundle" %>
-  <%= javascript_include_tag "pages/user/orders-bundle" %>
   <script type="text/javascript">
   jQuery(function($) {
 
@@ -17,12 +15,12 @@
 <% content_for :right_side do %>
   <div class="row right-head triple-pad-left triple-pad-right">
     <span class="fa fa-flag-o"></span>
-    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i><%=user_sub_tab_text(params)%></span>
+    <span class="locate">反馈管理<i class="fa fa-angle-double-right"></i><%= if params[:t] == 'w'; '待反馈课程' else '已反馈课程'; end %></span>
   </div>
   <div class="row right-notice triple-pad-left triple-pad-right">
     <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
       <i class="fa fa-info"></i>
-      <span><%= order_notice(params[:t])%></span>
+      <span>未审核的反馈可以进行修改，一旦审核，则不能再次修改反馈内容</span>
     </div>
   </div>
   <div class="row triple-pad-left triple-pad-right">
@@ -41,28 +39,25 @@
         </tr>
       </thead>
       <tbody>
-      <% if @orders['data'].length > 0 %>
-        <% @orders['data'].each do |order|%>
+      <% if @courses['data'].length > 0 %>
+        <% @courses['data'].each do |order|%>
           <tr>
-            <td><%= order.course.code%></td>
-            <td><%= order.course.name_en%></td>
-            <td><%= order.course.start_date.strftime('%F')%><br><%=order.course.start_time%></td>
-            <td><%= order.course.end_date.strftime('%F')%><br><%=order.course.end_time%></td>
-            <td><%= order.course.show_city%></td>
-            <td><%= order.course.delivery_type%></td>
-            <td class='align-center'><%= image_tag(show_small_avatar(order.course))%><br/><%= order.course.instructor%></td>
+            <td><%= course.code%></td>
+            <td><%= course.name_en%></td>
+            <td><%= course.start_date.strftime('%F')%><br><%=course.start_time%></td>
+            <td><%= course.end_date.strftime('%F')%><br><%=course.end_time%></td>
+            <td><%= course.show_city%></td>
+            <td><%= course.delivery_type%></td>
+            <td class='align-center'><%= image_tag(show_small_avatar(course))%><br/><%= course.instructor%></td>
             <td><%= order.show_state %></td>
             <td>
-              <a href="/courses/<%= order.course.id.to_s%>" target="_blank">查看</a><br/>
-              <% if order.can_cancel && !order.is_cancel%>
-              <a href="javascript:void(0);" data-id="<%=order.id.to_s%>" class='cancel-order'>取消</a>
-              <% end %>
+              <a href="/courses/<%= order.course.id.to_s%>" target="_blank">反馈</a>
             </td>
           </tr>
         <% end %>
       <% else %>
         <tr>
-          <td colspan="9" class='align-center'>您暂时还没有报名的课程</td>
+          <td colspan="9" class='align-center'>暂时没有查到数据</td>
         </tr>
       <% end %>
       </tbody>

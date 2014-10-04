@@ -4,9 +4,10 @@ class User::OrdersController <  User::UserController
   def index
     params[:t] = 'w' unless params[:t]
     @orders = auto_paginate current_user.my_course(params)
-    Rails.logger.info('=====================')
-    Rails.logger.info(@orders.inspect)
-    Rails.logger.info('=====================')
+  end
+
+  def cancel
+    render_json_auto Order.cancel(params[:id],current_user.id.to_s)
   end
 
   def show
