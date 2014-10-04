@@ -1,6 +1,6 @@
 <% content_for :app_head do %>
-  <%= stylesheet_link_tag    "pages/default/course-bundle-mobile" %>
-  <%= javascript_include_tag "pages/default/course-bundle-mobile" %>
+  <%= stylesheet_link_tag    "pages/default/search-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/search-bundle-mobile" %>
   <script type="text/javascript">
   jQuery(function($) {
     
@@ -9,9 +9,92 @@
   <%= yield :head %>
 <% end %>  
 <article class="row">
-  <div class="one whole mobile half-padded bounceInLeft animated box info">
+  <form action="/courses/do_search" method='get'>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg ">
     <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
       <%= image_tag('mobile/logo.png')%>
     </a>
   </div>
+
+  <div class="one whole mobile padded bounceInLeft animated box lg">
+    <a href="javascript:void(0);"  class="block  align-center padded city origin">
+      <strong class='response city'>选择城市</strong>
+      <input type="hidden" name='city'>
+      <i class="icon-circle-arrow-right pull-right"></i>
+    </a>
+	<div class="select-container city-select">
+		<%Course::CITY_ARRAY.each do |city|%>
+			<div class="one whole mobile padded bounceInRight animated box lg">
+			  <a href="javascript:void(0);"  class="block  align-center padded city" data-select="<%= city %>">
+			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= city %></strong>
+			  </a>
+			</div>	
+		<% end %>  
+	</div>  
+  </div>
+ 
+  <div class="one whole mobile padded bounceInLeft animated box lg">
+    <a href="javascript:void(0);"  class="block  align-center padded type origin">
+      <strong class='response type'>课程类型</strong>
+      <input type="hidden" name='type'>
+      <i class="icon-circle-arrow-right pull-right"></i>
+    </a>
+	<div class="select-container type-select">
+		<%Course::CONTENT_TYPE_ARRAY.each do |type|%>
+			<div class="one whole mobile padded bounceInRight animated box lg">
+			  <a href="javascript:void(0);"  class="block  align-center padded type" data-select="<%= type %>">
+			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= type %></strong>
+			  </a>
+			</div>	
+		<% end %>  
+	</div>  
+  </div>
+  <div class="one whole mobile padded bounceInLeft animated box lg ">
+    <a href="javascript:void(0);"  class="block align-center padded start origin">
+      <strong class='response start'>开始日期</strong>
+	  <div class="start-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded box lg ">
+	  	    <div   class="block  align-center padded">
+	  	      <input type="date" name='start_date'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>
+    </a>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block align-center padded">
+      <strong class='response end '>结束日期</strong>  
+	  <div class="end-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded box lg ">
+	  	    <div class="block  align-center padded">
+	  	      <input type="date" name='end_date'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>        
+    </a>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block align-center padded">
+      <strong class='response'>课程名称</strong>
+	  <div class="keyword-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded box lg ">
+	  	    <div class="block  align-center padded">
+	  	      <input type="text" name='keyword'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>          
+    </a>
+    <span class="container block  align-center padded"><strong class='response'></strong></span>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <button  class="block  yellow align-center padded search-btn">开始搜索 </button>
+  </div>   	
+  </form>
+             
 </article>

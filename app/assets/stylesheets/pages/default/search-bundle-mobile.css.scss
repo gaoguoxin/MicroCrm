@@ -1,0 +1,19 @@
+@import "compass/css3/border-radius";
+.box{
+	@include border-radius(0px);
+	border:1px solid #ddd;
+	color:#fff;
+}
+.lg{
+	background:rgb(0,188,242) !important;
+	a{
+		text-decoration: none;
+	}
+}
+.select-container{
+	display:none;
+	// position:absolute;
+}
+span.container{
+	display:none;
+}

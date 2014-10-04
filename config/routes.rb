@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   resources :courses do 
     collection do 
       get 'search'
+      get 'do_search'
     end
   end
   
