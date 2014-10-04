@@ -11,7 +11,7 @@
 
 
 <% content_for :left_side do %>
-	<%= render :partial => 'left_side' %>
+	<%= render :partial => '/user/partial/left_side' %>
 <% end %>
 
 <% content_for :right_side do %>
@@ -39,59 +39,112 @@
 			    <div class="row">
 			      <div class="one half padded">
 			        <label for="name">用户名</label>
-			        <input id="name" type="text" name='user[name]' placeholder="username">
+			        <input id="name" type="text" name='user[name]' placeholder="username" value="<%= @user.name%>">
 			      </div>
 			      <div class="one half padded">
 			        <label for="email">邮箱</label>
-			        <input id="email" type="email" name='user[email]' placeholder="you@example.com">
+			        <input id="email" type="email" name='user[email]' placeholder="you@example.com" value="<%= @user.email%>" disabled='disabled'>
 			      </div>
 			    </div>
 			    <div class="row">
 			    	<div class="one half padded">
 			        	<label for="mobile">手机号</label>
-			        	<input id="mobile"  name='user[mobile]' type="text" placeholder="your mobile number">
+			        	<input id="mobile"  name='user[mobile]' type="text" placeholder="your mobile number" value="<%= @user.mobile%>" disabled='disabled'>
 			    	</div>
-			    	<div class="one half padded">
-			        	<label for="position">职位</label>
-			        	<input id="position" name='user[position]' type="text" placeholder="your position">
-			    	</div>			    	
+  					<div class="one half padded">
+  					    <label for="type_of_position">工作类型</label>
+  					    <span class="select-wrap">
+  					      <select class="unselected" id='type_of_position' name='user[type_of_position]'>
+  					        <% User::POSITION_ARRAY.each do |position| %>
+  					          <option value="<%= position %>" <% if @user.try(:type_of_position) == position %>selected='selected'<% end%> ><%= position %></option>
+  					        <% end %>
+  					      </select>
+  					    </span>      
+  					</div>		    	
 			    </div>
+
+				<div class="row">
+				  <div class="one half padded">
+				      <label for="company_id">所属单位</label>
+				      <span class="select-wrap">
+				        <select class="unselected" id='company_id' name='user[company_id]'>
+				          <% Company.all.each do |company| %>
+				            <option value="<%= company.id.to_s%>" <% if @user.try(:company_id).to_s == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
+				          <% end %>
+				        </select>
+				      </span>      
+				  </div>
+				  <div class="one half padded">
+				      <label for="city">距您最近的城市</label>
+				      <span class="select-wrap">
+				        <select class="unselected" id='city' name='user[city]'>
+				          <% User::CITY_ARRAY.each do |city| %>
+				            <option value="<%= city %>" <% if @user.try(:city) == city %> selected='selected'<% end %> ><%= city %></option>
+				          <% end %>         
+				        </select>
+				      </span>
+				  </div>     
+				</div>
+
+
 			    <div class="row">
-			    	<div class="one half padded">
+			    	<div class="one third padded">
 			        	<label for="qq">QQ帐号</label>
-			        	<input id="qq" type="text" name='user[qq]' placeholder="your qq account">
+			        	<input id="qq" type="text" name='user[qq]' placeholder="your qq account" value="<%= @user.qq%>">
 			    	</div>
-			    	<div class="one half padded">
+			    	<div class="one third padded">
 			        	<label for="wechart">微信帐号</label>
-			        	<input id="wechart"  name='user[wechart]' type="text" placeholder="your wechart account">
-			    	</div>			    	
-			    </div>
-			    <div class="row">
-			    	<div class="one half padded">
+			        	<input id="wechart"  name='user[wechart]' type="text" placeholder="your wechart account" value="<%= @user.wechart%>">
+			    	</div>	
+			    	<div class="one third padded">
 			        	<label for="skype">Skype帐号</label>
-			        	<input id="skype" name='user[skype]' type="text" placeholder="your skype account">
+			        	<input id="skype" name='user[skype]' type="text" placeholder="your skype account" value="<%= @user.skype%>">
 			    	</div>
-			    	<div class="one half padded">
-			        	<label for="gtalk">Gtalk帐号</label>
-			        	<input id="gtalk" name='user[gtalk]' type="text" placeholder="your gtalk account">
-			    	</div>			    	
 			    </div>
-			    <div class="row">
-			    	<div class="one half padded">
-			        	<label for="twitter">Twitter帐号</label>
-			        	<input id="twitter" name='user[twitter]' type="text" placeholder="your twitter account">
-			    	</div>
-			    	<div class="one half padded">
-			        	<label for="facebook">Facebook帐号</label>
-			        	<input id="facebook" name='user[facebook]' type="text" placeholder="your facebook account">
-			    	</div>			    	
-			    </div>			    
-			    <div class="row">
-			      <div class="one whole padded">
-			        <label for="message">个人简介</label>
-			        <textarea id="message" name='user[description]' placeholder="Enter your message..."></textarea>
-			      </div>
-			    </div>
+
+
+				<div class="row">
+				  <div class="one third padded">
+				    <label for="ax">是否对AX培训感兴趣</label>
+				    <ul class="unstyled">
+				      <li class='double-gap-right double-gap-left'>
+				        <input id="ax_1" type="radio" name="user[ax]" value='true' <%if @user.ax %>checked='checked'<% end %>>
+				        <label for="ax_1" class="inline">是</label>
+				      </li>
+				      <li>
+				        <input id="ax_2" type="radio" name="user[ax]" value='false' <%unless  @user.ax %>checked='checked'<% end %>>
+				        <label for="ax_2" class="inline">否</label>
+				      </li>
+				    </ul>
+				  </div>
+				  <div class="one third padded">
+				    <label for="ax">是否对CRM培训感兴趣</label>
+				    <ul class="unstyled">
+				      <li class='double-gap-right double-gap-left'>
+				        <input id="crm_1" type="radio" name="user[crm]" value='true' <%if @user.crm %>checked='checked'<% end %>>
+				        <label for="crm_1" class="inline">是</label>
+				      </li>
+				      <li>
+				        <input id="crm_2" type="radio" name="user[crm]" value='false' <%unless @user.crm %>checked='checked'<% end %>>
+				        <label for="crm_2" class="inline">否</label>
+				      </li>
+				    </ul>
+				  </div>  
+				  <div class="one third padded">
+				    <label for="ax">是否对软技能培训感兴趣</label>
+				    <ul class="unstyled">
+				      <li class='double-gap-right double-gap-left'>
+				        <input id="softskill_1" type="radio" name="user[softskill]" value='true' <%if @user.softskill %>checked='checked'<% end %>>
+				        <label for="softskill_1" class="inline">是</label>
+				      </li>
+				      <li>
+				        <input id="softskill_2" type="radio" name="user[softskill]" value='false' <%unless @user.softskill %>checked='checked'<% end %>>
+				        <label for="softskill_2" class="inline">否</label>
+				      </li>
+				    </ul>
+				  </div>    
+				
+				</div>
 			    <button class="block info info-submit">提交</button>
 			  </fieldset>
 			</form>

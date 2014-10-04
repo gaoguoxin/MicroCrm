@@ -1,9 +1,15 @@
 class FeedbacksController < ApplicationController
   before_action :set_feedback, only: [:show, :edit, :update, :destroy]
-  before_action :check_login
+  before_action :check_login,only: [:index]
   def index
-    params[:t] ||= 'w'
-    @courses = current_user.get_feedbacks(params)
+    unless params[:m].present?
+      redirect_to '/admin/feedbacks?t=w' and return  if current_user.is_admin? || current_user.is_viewer?
+      redirect_to '/manager/feedbacks?t=w' and return  if current_user.manager?
+      redirect_to '/user/feedbacks?t=w' and return  if current_user.manager?    
+    else
+      params[:t] ||= 'w'
+      @courses = current_user.get_feedbacks(params)
+    end
   end
 
   def show
@@ -18,7 +24,6 @@ class FeedbacksController < ApplicationController
     else
       render_json_auto Feedback.create_new(params,current_user.id.to_s)
     end
-    
   end
 
 

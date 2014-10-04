@@ -1,5 +1,39 @@
 @import "compass/css3/border-radius";
 @import "compass/utilities/general/clearfix";
-.pagement{
-	@include clearfix;
+
+.show-top,.show-bottom{
+	border: 1px solid #ddd;	
+	.start-container{
+		position:absolute;
+		bottom:0;
+		right:0;
+		button.start{
+			@include border-radius(0px);
+			outline:none;
+		}		
+	}
+}
+.feedback{
+	border: 1px solid #ddd;	
+	.box{
+		@include border-radius(0px);
+	}
+	button{
+		@include border-radius(0px);
+		border:0px;
+		outline:none;
+	}
+	.msg-notice{
+		z-index: 999;
+		color:#fff;
+		background: #e74c3c;
+		width:inherit;
+	}
+}
+
+.right-cont{
+	border-left:1px solid #ddd;
+	.small-info{
+		border-bottom:1px solid #ddd;
+	}
 }

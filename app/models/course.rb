@@ -135,7 +135,7 @@ class Course
     if self.delivery_type == TYPE_CODE_1
       return '无'
     else
-      unless self.city.include?('其他城市')
+      if self.city.include?('其他城市')
         return self.address.split('市').first + '市'
       else
         return self.city
@@ -155,28 +155,32 @@ class Course
     end
   end
 
+
+  def admin_search
+  end
+
+
   def self.search(opt)
-    if opt[:m] #标识手机请求　
-      if opt[:f] #标识是否免费
-        result = self.published.uncharge
-      else
-        opt[:t] ||= 'crm'
-        result = self.where(content_type:/#{opt[:t].upcase}/).published.charge
-      end
+    result =  self.published
+    if opt[:f].present?
+      #搜索免费课程  
+      result = result.uncharge
     else
-      self.where(content_type:/#{opt[:t].upcase}/).published
+      result = result.charge
     end
-    return result 
+    if opt[:t].present?
+      if opt[:t].match(/其他/)
+        opt[:t] = '其他'
+      end
+      result = result.where(content_type:/#{opt[:t].upcase}/)  
+    end
+    return result
   end
 
   #判断某个用户对某个课程是否可以提交反馈
-  def can_feed(user)
-    return false unless user.present?
-    order = self.orders.where(user_id:user.id.to_s,state:Order::STATE_CODE_1,is_cancel:false,:start_date.lte => Date.today).first
-    return false unless order.present?
-    feed = self.feedbacks.where(user_id:user.id.to_s,:status.ne => Feedback::STATUS_UN_CHECK).first
-    rturn false if feed.present?
-    return true
+  def can_feed
+    return true if self.start_date <= Date.today
+    return false 
   end
 
 

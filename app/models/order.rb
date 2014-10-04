@@ -52,4 +52,17 @@ class Order
   end
 
 
+  def show_state
+    return '待审核'   if self.state == STATE_CODE_0
+    return '审核通过' if self.state == STATE_CODE_1
+    return '审核拒绝' if self.state == STATE_CODE_1
+  end
+
+  def show_status
+    return '待审核'   if self.status == STATUS_CODE_0
+    return '审核通过' if self.status == STATUS_CODE_1
+    return '审核拒绝' if self.status == STATUS_CODE_2   
+  end
+
+
 end

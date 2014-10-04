@@ -257,9 +257,6 @@ class User
 
 
   def self.update_info(opt,inst,updater)  
-    Rails.logger.info('=============================')
-    Rails.logger.info(opt)
-    Rails.logger.info('=============================')
     opt[:updater]  = updater  
     if opt[:password].present?
       opt[:password] =  self.make_encrypt(opt[:password]) 
@@ -278,13 +275,14 @@ class User
 
   #我的课程
   def my_course(opt)
-    if opt[:w] # 我等待上的课
+    if opt[:t] == 'w' # 我等待上的课
+      Rails.logger.info('ddddddddddddddd')
       result = self.orders.where(is_cancel:false,passed:false)
-    elsif opt[:p] #我上过的课
-      result = self.orders.where(is_cancel:false,passed:true)
-    elsif opt[:n]#我正在上的课
+    elsif opt[:t] == 'p' #我上过的课
+      result = self.orders.where(is_cancel:false,passed:true,state:Order::STATE_CODE_1)
+    elsif opt[:t] == 'n'#我正在上的课
       c_id_arr = Course.where(:start_date.lte => Date.today,:end_date.gte => Date.today).map(&:id)
-      result = self.orders.where(is_cancel:false,:course_id.in => c_id_arr)
+      result = self.orders.where(is_cancel:false,:course_id.in => c_id_arr,state:Order::STATE_CODE_1)
     else #我取消的课
       result = self.orders.where(state:Order::STATE_CODE_1,is_cancel:true)
     end

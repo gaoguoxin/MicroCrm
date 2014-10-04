@@ -51,7 +51,7 @@ Rails.application.routes.draw do
         post 'update_pwd'
       end
     end
-    resources :courses
+    resources :orders
     resources :feedbacks
   end
 

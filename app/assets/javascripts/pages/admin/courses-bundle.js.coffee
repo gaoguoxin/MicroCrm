@@ -64,7 +64,7 @@ $(->
 
 	check_present = ->
 		go = true
-		pulish = parseInt($('#course_status').val())
+		publish = parseInt($('#course_status').val())
 		$('form.info input,select,textarea').each(->
 			unless $(@).attr('id') == 'course_instructor_avatar'
 				if $(@).is(":visible")

@@ -1,54 +1,58 @@
 @import "compass/css3/border-radius";
 article.row{
 	>div{
+		img{
+			width:60px;
+			left:35%;
+		}
 		&:nth-child(1){
 			a{
-				background:#8f4bab;	
+				background:#ba141a;	
 			}
 		}
 		&:nth-child(2){
 			a{
-				background:#2b2929;	
+				background:#2d89ef;	
 			}
 		}
 		&:nth-child(3){
 			a{
-				background:#2b3c4e;	
+				background:#9f00a7;
 			}
 		}
 		&:nth-child(4){
 			a{
-				background:#29b765;	
+				background:#b91d47;	
 			}
 		}
 		&:nth-child(5){
 			a{
-				background:#258cd1;	
+				background:#00d8cc;	
 			}
 		}
 		&:nth-child(6){
 			a{
-				background:#f1c40f;	
+				background:#b4009e;	
 			}
 		}						
 		&:nth-child(7){
 			a{
-				background:#d67118;	
+				background:#009e49;	
 			}
 		}
 		&:nth-child(8){
 			a{
-				background:#e74c3c;	
+				background:#7fba00;	
 			}
 		}
 		&:nth-child(9){
 			a{
-				background:#ea1067;	
+				background:#ffb900;	
 			}
 		}
 		&:nth-child(10){
 			a{
-				background:#17a689;	
+				background:#fcd116;	
 			}
 		}		
 	}

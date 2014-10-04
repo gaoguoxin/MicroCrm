@@ -12,337 +12,92 @@
     <div class="container main triple-padded">
       <article class="row tool padded">
         <div>
-          <div class="row">
+          <div class="row select-tool">
             <div class="blue padded">
               <ul class="checklist turquoise eleven twelfths">
-                <li class='half-gap-top gap-right pull-right'>反选</li>
-                <li class='half-gap-top gap-right pull-right' aria-checked="true">全选</li>
+                <li class='half-gap-top gap-right pull-right select-all' >全选/全不选</li>
               </ul> 
-              <button class="round one twelfth">报名</button>
+              <button class="round one twelfth multip-start">报名</button>
             </div>
           </div>   
         </div>
       </article>
-      <article class="row">
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
-                    </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
-                    </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
-                    </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
+      <%if @courses['data'].length > 0%>
+      <% @courses['data'].each_slice(2) do |c_arr|%>
+        <article class="row">
+          <% c_arr.each do |course|%>
+          <div class="one half">
+            <div class="row">
+              <div class="one fourth padded">
+                <div class="avatar">
+                <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
+                  <%=image_tag(show_thumb_avatar(course)) %>
+                </a>
+                  
                 </div>
               </div>
-            </div>
-          </div>          
-        </div>
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
+              <div class="three fourth padded">
+                <div class="row">
+                  <div class="eleven twelfth">
+                    <div class="row c-title">
+                      <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
+                        <b>
+                          <span class="code"><%= course.code%>:</span>
+                          <span class="title"><%= course.name_en %></span>
+                        </b>                        
+                      </a>
+
                     </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
+                    <div class="row audience">
+                      受众对象:
+                      <span class="audiencer">
+                        <%= course.audience%>
+                      </span>
                     </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
+                    <div data-truncate="2" class="row description">
+                      <%= course.description %>
                     </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
+                    <div class="row more"><a href="<%=course_path(course)%>" target='_blank'>More</a></div>
+                    <div class="row pagement pad-top">
+                      <div class="one fifth">
+                        <button class="start success half-gap-bottom small" data-id="<%= course.id.to_s %>">报名</button>
+                        <% if course.can_feed && current_user.present? %>
+                          <button class="feedback info small" data-id="<%= course.id.to_s %>">反馈</button>
+                        <% else %>
+                          <button class="small" data-id="<%= course.id.to_s %>">反馈</button>
+                        <% end %>
+                      </div>
+                      <div class="two fifths">
+                        <p class='duration'>时长:<%= course.duration %></p>
+                        <p class="level">LEVEL:<%= course.difficulty_level %></p>
+                      </div>
+                      <div class="two fifths">
+                        <p class="pub">时间:<%= course.start_date.strftime('%Y年%m月%d日')%></p>
+                        <p class="city">城市:<%= course.show_city %></p>
+                      </div>
+                    </div>                  
+                  </div>
+                  <div class="one twelfth">
+                    <ul class="checklist select-list">
+                      <li data-id="<%= course.id.to_s%>"></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>          
-        </div>
-      </article>  
-      <article class="row">
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
-                    </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
-                    </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
-                    </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>          
-        </div>
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
-                    </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
-                    </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
-                    </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>          
-        </div>
-      </article>
-      <article class="row">
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
-                    </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
-                    </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
-                    </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>          
-        </div>
-        <div class="one half">
-          <div class="row">
-            <div class="one fourth padded">
-              <div class="avatar">
-                <%=image_tag "avatar.jpg", :alt => "avatar" %>
-              </div>
-            </div>
-            <div class="three fourth padded">
-              <div class="row">
-                <div class="eleven twelfth">
-                  <div class="row c-title">
-                    <b>
-                      <span class="code">80539AE:</span>
-                      <span class="title">Installation and Deployment In Microsoft Dynamics CRM 2014</span>
-                    </b>
-                      
-                  </div>
-                  <div class="row audience">
-                    受众对象:
-                    <span class="audiencer">
-                      Application Consultant,Technology Consultant,Developer,Pre-Sales
-                    </span>
-                  </div>
-                  <div data-truncate="2" class="row description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  </div>
-                  <div class="row more"><a href="#" target='_blank'>More</a></div>
-                  <div class="row pagement pad-top">
-                    <div class="one fifth">
-                      <button class="start success half-gap-bottom small">报名</button>
-                      <button class="feedback info small">反馈</button>
-                    </div>
-                    <div class="two fifths">
-                      <p class='duration'>时长:5 HRS 13 MINS</p>
-                      <p class="level">LEVEL:200</p>
-                    </div>
-                    <div class="two fifths">
-                      <p class="pub">时间:2014年1月1日</p>
-                      <p class="city">城市:上海</p>
-                    </div>
-                  </div>                  
-                </div>
-                <div class="one twelfth">
-                  <ul class="checklist">
-                    <li></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>          
-        </div>
-      </article>
+            </div>          
+          </div>
+          <% end %>
+        </article>
+      <% end %>
       <article class="paginate triple-padded">
         <div class="one twelfth">
-          <button>上一页</button>
+          <a href="/category?t=<%=params['t']%>&page=<%=@courses['previous_page']%>">上一页</a>
         </div>
-        <div class="ten twelfths center">第 1 页/共 14 页</div>
+        <div class="ten twelfths center">第 <%= @courses['current_page'] %> 页/共 <%= @courses['total_page'] %> 页</div>
         <div class="one twelfth">
-          <button>下一页</button>
+          <a href="/category?t=<%=params['t']%>&page=<%=@courses['next_page']%>">下一页</a>
         </div>
-      </article>                            
+      </article>
+      <% end %>                            
     </div>
 </div>

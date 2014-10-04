@@ -50,6 +50,18 @@ module ApplicationHelper
     return '已取消的课程' if status.to_i == 4
   end
 
+  def user_sub_tab_text(opt)
+    if opt['t'] == 'w'
+      return '已报名的课程'
+    elsif opt['t'] == 'n'
+      return '进行中的课程'
+    elsif opt['t'] == 'p'
+      return '参与过的课程'
+    else
+      return '已取消的课程'
+    end
+  end
+
   def sub_bread(status)
     return '规划中的课程' if status.to_i == 0
     return '已发布的课程' if status.to_i == 1
@@ -65,6 +77,19 @@ module ApplicationHelper
     return '课程已结束，开始收集反馈信息！' if status.to_i == 3
     return '取消的课程， 可以删除！' if status.to_i == 4
   end
+
+  def order_notice(opt)
+    if opt == 'w'
+      return '已报名的课程，表示您已经报名了该课程，需要管理员进行审核才能进行听课'
+    elsif opt == 'n'
+      return '进行中的课程，表示您的报名已经通过审核，并且当前该课程正在进行中'
+    elsif opt == 'p'
+      return '参与过的课程，表示您的报名通过了审核并且您已经参与了该课程'
+    else
+      return '已取消的课程，表示您或者您的单位管理或者系统管理员取消了您对该课程的报名'
+    end    
+  end
+
 
   def admin_paginator_ajax(ckass,items,opt)
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
@@ -88,6 +113,15 @@ module ApplicationHelper
       return 'assets/avatar.jpg'
     end
   end
+
+  def show_thumb_avatar(course)
+    if course.instructor_avatar.thumb.url
+      return course.instructor_avatar.thumb.url
+    else
+      return 'assets/avatar.jpg'
+    end
+  end
+
 
   def can_feed?(course)
     if course.start_date <= Date.today

@@ -24,7 +24,7 @@
             <% elsif current_user.is_manager? %>
               <a href="<%= admin_companies_path %>" class='one half mobile'>管理中心</a>
             <% else%>
-              <a href="<%= manager_user_path %>" class='one half mobile'>个人中心</a>
+              <a href="<%= user_users_path %>" class='one half mobile'>个人中心</a>
             <% end %>
             
             <a data-method="delete" class='one half mobile ' href="/logout">退出</a>
@@ -39,19 +39,21 @@
         <div class="one third">
           <nav role="navigation" class="nav gap-top">
             <ul role="menubar">
-              <li class="one fourth" aria-selected=<%= nav_actived?('welcome',['index'])%>>
+              <li class="one fifth" aria-selected=<%= nav_actived?('welcome',['index'])%>>
                 <a href="/" class='triple-padded'>Home</a>
               </li>
-              <li class="one fourth" aria-selected=<%= nav_actived?('category',['index','show'],'ax')%>>
+              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'ax')%>>
                 <a href="/category?t=ax" class='triple-padded'>AX</a>
               </li>
-              <li class="one fourth" aria-selected=<%= nav_actived?('category',['index','show'],'crm')%>>
+              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'crm')%>>
                 <a href="/category?t=crm" class='triple-padded'>CRM</a>
               </li>
-
-              <li class="one fourth" aria-selected=<%= nav_actived?('category',['index','show'],'ax_crm')%>>
+              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'ax_crm')%>>
                 <a href="/category?t=ax_crm"  class='triple-padded'>AX+CRM</a>
               </li>
+              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'qt')%>>
+                <a href="/category?t=qt"  class='triple-padded'>OTHER</a>
+              </li>              
             </ul>
           </nav>          
         </div>

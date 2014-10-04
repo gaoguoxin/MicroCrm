@@ -21,6 +21,8 @@ $(->
 
 
 	check_password = ->
+		unless $.trim(password_ipt.val()).length > 0
+			return false
 		unless password_ipt.val() == confirm_ipt.val()
 			add_flag(confirm_ipt,'两次密码不匹配')
 			return
@@ -32,7 +34,7 @@ $(->
     	    url: '/user/users/update_pwd',
     	    method: "POST",
     	    success: (ret)->
-    	      console.log(ret)     
+    	      $('.pass-submit').removeClass('info').addClass('success').text('修改成功!')
     	})
 
 
@@ -42,7 +44,7 @@ $(->
     	    url: '/user/users/update_info',
     	    method: "POST",
     	    success: (ret)->
-    	      console.log(ret)     
+    	      $('button.info-submit').removeClass('info').addClass('success').text('修改成功!')
     	})
 
 

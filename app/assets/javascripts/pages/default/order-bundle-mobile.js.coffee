@@ -21,8 +21,5 @@ $(->
 			if ret.success
 				window.location.href = '/courses?w=true'
 		)
-
-
-
 	)
 )

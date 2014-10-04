@@ -13,13 +13,13 @@
     <div class="one whole">
       <ul class="button-group row">
         <li class='one third mobile'>
-          <a class="yellow" href="<%=courses_path(:w => true)%>" aria-selected=true>当前报名</a>
+          <a class="yellow" href="<%=courses_path(:t => 'w')%>" aria-selected=true>当前报名</a>
         </li>
         <li class='one third mobile'>
-          <a href="<%=courses_path(:p => true)%>" class="orange block">往期报名</a>
+          <a href="<%=courses_path(:t => 'p')%>" class="orange block">往期报名</a>
         </li>
         <li class='one third mobile'>
-          <a href="<%=courses_path(:c => true)%>" class="red block">取消报名</a>
+          <a href="<%=courses_path(:t => 'c')%>" class="red block">取消报名</a>
         </li>
       </ul>
     </div>

@@ -12,14 +12,16 @@ class SessionsController < ApplicationController
     render_json_auto user and return
   end
 
-  #登录进来后处理新那些在登录之前定的报名记录
+  
   def after_sign_in
-    if cookies[:order_c_ids].blank?
-      redirect_to (params[:ref].blank? ? root_path : params[:ref])
-    else
+    #登录进来后处理新那些在登录之前定的报名记录
+    if cookies[:order_c_ids].present?
       Order.create_new({data:cookies[:order_c_ids].split(',')},current_user.id.to_s)
+      cookies.delete(:order_c_ids, :domain => :all)
       redirect_to orders_path
-    end    
+    else
+      redirect_to (params[:ref].blank? ? root_path : params[:ref])
+    end 
   end
 
 

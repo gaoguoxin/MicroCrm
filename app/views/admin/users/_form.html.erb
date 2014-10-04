@@ -51,7 +51,7 @@
       <span class="select-wrap">
         <select class="unselected" id='company_id' name='user[company_id]'>
           <% Company.all.each do |company| %>
-            <option value="<%= company.id.to_s%>" <% if user.try(:company_id) == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
+            <option value="<%= company.id.to_s%>" <% if user.try(:company_id).to_s == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
           <% end %>
         </select>
       </span>      
@@ -87,7 +87,7 @@
       <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(user,'wechart') %>">
   </div>   
   <div class="one third padded">
-      <label for="skype">状态</label>
+      <label for="skype">Skype</label>
       <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(user,'skype') %>">
   </div>   
 </div>

@@ -30,7 +30,8 @@ $(->
 		ref      = window.location.href.split('ref=')[1]
 		$.post("/sessions",{email_mobile:account,password:password,remember:rem},(ret)->
 			if ret.success
-				window.location.href = decodeURIComponent(ret.value.ref)
+				window.location.href = '/after_sign_in?ref=' + decodeURIComponent(ret.value.ref)
+				# window.location.href = decodeURIComponent(ret.value.ref)
 			else
 				if ret.value.error_code == "error_3"
 					flag_notice(account_ipt,'该用户不存在')
@@ -38,17 +39,18 @@ $(->
 					flag_notice(password_ipt,'您输入的密码有误')
 		)
 
-	$('.form input').focus(->
+	$('body').on('focus','.form input',->
 		remove_notice($(@))
 	)
 
 
-	$('.login-btn').click((e)->
+	$('body').on('click','.login-btn',(e)->
 		e.preventDefault()
 		check_required()
 	)
 
-	$('password').keydown (e)->
+	$('body').on('keydown','password',(e)->
 		if e.which == 13
-			$('.login-btn').click
+			$('.login-btn').click()
+	)
 )

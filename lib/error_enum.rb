@@ -15,4 +15,5 @@ module ErrorEnum
 	EMAIL_BLANK        = "error_13"
 	MOBILE_BLANK       = "error_14"
 	NAME_BLANK         = "error_15"
+	ORDER_NOT_EXIST    = "error_16"
 end 
