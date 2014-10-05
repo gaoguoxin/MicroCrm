@@ -90,6 +90,25 @@ module ApplicationHelper
     end    
   end
 
+  def manager_order_status(str,desc=false)
+    if str == 'o'
+      return '开放中的课程' unless desc
+      return '开放中的课程表示当前课程处于接受报名状态，您可以选择这些课程为公司员工报名'
+    elsif str == 'w'
+      return '已报名的课程' unless desc
+      return '已报名的课程表示这些课程本公司员工已经报名，需要您给予审核，并且只有您和系统教务审核后才可以参与课程'
+    elsif str == 'n'
+      return '进行中的课程' unless desc
+      return '进行中的课程表示这些课程目前处于上课状态，此时您公司的员工已经在听课'
+    elsif str == 'p'
+      return '参与过的课程' unless desc
+      return '参与过的课程标示这些课程您公司的员工已经参与'
+    else
+      return '取消的课程' unless desc
+      return '取消的课程表示您公司的员工已经报名并且得到了系统教务的审核通过，但是被公司员工或者您给予取消的课程'
+    end
+  end
+
 
   def admin_paginator_ajax(ckass,items,opt)
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}

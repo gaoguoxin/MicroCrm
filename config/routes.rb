@@ -40,7 +40,14 @@ Rails.application.routes.draw do
   end
 
   namespace :manager do
-    resources :orders
+    resources :orders do 
+      collection do 
+        post 'get_employee'
+        get 'get_order_list'
+        get 'check'
+        get 'cancel'
+      end
+    end
     resources :users do
       collection do 
         get 'minfo'

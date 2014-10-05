@@ -1,14 +1,37 @@
-class Manager::OrdersController < ApplicationController
+class Manager::OrdersController < Manager::ManagerController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    params[:t] ||= 'o'
+    #@courses  = auto_paginate current_user.manager_courses(params)
+    # params[:per_page] = 1
+    @courses  = auto_paginate Course.all
   end
 
-  # GET /orders/1
-  # GET /orders/1.json
+
+  def get_employee
+    render_json_auto current_user.do_multiple_order(params)
+  end
+
+  def get_order_list
+    render_json_auto Order.get_company_list(current_user.id.to_s,params[:id])
+  end
+  
+  def check
+    if params[:type] == 'refuse'
+      render_json_auto Order.check(params,current_user.id.to_s,true)
+    else
+      render_json_auto Order.check(params,current_user.id.to_s)
+    end
+  end
+
+  def cancel
+    render_json_auto Order.cancel(params[:id],current_user.id.to_s)
+  end
+
+
   def show
   end
 
@@ -24,17 +47,7 @@ class Manager::OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
-
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-    end
+    render_json_auto Order.manager_multiple_create(params,current_user.id.to_s)
   end
 
   # PATCH/PUT /orders/1

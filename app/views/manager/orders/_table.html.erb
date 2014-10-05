@@ -1,0 +1,31 @@
+
+<% if cousrses['data'].length > 0 %>
+  <% cousrses['data'].each do |course|%>
+    <tr>
+      <td><a href="/courses/<%= course.id.to_s%>" target="_blank" class="noicon"><%= course.code %></a></td>
+      <td><a href="/courses/<%= course.id.to_s%>" target="_blank" class="noicon"><%= course.name_en%></a></td>
+      <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
+      <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
+      <td><%= course.city %></td>
+      <td><%= course.content_type%></td>
+      <td class='align-center'>
+        <a href="/courses/<%= course.id.to_s%>" target="_blank" class="noicon">
+         <%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %>
+        </a>
+     </td>
+      <td class='align-center'>
+        <% if params[:t] == 'o'%>
+          <ul class="checklist turquoise">
+            <li data-id="<%= course.id.to_s %>">报名<br />(剩余<%= course.remain_num%>)</li>
+          </ul>    
+        <% else %>
+          <a href="javascript:void(0);" class='show-order' data-id="<%= course.id.to_s %>" <% if params[:t] == 'w'%> data-opera='true' <% end %> >查看报名</a>    
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="8" class='no-data'>目前没有查到任何处于发布中的课程</td>  
+  </tr>  
+<% end %>

@@ -29,6 +29,20 @@ class SmsWorker
       retval = SmsApi.lesson_canceled_to_student(sms_type, mobile, opt)
     when 'find_password'
       retval = SmsApi.find_password(sms_type, mobile, opt)
+    when 'manager_refused_order'
+      retval = SmsApi.manager_refused_order(sms_type, mobile, opt)
+    when 'user_create_order'
+      retval = SmsApi.user_create_order(sms_type, mobile, opt)
+    when 'manager_cancel_uneffective_order'
+      retval = SmsApi.manager_cancel_uneffective_order(sms_type, mobile, opt)
+    when 'manager_cancel_effective_order'
+      retval = SmsApi.manager_cancel_effective_order(sms_type, mobile, opt)
+    when 'user_cancel_effective_order'
+      retval = SmsApi.user_cancel_effective_order(sms_type, mobile, opt)
+    when 'admin_cancel_uneffective_order'
+      retval = SmsApi.admin_cancel_uneffective_order(sms_type, mobile, opt)  
+    when 'admin_cancel_effective_order'
+      retval = SmsApi.admin_cancel_effective_order(sms_type, mobile, opt)  
     end
     return true
   end

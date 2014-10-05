@@ -368,6 +368,70 @@ class User
   end
 
 
+  #企业管理员查找自己公司员工的id
+  def employees
+    uids = self.companies.first.users.actived.map{|e| e.id.to_s}
+  end
+  #企业管理员查看相关课程
+  def manager_courses(params)
+    uids = self.employees
+    if params[:t] == 'o' # 开放中的课程
+      return Course.published
+    end
+
+    if params[:t] == 'w' #已报名的课程
+      cids = Order.where(:user_id.in => uids,:is_cancel => false,:passed => false).map{|e| e.course_id.to_s}.uniq
+      return Course.published.where(:id.in => cids)
+    end
+
+    if params[:t] == 'n' # 进行中的课程
+      cids = Course.going.map{|e| e.id.to_s}
+      return Order.where(:user_id.in => uids,:is_cancel => false,:passed => false,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+    end
+
+    if params[:t] == 'p' # 参与过的课程
+      cids = Course.passed.map{|e| e.id.to_s}
+      return Order.where(:user_id.in => uids,:is_cancel => false,:passed => true,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+    end
+
+    if parms[:t] == 'c' # 取消的课程
+      return Order.where(:user_id.in => uids,:is_cancel => true,:state => Order::STATE_CODE_1).map{|e| e.course}
+    end
+  end
+
+  #企业管理员批量添加报名
+  def do_multiple_order(params)
+    result = []
+    employees =  self.companies.first.users.actived
+    Course.where(:id.in => params[:data]).each do |course|
+      tmp_hash = {}
+      tmp_hash['c_id']         = course.id.to_s
+      tmp_hash['c_code']       = course.code
+      tmp_hash['c_name']       = course.name_en
+      tmp_hash['c_city']       = course.city
+      tmp_hash['c_start']      = course.start_date.strftime('%F')
+      tmp_hash['c_instructor'] = course.instructor
+      tmp_hash['c_remain']     = course.remain_num
+
+      e_arrs = []
+      employees.each do |e|
+        tmp_employer = {}
+        tmp_employer['e_id']        = e.id.to_s
+        tmp_employer['e_name']      = e.name
+        tmp_employer['e_email']     = e.email
+        tmp_employer['e_mobile']    = e.mobile
+        tmp_employer['can_cancel']  = course.start_date - Date.today > 3 ? true : false
+        tmp_employer['e_enroll']    = e.orders.where(is_cancel:false,course_id:course.id.to_s).first.present? ? true : false
+        e_arrs << tmp_employer
+      end
+
+      tmp_hash['e_arr'] = e_arrs
+      result << tmp_hash
+    end
+    return result
+  end
+
+
   def is_admin?
     return self.role_of_system == ROLE_ADMIN
   end

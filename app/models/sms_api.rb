@@ -210,6 +210,82 @@ class SmsApi # 短信接口
     text = text_template.result(binding)
     self.send_sms(type,mobile, text)
   end
+
+
+  # 企业管理员审核拒绝短信
+  def self.manager_refused_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @manager = opt['manager']
+    @name = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/manager_refused_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)
+  end
+
+  # 学员自主创建的报名，短信通知企业管理员
+  def self.user_create_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    user   = User.find(opt['user_id'])
+    @uname = user.name
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/user_create_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)
+  end
+
+  #企业管理员取消无效的报名
+  def self.manager_cancel_uneffective_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @manager = opt['manager']
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/manager_cancel_uneffective_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)    
+  end
+
+  #企业管理员取消有效的报名
+  def self.manager_cancel_effective_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @manager = opt['manager']
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/manager_cancel_effective_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)       
+  end
+
+  # 用户自主取消有效报名，发短信通知对应的企业管理员
+  def self.user_cancel_effective_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @user = opt['user']
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/user_cancel_effective_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)       
+  end
+
+  # 系统管理员删除无效的报名，发送短信到报名人
+  def self.admin_cancel_uneffective_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/admin_cancel_uneffective_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)       
+  end
+
+  def self.admin_cancel_effective_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/admin_cancel_effective_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)     
+  end
   
 
   # def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)

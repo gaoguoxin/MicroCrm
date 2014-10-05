@@ -1,25 +1,96 @@
-<h1>Listing orders</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/manager/orders-bundle" %>
+  <%= javascript_include_tag "pages/manager/orders-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
 
-  <tbody>
-    <% @orders.each do |order| %>
-      <tr>
-        <td><%= order.status %></td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<br>
 
-<%= link_to 'New Order', new_order_path %>
+<% content_for :left_side do %>
+  <%= render :partial => 'manager/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span>
+    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i><%=manager_order_status(params[:t])%></span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span><%=manager_order_status(params[:t],true)%></span>
+    </div>
+  </div>
+  <div class="row triple-pad-left triple-pad-right">
+    <table class="responsive responsiveTable  <%= @courses['data'].length > 0 ? 'info' : 'error' %>" data-max="15">
+      <thead>
+        <tr>
+          <th>编码</th>
+          <th>名称</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>城市</th>
+          <th>内容类型</th>
+          <th>教师姓名</th>
+          <th class='align-center'>
+            <% if params[:t] == 'o'%>
+              <button class='start small yellow'>报名</button> 
+              <ul class="checklist turquoise">
+                <li ></li>
+              </ul> 
+            <% else %>
+              操作     
+            <% end %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => '/manager/orders/table',:locals => {:cousrses => @courses}%>
+      </tbody>
+    </table>   
+  </div> 
+
+
+<article class="employee-box row"> 
+  <div class="one whole padded">
+    <h4 class='box info align-center'>勾选要报名的员工,已勾选的标示该员工已经报名,取消勾选来取消该员工的报名<span class="error">(注:开课前三天不允许取消报名)</span></h4> 
+    <div class="content">    
+    </div>     
+    <div class="row double-pad-top double-pad-bottom">
+      <button class="info block multiple_start_button">确定</button>
+    </div>  
+  </div>
+</article>
+
+<article class="order-list row"> 
+  <div class="one whole padded">
+    <div class="content">  
+      <table >
+        <thead>
+          <tr>
+            <th style="width: 55%;">课程名称</th>
+            <th style="width: 15%;">报名人</th>
+            <th style="width: 15%;">是否缺席</th>
+            <th style="width: 15%;">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>     
+    <div class="row double-pad-top double-pad-bottom">
+      <button class="info block close-box">关闭</button>
+    </div>  
+  </div>
+</article>
+
+
+<% end %>
+
+
+

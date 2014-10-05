@@ -36,7 +36,6 @@ class Course
   field :code,    type:String # 课程编码   limit 12 letter          
   field :name_cn, type:String # 中文名 limit 128 letter  
   field :name_en, type:String # 英文名 limit 128 letter 
-
   field :difficulty_level,type:String #难易程度 Level 100, Level 200, Level 300, Level 400
   field :delivery_type,type:Integer,default:TYPE_CODE_0 # 课程类型
   field :charge_category,type:Integer,default:CHARGE_TYPE_0 #收费
@@ -63,12 +62,9 @@ class Course
   field :valid_registration_num,type:Integer,default:0 # 当前有效报名人数
   field :canceled_num,type:Integer,default:0 # 已取消报名的人数
   field :attendee_num,type:Integer,default:0 # 实际参训人数
-
-
   field :price_level1,type:Float # Managed伙伴价格
   field :price_level2,type:Float # Un-managed伙伴价格
   field :price_level3,type:Float # 公众价格
-
   field :manager_condition,type:String # 匹配短信通知管理员的条件  
   field :trainee_condition,type:String # 匹配短信通知学员的条件
   field :notice_content,type:String # 管理员自定义提醒短信内容
@@ -80,6 +76,7 @@ class Course
   scope :charge, -> {where(charge_category:CHARGE_TYPE_0)}
   scope :uncharge, -> {where(charge_category:CHARGE_TYPE_1)}
   scope :going, -> {where(:start_date.lte => Date.today,:end_date.gte => Date.today)}
+  scope :passed, -> {where(status:STATUS_CODE_3)}
   after_save :send_msg
 
   def send_msg
@@ -116,8 +113,6 @@ class Course
     # end
     # job_identifier = MyWorker.perform_at(3.hours.from_now, 'mike', 1)
     # Sidekiq::Status.unschedule job_identifier
-
-
   end
 
   #取消课程短信
@@ -155,13 +150,18 @@ class Course
     end
   end
 
+  # 查查某个课程还剩多少个名额
+  def remain_num
+    lim_num - valid_registration_num
+  end
+
 
   def admin_search
   end
 
 
   def self.search(opt)
-    result =  self.published
+    result =  self.where(:status.in => [STATUS_CODE_0,STATUS_CODE_1])
     if opt[:f].present?
       #搜索免费课程  
       result = result.uncharge
