@@ -27,7 +27,58 @@
     </div>
   </div>
   <div class="row triple-pad-left triple-pad-right">
-    <table class="responsive responsiveTable  <%= @courses['data'].length > 0 ? 'info' : 'error' %>" data-max="15">
+    <% if params[:t] == 'o'%>
+      <div class="search-container">
+        <form class='info search-course'>
+            <div class="row">
+              <div class="one third padded">
+                <input id="search_code" name='code' type="text" placeholder="课程代码">
+              </div>
+              <div class="one third padded">
+                <input id="search_name" name='name'  type="text" placeholder="课程名称">
+              </div>
+              <div class="one third padded">
+                <input id="search_start" name='start' type="text" placeholder="开始时间">
+              </div>                                            
+            </div>
+            <div class="row">
+              <div class="one third padded">
+                <span class="select-wrap">
+                  <select class="unselected" name="content" id='search_position'>
+                    <option value="" disabled="" selected="">内容类型</option>
+                    <% Course::CONTENT_TYPE_ARRAY.each do |content| %>
+                      <option value="<%= content %>" <% if params[:content] == content %>selected='selected' <% end %> ><%= content %></option>
+                    <% end %>
+                  </select>
+                </span>                 
+              </div>  
+  
+              <div class="one third padded">
+                <span class="select-wrap">
+                  <select class="unselected" name="city" id="search_city">
+                    <option value="" disabled="" selected="">城市</option>
+                    <% Course::CITY_ARRAY.each do |city| %>
+                      <option value="<%= city %>" <% if params[:city] == city %> selected='selected'<% end %> ><%= city %></option>
+                    <% end %>
+                  </select>
+                </span>
+              </div>
+  
+              <div class="one third padded">
+                <input id="search_end" name='end' type="text" placeholder="结束时间">
+              </div>  
+            </div>
+            <div class="row">
+              <div class="one whole padded">
+                <button class="block info search_course">搜索</button>
+              </div>
+            </div>
+        </form>
+      </div>    
+    <% end %>
+
+
+    <table class=" main-container responsive responsiveTable  <%= @courses['data'].length > 0 ? 'info' : 'error' %>" data-max="15">
       <thead>
         <tr>
           <th>编码</th>
@@ -50,9 +101,14 @@
         </tr>
       </thead>
       <tbody>
-        <%= render :partial => '/manager/orders/table',:locals => {:cousrses => @courses}%>
+        <%= render :partial => '/manager/orders/table',:locals => {:courses => @courses}%>
       </tbody>
-    </table>   
+    </table> 
+      <% if params[:t] == 'o'%>
+        <div class="page-container">
+          <%= manager_paginator_ajax('order',@courses,{:name => params[:name],:code => params[:code],:content => params[:content],:city => params[:city],:start => params[:start],:end => params[:end]}) %>
+        </div>
+      <% end %>      
   </div> 
 
 

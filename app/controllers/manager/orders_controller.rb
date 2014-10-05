@@ -1,14 +1,20 @@
 class Manager::OrdersController < Manager::ManagerController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
-  # GET /orders
-  # GET /orders.json
   def index
     params[:t] ||= 'o'
-    #@courses  = auto_paginate current_user.manager_courses(params)
-    # params[:per_page] = 1
-    @courses  = auto_paginate Course.all
+    if request.xhr?
+      search
+      render :partial => 'manager/orders/index.js.erb', :locals => { :courses => @courses }
+    else
+      search
+    end
   end
+
+  def search
+    @courses =  auto_paginate current_user.manager_courses(params)
+  end  
+
 
 
   def get_employee

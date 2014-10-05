@@ -376,27 +376,59 @@ class User
   def manager_courses(params)
     uids = self.employees
     if params[:t] == 'o' # 开放中的课程
-      return Course.published
+      result =  Course.published
+      if params[:name].present?
+        result = result.where(name:/#{params[:name]}/)
+      end
+
+      if params[:code].present?
+        result = result.where(code:/#{params[:code]}/)
+      end
+
+      if params[:content].present?
+        result = result.where(content_type:/#{params[:content]}/)
+      end
+
+      if params[:city].present?
+        result = result.where(city:params[:city])
+      end
+
+      if params[:start].present?
+        result = result.where(:start_date.gte => params[:start])
+      end 
+
+      if params[:end].present?
+        result = result.where(:end_date.lte => params[:end])
+      end
+
+      return result
+
     end
 
     if params[:t] == 'w' #已报名的课程
       cids = Order.where(:user_id.in => uids,:is_cancel => false,:passed => false).map{|e| e.course_id.to_s}.uniq
-      return Course.published.where(:id.in => cids)
+      result =  Course.published.where(:id.in => cids)
+      return result
     end
 
     if params[:t] == 'n' # 进行中的课程
       cids = Course.going.map{|e| e.id.to_s}
-      return Order.where(:user_id.in => uids,:is_cancel => false,:passed => false,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => false,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      return result
     end
 
     if params[:t] == 'p' # 参与过的课程
       cids = Course.passed.map{|e| e.id.to_s}
-      return Order.where(:user_id.in => uids,:is_cancel => false,:passed => true,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => true,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      return result
     end
 
-    if parms[:t] == 'c' # 取消的课程
-      return Order.where(:user_id.in => uids,:is_cancel => true,:state => Order::STATE_CODE_1).map{|e| e.course}
+    if params[:t] == 'c' # 取消的课程
+      result =  Order.where(:user_id.in => uids,:is_cancel => true,:state => Order::STATE_CODE_1).map{|e| e.course}
+      return result
     end
+
+
   end
 
   #企业管理员批量添加报名

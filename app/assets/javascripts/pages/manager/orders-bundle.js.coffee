@@ -1,5 +1,5 @@
 $(->
-
+	$("#search_start,#search_end").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
 	get_employee = (id_arr)->
 		$.post('/manager/orders/get_employee',{data:id_arr},(ret)->
 			if ret.success
@@ -140,6 +140,32 @@ $(->
 				$('.employee-box .multiple_start_button').removeClass('info').addClass('success').text('恭喜您,报名成功,请等待系统教务审核！')
 				window.location.href = '/manager/orders?t=w'
 		)		
+
+
+
+	$('body').on('click','.search_course',(e)->
+		e.preventDefault()
+		search_data = $('form.search-course').serialize()
+		$.get("/manager/orders",search_data,->)
+	)
+
+
+	$('body').on('click','.pagination a',->
+		unless $(@).hasClass('disabled')
+			page   		= $(@).data('page')
+			name       	= $(@).data('name')	
+			code        = $(@).data('code')
+			content     = $(@).data('content')
+			city        = $(@).data('city')
+			start       = $(@).data('start')
+			end         = $(@).data('end')
+
+			g_data = {page:page,name:name,code:code,content:content,city:city,start:start,end:end}
+			if page
+				$.get("/manager/orders",g_data,->)
+	)
+
+
 
 
 	$('body').on('click','table tr th .checklist li',->

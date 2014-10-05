@@ -1,0 +1,7 @@
+<% if courses.present? %>
+  $('table.main-container tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :courses => @courses }) %>");
+  $('.page-container').html("<%= escape_javascript(manager_paginator_ajax('order',@courses,{:name => params[:name],:code => params[:code],:content => params[:content],:city => params[:city] ,:start => params[:start],:end => params[:end]})) %>");
+  <% if courses['data'].length <= 0 %>
+  	$('td.no-data').text('未查到符合条件的数据!');
+  <% end %>  
+<% end %>
