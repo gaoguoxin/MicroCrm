@@ -40,8 +40,16 @@ Rails.application.routes.draw do
   end
 
   namespace :manager do
-     resources :orders
-     resources :users
+    resources :orders
+    resources :users do
+      collection do 
+        get 'minfo'
+        get 'delete'
+        post 'update_pwd'
+        post 'update_info'
+      end
+    end
+    resources :feedbacks
   end
 
   namespace :user do 

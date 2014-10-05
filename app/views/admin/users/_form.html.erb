@@ -99,11 +99,11 @@
     <label for="ax">是否对AX培训感兴趣</label>
     <ul class="unstyled">
       <li class='double-gap-right double-gap-left'>
-        <input id="ax_1" type="radio" name="ax" checked="">
+        <input id="ax_1" type="radio" name="user[ax]" value='true' <%if user.try(:ax) %>checked='checked'<% end %>>
         <label for="ax_1" class="inline">是</label>
       </li>
       <li>
-        <input id="ax_2" type="radio" name="ax">
+        <input id="ax_2" type="radio" name="user[ax]" value='false' <%unless  user.try(:ax) %>checked='checked'<% end %>>
         <label for="ax_2" class="inline">否</label>
       </li>
     </ul>
@@ -112,11 +112,11 @@
     <label for="ax">是否对CRM培训感兴趣</label>
     <ul class="unstyled">
       <li class='double-gap-right double-gap-left'>
-        <input id="crm_1" type="radio" name="crm" checked="">
+        <input id="crm_1" type="radio" name="user[crm]" value='true' <%if user.try(:crm) %>checked='checked'<% end %>>
         <label for="crm_1" class="inline">是</label>
       </li>
       <li>
-        <input id="crm_2" type="radio" name="crm">
+        <input id="crm_2" type="radio" name="user[crm]" value='false' <%unless user.try(:crm) %>checked='checked'<% end %>>
         <label for="crm_2" class="inline">否</label>
       </li>
     </ul>
@@ -125,16 +125,15 @@
     <label for="ax">是否对软技能培训感兴趣</label>
     <ul class="unstyled">
       <li class='double-gap-right double-gap-left'>
-        <input id="softskill_1" type="radio" name="softskill" checked="">
+        <input id="softskill_1" type="radio" name="user[softskill]" value='true' <%if user.try(:softskill) %>checked='checked'<% end %>>
         <label for="softskill_1" class="inline">是</label>
       </li>
       <li>
-        <input id="softskill_2" type="radio" name="softskill">
+        <input id="softskill_2" type="radio" name="user[softskill]" value='false' <%unless user.try(:softskill) %>checked='checked'<% end %>>
         <label for="softskill_2" class="inline">否</label>
       </li>
     </ul>
   </div>    
-
 </div>
 
 <div class="row">

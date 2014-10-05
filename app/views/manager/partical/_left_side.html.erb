@@ -1,0 +1,36 @@
+<dl class="menu">
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>账户管理</dt>
+	<dd class="menu_item double-pad-left <%= actived('users','minfo')%>">
+		<a href="<%= minfo_manager_users_path %>" class="triple-pad-left">信息管理</a>
+	</dd>
+</dl>
+<dl class="menu">
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>员工管理</dt>
+	<dd class="menu_item double-pad-left <%= actived('users','index')%>">
+		<a href="<%= manager_users_path %>" class="triple-pad-left">员工信息管理</a>
+	</dd>
+</dl>
+<dl class="menu">
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>课程管理</dt> 
+	<dd class="menu_item double-pad-left <%= actived('orders','index',params[:t],'w')%>">
+		<a href="<%= manager_orders_path(:t => 'w')%>" class="triple-pad-left">已报名的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'n')%>">
+		<a href="<%= manager_orders_path(:t =>'n')%>" class="triple-pad-left">进行中的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'p')%>">
+		<a href="<%= manager_orders_path(:t =>'p')%>" class="triple-pad-left">参与过的课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'c')%>">
+		<a href="<%= manager_orders_path(:t =>'c')%>" class="triple-pad-left">已取消的课程</a>
+	</dd>	
+</dl>
+<dl class="menu">
+    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt> 
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'p')%>">
+		<a href="<%= manager_feedbacks_path(:t => 'p')%>" class="triple-pad-left">员工已反馈课程</a>
+	</dd>
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'w')%>">
+		<a href="<%= manager_feedbacks_path(:t =>'w')%>" class="triple-pad-left">员工待反馈课程</a>
+	</dd>
+</dl>

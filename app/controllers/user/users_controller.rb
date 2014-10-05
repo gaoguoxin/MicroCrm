@@ -17,6 +17,6 @@ class User::UsersController < User::UserController
 
   private
     def user_params
-      params.require(:user).permit(:name, :type_of_position, :company_id, :city, :ax, :crm, :softskill,:qq,:wechart,:skype)
+      params.require(:user).permit(:name,:email,:mobile, :type_of_position, :company_id, :city, :ax, :crm, :softskill,:qq,:wechart,:skype)
     end
 end

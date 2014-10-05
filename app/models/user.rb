@@ -71,6 +71,7 @@ class User
     #is_admin 标示当前的添加用户行为是否由管理员进行
     #is_manager 标示当前的添加用户行为是否由企业管理员进行
     #creater  表示创建人是谁
+
     account = {}
     account[:name]              = opt[:name]
     account[:email]             = opt[:email].to_s.downcase
@@ -78,6 +79,7 @@ class User
     account[:role_of_system]    = opt[:role_of_system] || ROLE_EMPLOYEE
     account[:creater]           = creater
     opt[:password]              = opt[:password].downcase
+
     
     return ErrorEnum::NAME_BLANK unless account[:name].present? 
     return ErrorEnum::EMAIL_BLANK unless account[:email].present? unless is_admin
@@ -96,8 +98,16 @@ class User
     return ErrorEnum::MOBILE_EXIST if user.present?
     # exist_user = true if user.present?
     # return ErrorEnum::USER_EXIST if exist_user
+    if is_manager
+      manager = User.find(creater)
+      opt[:company_id] = manager.companies.first.id.to_s
+      account[:company_id] = opt[:company_id]
+    end
     company = Company.where(id:opt[:company_id]).first unless is_admin
-    return ErrorEnum::COMPANY_NOT_EXIST unless company.present? unless is_admin
+
+    unless is_admin
+      return ErrorEnum::COMPANY_NOT_EXIST unless company.present?
+    end
     user = self.create(account)
     
     if is_admin
@@ -195,7 +205,7 @@ class User
     return user
   end
 
-  def self.search(opt)
+  def self.admin_search(opt)
     result = self.all
     if opt['name'].present?
       result = result.where(name:/#{opt['name']}/)
@@ -245,18 +255,62 @@ class User
     end 
 
     if opt['start'].present?
-      result = result.where(:created_at.gte => DateTime.parse(opt['search_start']))
+      result = result.where(:created_at.gte => DateTime.parse(opt['start']))
     end
     if opt['end'].present?
-      result = result.where(:created_at.lte => DateTime.parse(opt['search_end']))
+      result = result.where(:created_at.lte => DateTime.parse(opt['end']))
     end
 
     return result    
+  end
 
+  def self.manager_search(opt,current_user_id)
+    current_user = self.find(current_user_id)
+    company = current_user.companies.first
+    result = self.where(company_id:company.id.to_s)
+    if opt['name'].present?
+      result = result.where(name:/#{opt['name']}/)
+    end
+    if opt['email'].present?
+      result = result.where(email:/#{opt['email']}/)
+    end
+    if opt['mobile'].present?
+      result = result.where(mobile:/#{opt['mobile']}/)
+    end
+
+    if opt['position'].present?
+      result = result.where(type_of_position:opt['position'])
+    end
+
+    if opt['city'].present?
+      result = result.where(city:opt['city'])
+    end
+    if opt['interest'].present?
+      if opt['interest'] == 'AX培训'
+        result = result.where(ax:true)
+      elsif opt['interest'] == 'CRM培训'
+        result = result.where(crm:true)
+      elsif opt['interest'] == '软技能培训'
+        result = result.where(softskill:true)
+      end
+    end
+
+    if opt['start'].present?
+      result = result.where(:created_at.gte => DateTime.parse(opt['start']))
+    end
+    if opt['end'].present?
+      result = result.where(:created_at.lte => DateTime.parse(opt['end']))
+    end
+
+    return result  
   end
 
 
-  def self.update_info(opt,inst,updater)  
+  def self.update_info(opt,inst,updater)
+    u = User.where(email:opt[:email].downcase,:id.ne => inst.id.to_s).first
+    return ErrorEnum::EMAIL_EXIST if u.present?
+    u = User.where(mobile:opt[:mobile] .downcase,:id.ne => inst.id.to_s).first
+    return ErrorEnum::MOBILE_EXIST if u.present?
     opt[:updater]  = updater  
     if opt[:password].present?
       opt[:password] =  self.make_encrypt(opt[:password]) 
@@ -293,10 +347,24 @@ class User
     if params[:t] == 'w' #等待填写的反馈
       course_id = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map(&:course_id).map{|e| e.to_s}
       courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
+      courses = courses.select{|e| e.feedbacks.length <= 0}
     else #已经填写的反馈
       courses = self.feedbacks.map{|f| f.course}
     end
     return courses
+  end
+
+  def manager_feedbacks(params)
+    company  = self.companies.first
+    user_ids = company.users.map{|e| e.id.to_s}
+    if params[:t] == 'w' #等待填写的反馈
+      course_id = Order.where(is_cancel:false,state:Order::STATE_CODE_1,:user_id.in => user_ids).map(&:course_id).map{|e| e.to_s}
+      courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
+      courses = courses.select{|e| e.feedbacks.length <= 0}
+    else #已经填写的反馈
+      courses = Feedback.where(:user_id.in => user_ids).map{|e| e.course}
+    end
+    return courses    
   end
 
 

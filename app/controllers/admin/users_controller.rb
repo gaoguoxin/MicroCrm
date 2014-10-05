@@ -18,7 +18,7 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def search
-    @users = auto_paginate(User.search(params))
+    @users = auto_paginate(User.admin_search(params))
   end
 
   def check_exist

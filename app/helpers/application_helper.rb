@@ -95,6 +95,11 @@ module ApplicationHelper
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
   end
 
+  def manager_paginator_ajax(ckass,items,opt)
+    render :partial => "/manager/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}
+  end
+
+
   def change_bg(para)
     if para[:w].present?
       return 'yellow'

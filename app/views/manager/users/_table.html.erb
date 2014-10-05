@@ -1,0 +1,24 @@
+<% if users['data'].length > 0 %>
+  <% users['data'].each do |user|%>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td><%= user.mobile %></td>
+      <td><%= User::ROLE_HASH[user.role_of_system] %></td>
+      <td><%= user.type_of_position %></td>
+      <td><%= user.course_count %></td>
+      <td><%= user.course_manday_count %></td>
+      <td><%= User::STATUS_HASH[user.status] %></td>
+      <td>
+        <a href="javascript:void(0);" class='edit-user' id="<%= user.id.to_s %>">
+          修改/查看
+        </a>
+        <a href="javascript:void(0)" class="delete-user" data-cid="<%= user.id.to_s %>">删除</a>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="9" class='no-data'>暂无数据</td>  
+  </tr>  
+<% end %>

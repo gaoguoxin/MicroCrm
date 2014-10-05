@@ -1,0 +1,7 @@
+<% if users.present? %>
+  $('#tab1 table tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :users => @users }) %>");
+  $('#tab1 .page-container').html("<%= escape_javascript(manager_paginator_ajax('user',users,{:name => params[:name],:email => params[:email],:position => params[:position],:city => params[:city],:interest => params[:interest],:start => params[:start],:end => params[:end]})) %>");
+  <% if users['data'].length <= 0 %>
+  	$('td.no-data').text('未查到符合条件的相关员工,请确认查询条件是否正确!');
+  <% end %>  
+<% end %>

@@ -22,7 +22,7 @@
             <% if current_user.is_admin? || current_user.is_viewer? %>
               <a href="<%= admin_companies_path %>" class='one half mobile'>管理中心</a>
             <% elsif current_user.is_manager? %>
-              <a href="<%= admin_companies_path %>" class='one half mobile'>管理中心</a>
+              <a href="<%= manager_users_path %>" class='one half mobile'>管理中心</a>
             <% else%>
               <a href="<%= user_users_path %>" class='one half mobile'>个人中心</a>
             <% end %>

@@ -44,6 +44,7 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 # gem 'ckeditor'
 gem 'ckeditor_rails'
 gem "unicorn", group: :development
+gem 'pry-rails', '~> 0.2.2',        group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

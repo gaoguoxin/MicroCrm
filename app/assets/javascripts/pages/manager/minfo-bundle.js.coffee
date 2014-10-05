@@ -31,17 +31,17 @@ $(->
 	send_password_ajax = ->
     	$.ajax({
     	    data: {password:$.trim( password_ipt.val() )},
-    	    url: '/user/users/update_pwd',
+    	    url: '/manager/users/update_pwd',
     	    method: "POST",
     	    success: (ret)->
-    	      $('.pass-submit').removeClass('info').addClass('success').text('修改成功!')
+    	      flash_notice('密码修改成功!')
     	})
 
 
 	send_info_ajax = ->
-		$.post('/user/users/update_info',$('form.info').serialize(),(ret)->
+		$.post('/manager/users/update_info',$('form.info').serialize(),(ret)->
 			if ret.success
-				$('button.info-submit').removeClass('info').addClass('success').text('修改成功!')
+				flash_notice('信息修改成功!')
 			else
 				if ret.value.error_code == 'error_5'
 					add_flag(email_ipt,'该邮箱已经存在!')
@@ -50,6 +50,15 @@ $(->
 
 		)
 
+	delay = (ms, func) -> setTimeout func, ms
+
+	go_top = ->
+		$("html, body").animate({ scrollTop: 0 }, 500)
+
+	flash_notice = (msg)->
+		$('.flash-notice').text(msg).addClass('animated bounceInRight').show()
+		go_top()
+		delay 2000, ->  window.location.reload()
 
 	add_flag =(obj,msg)->
 		unless obj.prev('label').find('span').length > 0

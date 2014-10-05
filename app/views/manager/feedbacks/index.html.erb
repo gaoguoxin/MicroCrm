@@ -1,0 +1,68 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/manager/feedbacks-bundle" %>
+  <%= javascript_include_tag "pages/manager/feedbacks-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
+
+
+<% content_for :left_side do %>
+  <%= render :partial => 'manager/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span><span class="locate">反馈管理<i class="fa fa-angle-double-right"></i>课程列表</span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>已经反馈课程标示您公司员工参与过该课程并给予了该课程反馈。待反馈课程标示您公司员工已参与了该课程但是还没有给予反馈</span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+      <table class="responsive responsiveTable  <%= @courses.length > 0 ? 'info' : 'error' %>" data-max="15">
+        <thead>
+          <tr>
+            <th>编码</th>
+            <th>名称</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>城市</th>
+            <th>内容类型</th>
+            <th>教师姓名</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @courses['data'].length > 0 %>
+            <% @courses['data'].each do |course|%>
+              <tr>
+                <td><%= course.code %></td>
+                <td><%= course.name_en%></td>
+                <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
+                <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
+                <td><%= course.city %></td>
+                <td><%= course.content_type%></td>
+                <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+                <td>
+                  <a href="<%=courses_path(course)%>" target="_blank">查看课程</a>
+                  <% if course.feedbacks.count > 0%>
+                    <a class="show_feedback" href="javascript:void(0);">查看反馈</a>
+                  <% else%>
+                    <a class="show_feedback" href="javascript:void(0);">参与人员</a>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
+            </tr>  
+          <% end %>                
+        </tbody>
+      </table>     
+  </div>
+<% end %>
