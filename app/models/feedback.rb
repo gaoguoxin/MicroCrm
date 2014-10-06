@@ -127,7 +127,7 @@ class Feedback
     if feedback.present?
       feedback.update_attributes("#{params[:q]}".to_sym => params[:p],modifier_id:admin_id)
     else
-      feedback = self.create(course_id:params[:cid],user_id:params[:uid],status:STATUS_CHECK_OK,creater_id:admin_id,modifier_id:admin_id,"#{params[:q]}".to_sym => params[:p])
+      feedback = self.create(course_id:params[:cid],user_id:params[:uid],status:STATUS_UN_CHECK,creater_id:admin_id,modifier_id:admin_id,"#{params[:q]}".to_sym => params[:p])
     end 
     return feedback.score
   end
@@ -139,6 +139,7 @@ class Feedback
       if feedback.present?
         if params[:r] == 'pass'
           feedback.update_attributes(status:STATUS_CHECK_OK)
+          feedback.add_point_to_course
         else
           feedback.update_attributes(status:STATUS_CHECK_FAIL)
         end
@@ -147,6 +148,21 @@ class Feedback
         return false
       end      
     end
+  end
+
+  #每审核通过一个反馈，计算分分值到对应的课程上
+  def add_point_to_course
+    course = Course.find(self.course_id)
+    feeds  = Feedback.where(course_id:self.course_id,status:STATUS_CHECK_OK)
+    total_score = 0
+    teach_score = 0
+    feeds.each do |feed|
+      total_score += (feed.question_1 + feed.question_2 + feed.question_3 + feed.question_4 + feed.question_5)
+      teach_score += (feed.question_4 + feed.question_5)
+    end
+    total_score = (total_score / feeds.count.to_f) / 5
+    teach_score = (teach_score / feeds.count.to_f) / 2
+    course.update_attributes(evaluation_general:total_score.round(1),evaluation_instructor:teach_score.round(1))
   end
 
 

@@ -1,5 +1,5 @@
 class Admin::FeedbacksController < Admin::AdminController
-  before_action :refuse_viewer, only: [:create,:update_info,:delete]
+  before_action :refuse_viewer, only: [:change_point,:check_feedback]
   def index
     if request.xhr?
       search
@@ -26,19 +26,5 @@ class Admin::FeedbacksController < Admin::AdminController
   def check_feedback
     render_json_auto Feedback.check_feedback(params)
   end
-
-
-  # def create
-  #   render_json_auto Card.create_new(card_params) and return 
-  # end
-
-  # def update_info
-  #   render_json_auto Card.update_info(card_params,@card)
-  # end
-
-  # def delete
-  #   render_json_auto @card.destroy
-  # end
-
 
 end

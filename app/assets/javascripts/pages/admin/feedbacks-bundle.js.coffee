@@ -60,6 +60,7 @@ $(->
 			if ret.success
 				obj.val(p).hide().siblings('span').text(p + '分').show()
 				obj.parents('tr').find('.tot').text(ret.value + '分')
+				obj.parents('tr').find('.status').text('等待审核')
 		)		
 
 
