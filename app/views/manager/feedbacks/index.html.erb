@@ -40,19 +40,21 @@
           <% if @courses['data'].length > 0 %>
             <% @courses['data'].each do |course|%>
               <tr>
-                <td><%= course.code %></td>
-                <td><%= course.name_en%></td>
+                <td><%= link_to course.code,course_path(course),:target=>"_blank",:class => 'noicon' %></td>
+                <td><%= link_to course.name_en,course_path(course),:target=>"_blank",:class => 'noicon'%></td>
                 <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
                 <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
                 <td><%= course.city %></td>
                 <td><%= course.content_type%></td>
-                <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+                <td class='align-center'>
+                  <a href="<%=course_path(course.id.to_s)%>" target="_blank" class="noicon">
+                    <%= image_tag(show_thumb_avatar(course))%><br/><%=course.instructor %>
+                  </a></td>
                 <td>
-                  <a href="<%=courses_path(course)%>" target="_blank">查看课程</a>
                   <% if course.feedbacks.count > 0%>
-                    <a class="show_feedback" href="javascript:void(0);">查看反馈</a>
+                    <a class="show_feedback" href="javascript:void(0);" data-id="<%= course.id.to_s%>">查看反馈</a>
                   <% else%>
-                    <a class="show_feedback" href="javascript:void(0);">参与人员</a>
+                    <a class="show_feedback" href="javascript:void(0);" data-id="<%= course.id.to_s%>">参与人员</a>
                   <% end %>
                 </td>
               </tr>
@@ -65,4 +67,40 @@
         </tbody>
       </table>     
   </div>
+
+  <article class="feedback-box row"> 
+    <div class="one whole padded">
+      <div class="box double-gap-bottom">
+        <ul class="unstyled question_list">
+          <li><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
+          <li><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
+          <li><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
+          <li><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
+          <li><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>                
+        </ul>
+      </div>    
+      <div class="content row">  
+        <table class="responsive" data-max="15">
+          <thead>
+            <tr>
+              <th>参与人员</th>
+              <th>Question 1</th>
+              <th>Question 2</th>
+              <th>Question 3</th>
+              <th>Question 4</th>
+              <th>Question 5</th>
+              <th>平均分</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>         
+      </div>     
+      <div class="row double-pad-top double-pad-bottom">
+        <button class="info close-btn pull-right">关闭</button>
+      </div>  
+    </div>
+  </article>
+
+
 <% end %>

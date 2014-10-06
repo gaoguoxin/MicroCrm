@@ -77,6 +77,7 @@ class User
     account[:email]             = opt[:email].to_s.downcase
     account[:mobile]            = opt[:mobile]
     account[:role_of_system]    = opt[:role_of_system] || ROLE_EMPLOYEE
+    account[:type_of_position]  = opt[:type_of_position] || '销售'
     account[:creater]           = creater
     opt[:password]              = opt[:password].downcase
 
@@ -355,8 +356,7 @@ class User
   end
 
   def manager_feedbacks(params)
-    company  = self.companies.first
-    user_ids = company.users.map{|e| e.id.to_s}
+    user_ids = self.employees
     if params[:t] == 'w' #等待填写的反馈
       course_id = Order.where(is_cancel:false,state:Order::STATE_CODE_1,:user_id.in => user_ids).map(&:course_id).map{|e| e.to_s}
       courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])

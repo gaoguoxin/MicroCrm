@@ -229,6 +229,10 @@ $(->
 
 	)
 
+	$('body').on('click','button.close-box',->
+		$.fancybox.close()
+	)
+
 
 
 )

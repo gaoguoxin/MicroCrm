@@ -56,7 +56,11 @@ Rails.application.routes.draw do
         post 'update_info'
       end
     end
-    resources :feedbacks
+    resources :feedbacks do 
+      collection do 
+        get 'get_feed_info'
+      end
+    end
   end
 
   namespace :user do 
