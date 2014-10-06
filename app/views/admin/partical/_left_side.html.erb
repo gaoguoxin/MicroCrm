@@ -46,13 +46,15 @@
 		<a href="<%#= user_courses_path(:t =>'actived')%>" class="triple-pad-left">参与过的课程</a>
 	</dd>
 </dl>
+
+
 <dl class="menu">
     <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt> 
-	<dd class="menu_item double-pad-left  <%#= actived('feedbacks')%>">
-		<a href="<%= user_feedbacks_path%>" class="triple-pad-left">我的反馈</a>
-	</dd>
-	<dd class="menu_item double-pad-left  <%#= actived('courses',params[:t],'unfeed')%>">
-		<a href="<%= user_feedbacks_path(:t =>'unfeed')%>" class="triple-pad-left">待反馈</a>
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'w')%>">
+		<a href="<%= admin_feedbacks_path(:t =>'w')%>" class="triple-pad-left">未反馈课程</a>
+	</dd>    
+	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'p')%>">
+		<a href="<%= admin_feedbacks_path(:t => 'p')%>" class="triple-pad-left">已反馈课程</a>
 	</dd>
 </dl>
 <% if current_user.is_admin? %>

@@ -25,8 +25,6 @@ $(->
 	get_feed_info =(cid)->
 		$.get('/manager/feedbacks/get_feed_info',{cid:cid,},(ret)->
 			if ret.success
-				console.log(ret)
-				console.log('==================')
 				$.each(ret.value,(k,v)->
 					tr = "<tr><td>#{v.uname}</td><td>#{v.q_1}分</td><td>#{v.q_2}分</td><td>#{v.q_3}分</td><td>#{v.q_4}分</td><td>#{v.q_5}分</td><td>#{v.tot}分</td></tr>"
 					$('.feedback-box .content table tbody').append(tr)

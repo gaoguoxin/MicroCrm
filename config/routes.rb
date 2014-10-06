@@ -37,6 +37,13 @@ Rails.application.routes.draw do
         get 'check_serial'
       end     
     end
+    resources :feedbacks do
+      collection do 
+        get 'get_feed_info'
+        post 'change_point'
+        post 'check_feedback'
+      end
+    end
   end
 
   namespace :manager do

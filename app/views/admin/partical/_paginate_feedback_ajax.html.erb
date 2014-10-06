@@ -1,0 +1,28 @@
+<% if common["total_page"] > 1 %>
+<div class="pagination">
+	<a href="javascript:void(0);" class="half-gapped <%= if common["current_page"].to_i == 1; 'disabled' end%>" data-page="<%= common["previous_page"] %>" data-status="<%=param[:status]%>" data-code="<%=param[:code]%>" data-city="<%=param[:city]%>" data-name="<%=param[:name]%>" data-content="<%=param[:content]%>" data-t="<%=param[:t]%>" data-start="<%=param[:start]%>"  data-end="<%=param[:end]%>" ><</a>
+	
+	<!-- two before pages -->
+	<% ((common["current_page"]-2)...common["current_page"]).select{|e| e > 0}.each do |e|	 %>
+		<a href="javascript:void(0);" class='half-gapped' data-page="<%= e %>" data-status="<%=param[:status]%>" data-code="<%=param[:code]%>" data-city="<%=param[:city]%>" data-name="<%=param[:name]%>" data-content="<%=param[:content]%>" data-t="<%=param[:t]%>" data-start="<%=param[:start]%>"  data-end="<%=param[:end]%>"><%= e %></a>
+	<% end %>
+	
+	<!-- ... -->
+	<% if (common["current_page"]-2) > 1 %>
+		<a onclick="return false;" class='half-gapped'  href="javascript:void(0);">...</a>
+	<% end %>
+	
+	<!-- current page --> 
+	<a class='half-gapped active'  href="javascript:void(0);" ><%= common["current_page"] %></a>
+	<!-- two after pages -->
+	<% ((common["current_page"]+1)..(common["current_page"]+2)).select{|e| e <= common["total_page"]}.each do |e| %>
+		<a href="javascript:void(0);" class='half-gapped' data-page="<%= e %>" data-status="<%=param[:status]%>" data-code="<%=param[:code]%>" data-city="<%=param[:city]%>" data-name="<%=param[:name]%>" data-content="<%=param[:content]%>" data-t="<%=param[:t]%>" data-start="<%=param[:start]%>"  data-end="<%=param[:end]%>"><%= e %></a>
+	<% end %>
+	<!-- ... -->
+	<% if (common["current_page"]+2) < common["total_page"] %>
+		<a  class='half-gapped'  href="javascript:void(0);" >...</a>
+	<% end %>
+
+	<a href="javascript:void(0);"  class='half-gapped <%= if common["current_page"].to_i == common["total_page"].to_i ; 'disabled' end%>' data-page="<%= common["next_page"] %>" data-status="<%=param[:status]%>" data-code="<%=param[:code]%>" data-city="<%=param[:city]%>" data-name="<%=param[:name]%>" data-content="<%=param[:content]%>" data-t="<%=param[:t]%>" data-start="<%=param[:start]%>"  data-end="<%=param[:end]%>" >></a>
+</div>
+<% end %>

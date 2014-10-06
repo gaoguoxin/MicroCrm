@@ -1,0 +1,7 @@
+<% if courses.present? %>
+  $('table.feed-course-container  tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :courses => @courses }) %>");
+  $('.page-container').html("<%= escape_javascript(admin_paginator_ajax('feedback',courses,{:status => params[:status],:code => params[:code],:city => params[:city],:name => params[:name],:content => params[:content],:t => params[:t],:start => params[:start],:end => params[:end]})) %>");
+  <% if courses['data'].length <= 0 %>
+  	$('td.no-data').text('未查到符合条件的记录');
+  <% end %>  
+<% end %>

@@ -1,0 +1,144 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/feedbacks-bundle" %>
+  <%= javascript_include_tag "pages/admin/feedbacks-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
+
+
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span><span class="locate">反馈管理<i class="fa fa-angle-double-right"></i>课程列表</span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span>您可以在这里 增加/删除/修改/查看 课程的反馈信息</span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+        <div class="search-container double-gap-bottom">
+          <form class='info search-form'>
+              <div class="row">
+                <div class="one fourth padded">
+                  <input id="search_name" name='code' type="text" placeholder="课程编码">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_account" name='name'  type="text" placeholder="课程名称">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_start" name='start' type="text" placeholder="起始时间">
+                </div>
+                <div class="one fourth padded">
+                  <input id="search_end" name='end' type="text" placeholder="结束时间">
+                </div>                                
+              </div>
+              <div class="row">
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="status" id='search_status'>
+                      <option value="" disabled="" selected="">状态</option>
+                      <% Course::STATUS_CODE_HASH.each_pair do |k,v| %>
+                        <option value="<%= k %>" <% if params[:status] == k %>selected='selected' <% end %> ><%= v %></option>
+                      <% end %>
+                    </select>
+                  </span>                 
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="city" id="search_city">
+                      <option value="" disabled="" selected="">城市</option>
+                      <% Course::CITY_ARRAY.each do |city| %>
+                        <option value="<%= city %>" <% if params[:city] == city %> selected='selected'<% end %> ><%= city %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div>
+                <div class="one fourth padded">
+                  <span class="select-wrap">
+                    <select class="unselected" name="content" id="search_content">
+                      <option value="" disabled="" selected="">内容类型</option>
+                      <% Course::CONTENT_TYPE_ARRAY.each do |content| %>
+                        <option value="<%= content %>" <% if params[:content] == content %>selected='selected'<% end%> ><%= content %></option>
+                      <% end %>
+                    </select>
+                  </span>
+                </div>
+                <div class="one fourth padded">
+                  <button class="block info search-feedbacks">搜索</button>
+                </div> 
+              </div>
+          </form>
+        </div>
+        <table class=" feed-course-container responsive responsiveTable  <%= @courses.length > 0 ? 'info' : 'error' %>" data-max="15">
+          <thead>
+            <tr>
+              <th>编码</th>
+              <th>名称</th>
+              <th>开始时间</th>
+              <th>结束时间</th>
+              <th>城市</th>
+              <th>内容类型</th>
+              <th>教师姓名</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render :partial => '/admin/feedbacks/table',:locals => {:courses => @courses}%>
+          </tbody>
+        </table>
+        <div class="page-container">
+          <%= admin_paginator_ajax('feedback',@courses,{:status => params[:status],:code => params[:code],:content => params[:content],:name => params[:name],:t => params[:t],:city => params[:city]}) %>
+        </div>
+  </div>
+
+  <article class="feedback-box row"> 
+    <div class="one whole padded">
+      <div class="box double-gap-bottom">
+        <ul class="unstyled question_list">
+          <li><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
+          <li><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
+          <li><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
+          <li><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
+          <li><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>                
+        </ul>
+      </div>   
+      <div class="box success align-center"><h6>注意:如果想更改评分的话,需要先更改后审核,不审核的反馈不作为评分你你计算标准!</h6></div> 
+      <div class="content row">  
+        <table class="responsive" data-max="15">
+          <thead>
+            <tr>
+              <th>参与人员</th>
+              <th>Question 1</th>
+              <th>Question 2</th>
+              <th>Question 3</th>
+              <th>Question 4</th>
+              <th>Question 5</th>
+              <th>平均分</th>
+              <th>状态</th>
+              <th>选择</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>         
+      </div>     
+      <div class="row double-pad-top double-pad-bottom ">
+        <div class="one ninth skip-eight check-tool">
+          <ul class="checklist turquoise ">
+            <li>全选/全不选</li>
+          </ul>         
+          <button class='red refuse double-gap-right small gap-top'>拒绝</button>
+          <button class='info pass small gap-top'>通过</button>           
+        </div>      
+      </div>  
+    </div>
+  </article>
+
+<% end %>

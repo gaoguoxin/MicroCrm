@@ -1,0 +1,17 @@
+table tr td{
+	vertical-align: middle;
+	&.point{
+		cursor:pointer;
+		input{
+			display:none;
+		}
+	}
+}
+.feedback-box{
+	display:none;
+	.checklist{
+		li{
+			cursor: pointer;
+		}
+	}
+}

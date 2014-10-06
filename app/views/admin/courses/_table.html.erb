@@ -20,7 +20,7 @@
     <% end %>
   <% else %>
     <tr>
-      <td colspan="8" class='no-data'>目前没有查到任何处于发布中的课程</td>  
+      <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
     </tr>  
   <% end %>
 <%elsif params[:status].to_i == Course::STATUS_CODE_1%>
@@ -45,7 +45,7 @@
     <% end %>
   <% else %>
     <tr>
-      <td colspan="8" class='no-data'>目前没有查到任何处于发布中的课程</td>  
+      <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
     </tr>  
   <% end %>
 <%elsif params[:status].to_i == Course::STATUS_CODE_2%>

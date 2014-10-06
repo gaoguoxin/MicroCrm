@@ -1,6 +1,6 @@
 <% if companies.present? %>
   $('#tab1 table tbody').html("<%= escape_javascript(render :partial => 'table', :locals => { :companies => @companies }) %>");
-  $('#tab1 .page-container').html("<%= escape_javascript(admin_paginator_ajax('company',companies,{:status => params[:search_status],:level => params[:search_level],:type => params[:search_type],:name => params[:search_name],:account => params[:search_account]})) %>");
+  $('#tab1 .page-container').html("<%= escape_javascript(admin_paginator_ajax('company',companies,{:status => params[:status],:start => params[:start],:end => params[:end],:name => params[:search_name],:account => params[:search_account]})) %>");
   <% if companies['data'].length <= 0 %>
   	$('td.no-data').text('未查到符合条件的相关企业,请确认查询条件是否正确!');
   <% end %>  
