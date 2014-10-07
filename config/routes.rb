@@ -13,7 +13,13 @@ Rails.application.routes.draw do
         post 'update_info'
       end
     end
-    resources :orders
+    resources :orders do 
+      collection do 
+        post 'make_attend'
+        post 'check_order'
+        post 'cancel_order'
+      end
+    end
     resources :companies do 
       collection do 
         get 'search_manager'

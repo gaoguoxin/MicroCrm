@@ -27,6 +27,53 @@
     </div>
   </div>
   <div class="row triple-pad-left triple-pad-right">
+    <div class="search-container">
+      <form class='info search-form'>
+          <div class="row">
+            <input type='hidden' name='status' value="<%= params[:status]%>">
+            <div class="one fourth padded">
+              <input id="search_code" name='code' type="text" placeholder="课程代码">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_name" name='name'  type="text" placeholder="课程名称">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_start" name='start' type="text" placeholder="课程开始时间">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_end" name='end' type="text" placeholder="课程结束时间">
+            </div>                                
+          </div>
+          <div class="row">
+            <div class="one half padded">
+              <span class="select-wrap">
+                <select class="unselected" name="content" id="search_content">
+                  <option value="" disabled="" selected="">内容类型</option>
+                  <% Course::CONTENT_TYPE_ARRAY.each do |level| %>
+                    <option value="<%= level %>" <% if params[:content] == level %>selected='selected'<% end%> ><%= level %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>          
+            <div class="one half padded">
+              <span class="select-wrap">
+                <select class="unselected" name="city" id="search_city">
+                  <option value="" disabled="" selected="">城市</option>
+                  <% Course::CITY_ARRAY.each do |city| %>
+                    <option value="<%= city %>" <% if params[:city] == city %>selected='selected'<% end%> ><%= city %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>             
+            <div class="row">
+              <div class="one whole padded">
+                <button class="block info search-orders">搜索</button>
+              </div>               
+            </div>
+          </div>
+      </form>
+    </div>
+
     <table class="responsive responsiveTable  <%= @courses.length > 0 ? 'info' : 'error' %>" data-max="15">
       <thead>
         <tr>
@@ -41,8 +88,74 @@
         </tr>
       </thead>
       <tbody>
-        <%= render :partial => '/admin/courses/table',:locals => {:cousrses => @courses}%>
+        <%= render :partial => '/admin/courses/table',:locals => {:courses => @courses}%>
       </tbody>
-    </table>   
-  </div>   
+    </table> 
+    <div class="page-container">
+      <%= admin_paginator_ajax('course',@courses,{:code => params[:code],:name => params[:name],:start => params[:start],:end => params[:end],:content => params[:content],:city => params[:city],:t => params[:t]}) %>
+    </div>       
+  </div>
+
+<article class="proxy-box row"> 
+  <div class="one whole padded">
+    <h6 class='box info align-center'></h6> 
+<form action="#" method="post">
+  <fieldset>
+    <legend>会员搜索</legend>
+    <div class="row">
+      <div class="one fifth padded mobile">
+        <span class="select-wrap">
+          <select class="unselected">
+            <option value="" disabled="" selected="">公司名称</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+          </select>
+        </span>
+      </div>    
+      <div class="one fifth padded mobile">
+        <input id="name" type="text" placeholder="会员姓名">
+      </div>
+      <div class="one fifth padded mobile">
+        <input id="email" type="email" placeholder="会员邮箱">
+      </div>
+      <div class="one fifth padded">
+        <input id="name" type="text" placeholder="会员手机号">
+      </div>
+      <div class="one fifth padded">
+        <button class="info  multiple_proxy block">搜索</button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+
+    <div class="content row success box double-gap-top">  
+      <ul class="checklist">
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+        <li class="turquoise one fourth">Turquoise checklist item</li>
+      </ul>
+    </div>     
+    <div class="row double-gap-top double-pad-bottom box select-tool">
+      <ul class="checklist one sixth skip-two align-center">
+        <li class="turquoise">全选/全不选</li>
+      </ul>      
+      <button class="info one sixth multiple_proxy">确定</button>
+    </div>  
+  </div>
+</article>
+
+
 <% end %>

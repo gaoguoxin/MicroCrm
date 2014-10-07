@@ -138,7 +138,7 @@
         <div class="row">
           <label for="course_duration">课程持续时间</label>
           <div class="four mobile fifths">
-            <%= f.number_field :duration %>
+            <%= f.number_field :duration,step: 0.1 %>
           </div>
           <div class="one mobile fifth"><span class="suffix">天</span></div>
         </div>

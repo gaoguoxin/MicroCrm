@@ -1,4 +1,9 @@
 $(->
+	bottom_left_height  = $('.bottom-left').height()
+	bottom_right_height = $('.bottom-right .right-cont').height()
+	if bottom_left_height > bottom_right_height
+		$('.bottom-right .right-cont').height(bottom_left_height)
+	
 	$('body').on('click','button.feed-btn',->
 		arr = []
 		q1 = $('input[name="question_1"]:checked').val()

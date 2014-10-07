@@ -1,0 +1,34 @@
+<% if orders['data'].length > 0 %>
+  <% orders['data'].each do |order|%>
+    <tr>
+      <td><%= order.course.code%>:<%= order.course.name_en %></td>
+      <td><%= order.course.city %></td>
+      <td><%= order.user.name %></td>
+      <td><%= order.user.company.name %></td>
+      <td class='state'><%= Order::STATE_CODE_HASH[order.state] %></td>
+      <td><%= Order::STATUS_CODE_HASH[order.status] %></td>
+      <td class='cancel'><%= order.cancel_or_not %></td>
+      <td><%= order.created_at.strftime("%F")%></td>
+      <% if params[:t] == 'p'%>
+        <td><%= order.presence ? '出席' : '缺席'%></td>
+      <% end %>
+      <td class='opera'>
+        <% if params[:t] == 'p'%>         
+          <ul class="checklist">
+            <li class="blue" data-id="<%= order.id.to_s %>">出/缺席</li>
+          </ul>  
+        <% elsif params[:t] == 'o'%>
+          <ul class="checklist">
+            <li class="blue" data-id="<%= order.id.to_s %>">拒绝/通过/取消</li>
+          </ul>          
+        <% else %>
+          --
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="9" class='no-data align-center'>没有查到任何数据</td>  
+  </tr>  
+<% end %>

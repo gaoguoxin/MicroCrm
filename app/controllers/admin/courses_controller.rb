@@ -3,9 +3,9 @@ class Admin::CoursesController < Admin::AdminController
   before_action :refuse_viewer, only: [:new,:edit,:match_manager,:match_student,:create,:delete,:destroy]
   # GET /courses
   # GET /courses.json
-  def index
-    @courses = Course.where(status:params[:status])
-  end
+  # def index
+  #   @courses = Course.where(status:params[:status])
+  # end
 
 
   def index
@@ -19,7 +19,8 @@ class Admin::CoursesController < Admin::AdminController
   end
 
   def search
-    @courses = auto_paginate(Course.search(params))
+    params[:status] ||= 'o'
+    @courses = auto_paginate(Course.admin_search(params))
   end
 
   # GET /courses/1

@@ -33,18 +33,18 @@
 </dl>
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名表管理</dt> 
-	<dd class="menu_item double-pad-left <%= actived('orders','index',params[:t],'w')%>">
-		<a href="<%= admin_orders_path%>" class="triple-pad-left">已报名的课程</a>
+	<dd class="menu_item double-pad-left <%= actived('orders','index',params[:t],'o')%>">
+		<a href="<%= admin_orders_path%>" class="triple-pad-left">尚未开课的报名表</a>
 	</dd>
-	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'w')%>">
-		<a href="<= admin_orders_path(:t =>'going')%>" class="triple-pad-left">进行中的课程</a>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'n')%>">
+		<a href="<%= admin_orders_path(:t =>'n')%>" class="triple-pad-left">授课中的报名表</a>
 	</dd>
-	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'w')%>">
-		<a href="<%= admin_orders_path(:t =>'wait')%>" class="triple-pad-left">待参与的课程</a>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'p')%>">
+		<a href="<%= admin_orders_path(:t =>'p')%>" class="triple-pad-left">已结课的报名表</a>
 	</dd>
-	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'w')%>">
-		<a href="<%= admin_orders_path(:t =>'actived')%>" class="triple-pad-left">参与过的课程</a>
-	</dd>
+	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'c')%>">
+		<a href="<%= admin_orders_path(:t =>'c')%>" class="triple-pad-left">取消课程的报名表</a>
+	</dd>	
 </dl>
 
 

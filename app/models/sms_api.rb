@@ -278,6 +278,7 @@ class SmsApi # 短信接口
     self.send_sms(type,mobile, text)       
   end
 
+  # 系统管理员取消无效的报名
   def self.admin_cancel_effective_order(type,mobile,opt)
     course = Course.find(opt['course_id'])
     @name  = course.name_en
@@ -286,30 +287,30 @@ class SmsApi # 短信接口
     text = text_template.result(binding)
     self.send_sms(type,mobile, text)     
   end
+
+  #系统管理员审核报名通过
+  def self.admin_allow_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @name  = course.name_en
+    @date  = course.start_date.strftime('%F')
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/admin_allow_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)       
+  end
+
+  # 系统管理员拒绝报名
+  def self.admin_refuse_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/admin_refuse_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    self.send_sms(type,mobile, text)      
+  end
   
 
-  # def self.pre_survey_sms(survey_id, mobile, reward_scheme_id)
-  #   survey = Survey.find(survey_id)
-  #   @survey_title = survey.title
-  #   @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
-  #   @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
-    
-  #   @reward = ""
-  #   reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
-  #   if reward_scheme && reward_scheme.rewards[0].present?
-  #     case reward_scheme.rewards[0]["type"]
-  #     when RewardScheme::MOBILE
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元手机话费奖励"
-  #     when RewardScheme::ALIPAY
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元支付宝奖励"
-  #     when RewardScheme::JIFENBAO
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元集分宝奖励"
-  #     when RewardScheme::POINT
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
-  #     when RewardScheme::LOTTERY
-  #         @reward = "一次抽奖机会"
-  #     end
-  #   end
+
 
   #   text_template_file_name = "#{Rails.root}/app/views/sms_text/pre_survey_invitation_sms.text.erb"
   #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")

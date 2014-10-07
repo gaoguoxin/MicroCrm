@@ -43,6 +43,10 @@ class SmsWorker
       retval = SmsApi.admin_cancel_uneffective_order(sms_type, mobile, opt)  
     when 'admin_cancel_effective_order'
       retval = SmsApi.admin_cancel_effective_order(sms_type, mobile, opt)  
+    when 'admin_allow_order'
+      retval = SmsApi.admin_allow_order(sms_type, mobile, opt)
+    when 'admin_refuse_order'  
+      retval = SmsApi.admin_refuse_order(sms_type, mobile, opt)
     end
     return true
   end

@@ -10,10 +10,12 @@ class Order
   STATUS_CODE_0 = 0 #企业管理员审核状态  待审核
   STATUS_CODE_1 = 1 #企业管理员审核状态  审核通过
   STATUS_CODE_2 = 2 #企业管理员审核状态  审核拒绝
-
+  STATUS_CODE_HASH = {0 => '待审核',1 => '审核通过',2 => '审核拒绝'}
   STATE_CODE_0  = 0 #系统管理员审核状态值 待审核
   STATE_CODE_1  = 1 #系统管理员审核状态值 审核通过
   STATE_CODE_2  = 2 #系统管理员审核状态值 审核拒绝
+  STATE_CODE_HASH = {0 => '待审核',1 => '审核通过',2 => '审核拒绝'}
+
 
   CANCEL_CODE_0 = 0 #谁取消的报名  学员
   CANCEL_CODE_1 = 1 #谁取消的报名  企业管理员
@@ -156,20 +158,20 @@ class Order
       user = order.user
 
       if u.is_admin?
-        if order.state == STATE_CODE_1  # 取消有效报名 系统管理员删除有效报名的时候没有三天时间的限制
-          order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
-          #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:course_id})            
-        else #取消无效报名
-          if order.status == STATUS_CODE_0 && order.state == STATE_CODE_0
-            #只有系统管理员和企业管理员都没有审核的情况下发送 短信
-            #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
-          end
-          order.destroy    
-        end
+        # if order.state == STATE_CODE_1  # 取消有效报名 系统管理员删除有效报名的时候没有三天时间的限制
+        #   order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
+        #   #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:course_id})            
+        # else #取消无效报名
+        #   if order.status == STATUS_CODE_0 && order.state == STATE_CODE_0
+        #     #只有系统管理员和企业管理员都没有审核的情况下发送 短信
+        #     #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
+        #   end
+        #   order.destroy    
+        # end
       elsif u.is_manager?
         if order.state == STATE_CODE_1  # 取消有效报名
           if order.start_date - Date.today > 3
-            order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
+            return order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
             #SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})            
           else
             return ErrorEnum::ORDER_CAN_NOT_CANCEL
@@ -179,8 +181,7 @@ class Order
             #如果该报名还未被审核就被删除，则发短信通知，否则不发通知
             #SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:u.name})
           end
-          order.destroy
-                    
+          return order.destroy             
         end
       else
         #用户自己取消报名
@@ -190,18 +191,149 @@ class Order
             manager = u.company.manager
             if manager.present? && manager.mobile.present?
               #SmsWorker.perform_async("user_cancel_effective_order",manager.mobile,{couser_id:course_id,user:u.name}) #用户自主取消了有效报名，发短信到对应的管理员 
-            end          
+            end
+            return true          
           else
             return ErrorEnum::ORDER_CAN_NOT_CANCEL
           end
         else #取消无效报名
-          order.destroy      
+          return order.destroy      
         end        
       end
     else
       return ErrorEnum::ORDER_NOT_EXIST
     end
   end
+
+  # 系统管理员取消报名
+  def self.admin_cancel(params)
+    Order.where(:id.in => params[:data]).update_all(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now)
+    params[:data].each do |oid|
+      o = Order.find(oid)
+      if o.present?
+        if o.state == STATE_CODE_1  # 取消有效报名 系统管理员删除有效报名的时候没有三天时间的限制
+          o.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
+          #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:o.course_id.to_s})            
+        else #取消无效报名
+          if o.status == STATUS_CODE_0 && order.state == STATE_CODE_0
+            #只有系统管理员和企业管理员都没有审核的情况下发送 短信
+            #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
+          end
+          order.destroy    
+        end
+      end
+    end
+    return true
+  end
+
+
+  # 系统管理员做订单检索
+  def self.admin_search(params)
+    course = Course.all
+    if params[:code].present?
+      course = course.where(code:/#{params[:code]}/)
+    end
+    if params[:name].present?
+      course = course.where(name_en:/#{params[:name]}/)
+    end
+    if params[:start].present?
+      course = course.where(:start_date.gte => DateTime.parse(params[:start]))
+    end
+    if params[:end].present?
+      course = course.where(:end_date.lte => DateTime.parse(params[:end]))
+    end
+    if params[:content].present?
+      course = course.where(content_type:params[:content])
+    end
+    if params[:city].present?
+      course = course.where(city:params[:city])
+    end
+    if params[:t] == 'o'
+      course = course.published
+    elsif params[:t] == 'n'
+      course = course.going
+    elsif params[:t] == 'c'
+      course = course.canceld
+    else
+      course = course.passed
+    end
+
+    orders = course.map{|e| e.orders}.flatten
+    # binding.pry
+    if params[:company].present?
+      company = Company.find(params[:company])
+      uids = company.users.map{|e| e.id.to_s}
+      # orders = orders.where(:user_id.in => uids)
+      orders = orders.select{|e| uids.include?(e.user_id.to_s)}
+    end
+
+    if params[:state].present?
+      # orders = orders.where(state:params[:state].to_i)
+      orders = orders.select{|e| e.state == params[:state].to_i}
+    end
+
+    if params[:status].present?
+      # orders = orders.where(status:params[:status].to_i)
+      orders = orders.select{|e| e.status == params[:status].to_i}
+    end
+
+    if params[:cancel].present?
+      if params[:cancel] == 'true'
+        # orders = orders.where(is_cancel:true)
+        orders = orders.select{|e| e.is_cancel == true}
+      else
+        # orders = orders.where(is_cancel:false)
+        orders = orders.select{|e| e.is_cancel == false}
+      end
+    end
+
+    return orders
+  end
+
+  # 系统管理员审核报名操作
+  def self.check_order(params)
+    params[:data].each do |oid|
+      o = Order.find(oid)
+      user = o.user
+
+      state_at = o.state_at
+      state_at << Time.now  
+
+      if params[:type] == 'allow'
+        o.update_attributes(state:STATE_CODE_1,state_at:state_at) if o.state != STATE_CODE_1 # 只有在订单没有审核或者审核拒绝的情况下做允许的操作
+        #SmsWorker.perform_async("admin_allow_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核通过的短信
+      else
+        o.update_attributes(state:STATE_CODE_2,state_at:state_at) if o.state != STATE_CODE_2 # 只有在订单没有审核或者审核通过的情况下做拒绝操作
+        #SmsWorker.perform_async("admin_refuse_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核拒绝的短信
+      end
+    end
+    return true
+  end
+
+  # 系统管理员标示课程的出席情况
+  def self.make_attend(params)
+    params[:data].each do |oid|
+      o = Order.find(oid)
+      o.update_attributes(presence:false) if params[:type] == 'absent'
+      o.update_attributes(presence:true)  if params[:type] == 'attend'
+    end
+    return true
+  end
+
+  # def self.to_csv
+  #   file = Spreadsheet::Workbook.new
+  #   Spreadsheet.client_encoding = 'UTF-8'
+  #   sheet1 = file.create_worksheet
+  #   sheet1.name = '数据导出报告'  
+  #   sheet1.insert_row 0, self.col
+  #   self.where(:status.ne => EDIT).each_with_index do |ans,idx|
+  #     sheet1.insert_row idx+1, ans.ad
+  #   end
+  #   path = Rails.root.to_s + "/public/export_data.xls"
+  #   file.write path
+  #   return path
+  # end
+
 
 
   def show_state
@@ -214,6 +346,11 @@ class Order
     return '待审核'   if self.status == STATUS_CODE_0
     return '审核通过' if self.status == STATUS_CODE_1
     return '审核拒绝' if self.status == STATUS_CODE_2   
+  end
+
+  def cancel_or_not
+    return '已取消' if self.is_cancel == true
+    return '未取消' if self.is_cancel == false
   end
 
   def can_cancel

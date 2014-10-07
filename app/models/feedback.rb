@@ -96,7 +96,7 @@ class Feedback
       result = result.where(code:/#{params[:code]}/)
     end
     if params[:name].present?
-      result = result.where(name:/#{params[:name]}/)
+      result = result.where(name_en:/#{params[:name]}/)
     end
 
     if params[:content].present?
@@ -108,10 +108,10 @@ class Feedback
     end
     
     if params[:start].present?
-      result = result.where(:start_date.gte => params[:start_date])
+      result = result.where(:start_date.gte => DateTime.parse(params[:start_date]))
     end
     if params[:end].present?
-      result = result.where(:end_date.lte => params[:end_date])
+      result = result.where(:end_date.lte => DateTime.parse(params[:end_date]))
     end
     if params[:t] == 'w'
       result = result.select{|e| e.feedbacks.count ==  0}  

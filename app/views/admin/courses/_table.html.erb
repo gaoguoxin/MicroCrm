@@ -1,10 +1,10 @@
 <% if params[:status].to_i == Course::STATUS_CODE_0%>
 <!-- 规划中-->
-  <% if cousrses['data'].length > 0 %>
-    <% cousrses['data'].each do |course|%>
+  <% if courses['data'].length > 0 %>
+    <% courses['data'].each do |course|%>
       <tr>
         <td><%= course.code %></td>
-        <td>中文:<%= course.name_cn%><br />英文:<%= course.name_en%></td>
+        <td class='cname'><%= course.name_en%></td>
         <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
@@ -25,21 +25,19 @@
   <% end %>
 <%elsif params[:status].to_i == Course::STATUS_CODE_1%>
 <!-- 已发布-->
-  <% if cousrses['data'].length > 0 %>
-    <% cousrses['data'].each do |course|%>
+  <% if courses['data'].length > 0 %>
+    <% courses['data'].each do |course|%>
       <tr>
         <td><%= course.code %></td>
-        <td>中文:<%= course.name_cn%><br />英文:<%= course.name_en%></td>
+        <td class='cname'><%= course.name_en%></td>
         <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
         <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
         <td>
-          <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看/修改</a>
-          <% if current_user.is_admin? %>
-            <a data-method="delete" class="delete-course" href="<%=admin_course_path(course)%>">删除</a>
-          <% end %>
+          <a href="<%=admin_course_path(course)%>" class='edit-course info small' id="<%= course.id.to_s %>" role='button'>查看/修改</a><br/>
+          <a href="javascript:void(0);" class='proxy yellow small' data-id="<%= course.id.to_s %>" role='button'>代理&nbsp;报名</a>
         </td>
       </tr>
     <% end %>
@@ -50,8 +48,68 @@
   <% end %>
 <%elsif params[:status].to_i == Course::STATUS_CODE_2%>
 <!-- 授课中-->
+  <% if courses['data'].length > 0 %>
+    <% courses['data'].each do |course|%>
+      <tr>
+        <td><%= course.code %></td>
+        <td class='cname'><%= course.name_en%></td>
+        <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
+        <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
+        <td><%= course.city %></td>
+        <td><%= course.content_type%></td>
+        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td>
+          <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
+    </tr>  
+  <% end %>
 <%elsif params[:status].to_i == Course::STATUS_CODE_3%>
 <!-- 已交付-->
+  <% if courses['data'].length > 0 %>
+    <% courses['data'].each do |course|%>
+      <tr>
+        <td><%= course.code %></td>
+        <td class='cname'><%= course.name_en%></td>
+        <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
+        <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
+        <td><%= course.city %></td>
+        <td><%= course.content_type%></td>
+        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td>
+          <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
+    </tr>  
+  <% end %>
 <%else%>
 <!-- 已取消-->
+  <% if courses['data'].length > 0 %>
+    <% courses['data'].each do |course|%>
+      <tr>
+        <td><%= course.code %></td>
+        <td class='cname'><%= course.name_en%></td>
+        <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
+        <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
+        <td><%= course.city %></td>
+        <td><%= course.content_type%></td>
+        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td>
+          <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="8" class='no-data align-center'>没有查到任何数据</td>  
+    </tr>  
+  <% end %>
 <% end %>

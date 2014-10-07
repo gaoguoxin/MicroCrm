@@ -49,7 +49,7 @@ class Course
   field :start_time,type:String
   field :end_date,type:Date
   field :end_time,type:String
-  field :duration,type:String #课程持续时间,以天我为单位
+  field :duration,type:String #课程持续时间,以天为单位
   field :lim_num,type:Integer #最多容纳人数
   field :description, type: String # 课程描述 2048 leter
   field :city,type:String # 城市  上海，北京，广州，其他城市，在线
@@ -77,6 +77,7 @@ class Course
   scope :uncharge, -> {where(charge_category:CHARGE_TYPE_1)}
   scope :going, -> {where(:start_date.lte => Date.today,:end_date.gte => Date.today)}
   scope :passed, -> {where(status:STATUS_CODE_3)}
+  scope :canceld,-> {where(status:STATUS_CODE_4)}
   after_save :send_msg
 
   def send_msg
@@ -104,8 +105,8 @@ class Course
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
-    SmsWorker.perform_async("lesson_published_to_manager",mlist,{date:self.start_date,city:self.city,name:self.name_cn})
-    SmsWorker.perform_async("lesson_published_to_student",slist,{date:self.start_date,city:self.city,name:self.name_cn})
+    SmsWorker.perform_async("lesson_published_to_manager",mlist,{date:self.start_date,city:self.city,name:self.name_en})
+    SmsWorker.perform_async("lesson_published_to_student",slist,{date:self.start_date,city:self.city,name:self.name_en})
     # self.notice_at.split(',').each do |d|
     #   send_time = (self.start_date - d.to_i.day).strftime('%Y%m%d600000') # 指定6点发送
     #   #这里有个bug，就是第一次的时候指定了发送时间，但是上课时间变更了，那么这个时候，新的指定时间又产生了
@@ -117,7 +118,7 @@ class Course
 
   #取消课程短信
   def send_cancel_msg
-    Order.cancel(self.id.to_s)
+    Order.cancel(self.id.to_s)  # 这个可能是个bug，需要待确认
     slist = self.orders.map{|e| e.user.mobile}
     SmsWorker.perform_async("lesson_canceled_to_student",slist,{date:self.start_date,city:self.city,name:self.name_en})
   end
@@ -156,7 +157,28 @@ class Course
   end
 
 
-  def admin_search
+  def self.admin_search(params)
+    courses = Course.where(status:params[:status].to_i)
+    if params[:code].present?
+      courses = courses.where(code:/#{params[:code]}/)
+    end
+    if params[:name].present?
+      courses = courses.wehre(name:/#{params[:name]}/)
+    end
+    if params[:content].present?
+      courses = courses.where(content_type:params[:content])
+    end
+    if params[:city].present?
+      courses = courses.where(city:params[:city])
+    end
+    if params[:start].present?
+      courses = courses.where(:start_date.gte => DateTime.parse(params[:start]))
+    end
+    if params[:end].present?
+      courses = courses.where(:end_date.lte => DateTime.parse(params[:end]))
+    end
+    return courses
+
   end
 
 

@@ -1,25 +1,186 @@
-<h1>Listing orders</h1>
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/admin/orders-bundle" %>
+  <%= javascript_include_tag "pages/admin/orders-bundle" %>
+  <script type="text/javascript">
+  </script>
+  <%= yield :head %>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @orders.each do |order| %>
-      <tr>
-        <td><%= order.status %></td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<% content_for :left_side do %>
+  <%= render :partial => 'admin/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="flash-notice row success double-padded"></div>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span><span class="locate">报名表管理<i class="fa fa-angle-double-right"></i><%=sub_order_nav(params[:t])%></span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span><%=sub_order_nav(params[:t],true)%></span>
+    </div>
+  </div>
+  <div class="row right-main triple-pad-left">
+    <div class="search-container">
+      <form class='info search-form'>
+          <div class="row">
+            <input type='hidden' name='t' value="<%= params[:t]%>">
+            <div class="one fourth padded">
+              <input id="search_code" name='code' type="text" placeholder="课程代码">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_name" name='name'  type="text" placeholder="课程名称">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_start" name='start' type="text" placeholder="课程开始时间">
+            </div>
+            <div class="one fourth padded">
+              <input id="search_end" name='end' type="text" placeholder="课程结束时间">
+            </div>                                
+          </div>
+          <div class="row">
+            <div class="one fourth padded">
+              <span class="select-wrap">
+                <select class="unselected" name="state" id='search_state'>
+                  <option value="" disabled="" selected="">系统审核状态</option>
+                  <% Order::STATE_CODE_HASH.each_pair do |k,v| %>
+                    <option value="<%= k %>" <% if params[:state] == k %>selected='selected' <% end %> ><%= v %></option>
+                  <% end %>
+                </select>
+              </span>                 
+            </div>
+            <div class="one fourth padded">
+              <span class="select-wrap">
+                <select class="unselected" name="status" id="search_status">
+                  <option value="" disabled="" selected="">单位审核状态</option>
+                  <% Order::STATUS_CODE_HASH.each_pair do |k,v| %>
+                    <option value="<%= k %>" <% if params[:status] == k %> selected='selected'<% end %> ><%= v %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>
+            <div class="one fourth padded">
+              <span class="select-wrap">
+                <select class="unselected" name="cancel" id='search_cancel'>
+                  <option value="" disabled="" selected="">是否取消</option>
+                  <option value="true" <% if params[:cancel] == 'true' %>selected='selected' <% end %> >是</option>
+                  <option value="false" <% if params[:cancel] == 'false' %>selected='selected' <% end %> >否</option>
+                </select>
+              </span>                 
+            </div> 
+
+            <div class="one fourth padded">
+              <span class="select-wrap">
+                <select class="unselected" name="content" id="search_content">
+                  <option value="" disabled="" selected="">内容类型</option>
+                  <% Course::CONTENT_TYPE_ARRAY.each do |level| %>
+                    <option value="<%= level %>" <% if params[:content] == level %>selected='selected'<% end%> ><%= level %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="one half padded">
+              <span class="select-wrap">
+                <select class="unselected" name="city" id="search_city">
+                  <option value="" disabled="" selected="">城市</option>
+                  <% Course::CITY_ARRAY.each do |city| %>
+                    <option value="<%= city %>" <% if params[:city] == city %>selected='selected'<% end%> ><%= city %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>           
+            <div class="one half padded">
+              <span class="select-wrap">
+                <select class="unselected" name="company" id='search_company'>
+                  <option value="" disabled="" selected="">单位名称</option>
+                  <% Company::actived.each do |company| %>
+                    <option value="<%= company.id.to_s %>" <% if params[:company] == company.id.to_s %>selected='selected' <% end %> ><%= company.name %></option>
+                  <% end %>
+                </select>
+              </span>                 
+            </div>    
+            <div class="row">
+              <div class="one whole padded">
+                <button class="block info search-orders">搜索</button>
+              </div>               
+            </div>
+          </div>
+      </form>
+    </div>
+    <% if params[:t] == 'p'%>
+      <%= link_to "ExportExcel", admin_orders_path(:format => 'xls',:code => params[:code],:name => params[:name],:start => params[:start],:end => params[:end],:state => params[:state],:status => params[:status],:cancel => params[:cancel],:content => params[:content],:city => params[:city],:company => params[:company],:t => params[:t]),:class=> 'gap-bottom gap-right pull-right yellow',:role => 'button'%>  
     <% end %>
-  </tbody>
-</table>
+    <table class="responsive responsiveTable  <%= @orders.length > 0 ? 'info' : 'error' %>" data-max="15">
+      <thead>
+        <tr>
+          <th>代码:名称</th>
+          <th>城市</th>
+          <th>报名人</th>
+          <th>所在单位</th>
+          <th>系统审核</th>
+          <th>单位审核</th>
+          <th>是否取消</th>
+          <th>报名时间</th>
+          <% if params[:t] == 'p'%>
+            <th>是否缺席</th>
+          <% end %>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => '/admin/orders/table',:locals => {:orders => @orders}%>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="one whole check-tool double-gap-top double-gap-bottom">
+        <div class="row">
+          <% if params[:t] == 'p'%>
+            <div class="two ninths skip-six align-right">
+              <button class="absent red">标为缺席</button>
+              <button class="attend green">标为出席</button> 
+            </div>
+            <div class="one ninth align-center">
+              <ul class="checklist">
+                <li class="blue">出/缺席</li>
+              </ul>
+            </div>            
+          <% elsif params[:t] == 'o'%>
+            <div class="two ninths skip-five align-right">
+              <button class="allow green">允许</button>
+              <button class="refuse yellow">拒绝</button>   
+              <button class="cancel red">取消</button>             
+            </div>
+            <div class="two ninths align-right">
+              <ul class="checklist">
+                <li class="blue">允许/拒绝/取消</li>
+              </ul>
+            </div>
+          <% end %>
+        </div>
 
-<br>
+      </div>
+    </div>
+    <div class="page-container">
+      <%= admin_paginator_ajax('order',@orders,{:code => params[:code],:name => params[:name],:start => params[:start],:end => params[:end],:state => params[:state],:status => params[:status],:cancel => params[:cancel],:content => params[:content],:city => params[:city],:company => params[:company],:t => params[:t]}) %>
+    </div>    
+  </div>
 
-<%= link_to 'New Order', new_order_path %>
+  <article class="confirm-box row"> 
+  <div class="one whole padded">
+    <div class="content box  red align-center">  
+      <strong>取消报名将使得这部分学员无资格上课，确定要取消？</strong>
+    </div>     
+    <div class="row double-pad-top double-pad-bottom">
+      <button class="info one half warning sure-operation">确定</button>
+      <button class="info one half success cancel-operation">取消</button>
+    </div>  
+  </div>
+</article>
+
+
+
+<% end %>

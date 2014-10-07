@@ -1,6 +1,12 @@
 #=require jquery.timepicker.min
 $(->
-	$("#course_start_date,#course_end_date").datepicker({dateFormat: "yy-mm-dd",showAnim:'show',minDate:0})
+
+	bottom_left_height  = $('.bottom-left').height()
+	bottom_right_height = $('.bottom-right .right-cont').height()
+	if bottom_left_height > bottom_right_height
+		$('.bottom-right .right-cont').height(bottom_left_height)
+	$("#search_start,#search_end").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})	
+	$("#course_start_date,#course_end_date").datepicker({dateFormat: "yy-mm-dd",showAnim:'show'})
 	$('#course_start_time').timepicker({ 'timeFormat': 'h:i A','step': 5 })
 	$('#course_end_time').timepicker({ 'timeFormat': 'h:i A','step': 5 })
 
@@ -82,6 +88,33 @@ $(->
 			else
 				$('form').submit() # 如果一个课程不是被设置为了发布中，那么不需要填写短息提醒内容，直接提交表单。
 
+	open_proxy_box = (obj)->
+		$.fancybox.open($('.proxy-box'),{
+			padding:0,
+			autoSize:true,
+			# scrolling:no,
+			minWidth:800,
+			minHeight:800,
+			openEffect:'none',
+			closeEffect:'none',        
+			helpers : {
+			  overlay : {
+			    locked: false,
+			    closeClick: false,
+			    css : {
+			      'background' : 'rgba(51, 51, 51, 0.2)'
+			    }
+			  }
+			},
+			beforeShow:->
+				$('.proxy-box h6').text(obj.parents('td').siblings('td.cname').text())
+				$('.proxy-box .content').html()
+				# $('.proxy-box .multiple_proxy').attr('data-cid',cid)
+
+
+		})		
+
+
 	$('form.info input,select,textarea').focus(->
 		$(@).parent('.padded').removeClass('invalid')
 	)
@@ -118,8 +151,25 @@ $(->
 		check_msg_info()
 	)
 
+	$('body').on('click','.pagination a',->
+		unless $(@).hasClass('disabled')
+			page			= $(@).data('page')
+			code			= $(@).data('code')
+			name            = $(@).data('name')
+			start   	    = $(@).data('start')
+			end    		    = $(@).data('end')
+			content         = $(@).data('content')
+			city            = $(@).data('city')
+			status          = $(@).data('status')
+			g_data = {page:page,code:code,name:name,start:start,end:end,content:content,city:city,status:status}
 
+			if page
+				$.get("/admin/courses",g_data,->)
+	)
 
+	$('body').on('click','a.proxy',->
+		open_proxy_box($(@))
+	)
 
 
 

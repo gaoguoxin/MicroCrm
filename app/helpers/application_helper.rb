@@ -109,6 +109,19 @@ module ApplicationHelper
     end
   end
 
+  def sub_order_nav(s,desc=false)
+    if s == 'o'
+      return '尚未开课的报名表' unless desc
+      return '您需要对尚未开课的报名表进行审核,只有被系统管理员审核的报名人员才可以参与课程'
+    elsif s == 'n'
+      return '授课中的报名表' unless desc
+      return '授课中的报名表,列出的时当前正在参与授课中的报名人员列表'
+    else
+      return '已结课的报名表' unless  desc
+      return '在这里您需要对已经结课的报名表做出勤的矫正'
+    end
+  end
+
 
   def admin_paginator_ajax(ckass,items,opt)
     render :partial => "/admin/partical/paginate_#{ckass}_ajax", :locals => {:common => items,:param => opt}

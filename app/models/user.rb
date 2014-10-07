@@ -346,11 +346,11 @@ class User
   #查询某个用户的反馈
   def get_feedbacks(params)
     if params[:t] == 'w' #等待填写的反馈
-      course_id = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map(&:course_id).map{|e| e.to_s}
+      course_id = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map{|e| e.course_id.to_s}
       courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
       courses = courses.select{|e| e.feedbacks.length <= 0}
     else #已经填写的反馈
-      courses = self.feedbacks.map{|f| f.course}
+      courses = self.feedbacks.map{|f| f.course}.flatten
     end
     return courses
   end
@@ -358,11 +358,11 @@ class User
   def manager_feedbacks(params)
     user_ids = self.employees
     if params[:t] == 'w' #等待填写的反馈
-      course_id = Order.where(is_cancel:false,state:Order::STATE_CODE_1,:user_id.in => user_ids).map(&:course_id).map{|e| e.to_s}
+      course_id = Order.where(is_cancel:false,state:Order::STATE_CODE_1,:user_id.in => user_ids).map{|e| e.course_id.to_s}
       courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
       courses = courses.select{|e| e.feedbacks.length <= 0}
     else #已经填写的反馈
-      courses = Feedback.where(:user_id.in => user_ids).map{|e| e.course}
+      courses = Feedback.where(:user_id.in => user_ids).map{|e| e.course}.flatten
     end
     return courses    
   end
@@ -378,7 +378,7 @@ class User
     if params[:t] == 'o' # 开放中的课程
       result =  Course.published
       if params[:name].present?
-        result = result.where(name:/#{params[:name]}/)
+        result = result.where(name_en:/#{params[:name]}/)
       end
 
       if params[:code].present?
@@ -394,11 +394,11 @@ class User
       end
 
       if params[:start].present?
-        result = result.where(:start_date.gte => params[:start])
+        result = result.where(:start_date.gte => DateTime.parse(params[:start]))
       end 
 
       if params[:end].present?
-        result = result.where(:end_date.lte => params[:end])
+        result = result.where(:end_date.lte => DateTime.parse(params[:end]))
       end
 
       return result
@@ -413,18 +413,18 @@ class User
 
     if params[:t] == 'n' # 进行中的课程
       cids = Course.going.map{|e| e.id.to_s}
-      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => false,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => false,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}.flatten
       return result
     end
 
     if params[:t] == 'p' # 参与过的课程
       cids = Course.passed.map{|e| e.id.to_s}
-      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => true,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}
+      result =  Order.where(:user_id.in => uids,:is_cancel => false,:passed => true,:state => Order::STATE_CODE_1,:course_id.in => cids).map{|e| e.course}.flatten
       return result
     end
 
     if params[:t] == 'c' # 取消的课程
-      result =  Order.where(:user_id.in => uids,:is_cancel => true,:state => Order::STATE_CODE_1).map{|e| e.course}
+      result =  Order.where(:user_id.in => uids,:is_cancel => true,:state => Order::STATE_CODE_1).map{|e| e.course}.flatten
       return result
     end
 
