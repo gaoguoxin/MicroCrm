@@ -2,29 +2,22 @@
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
+set :output, {
+    :error    => "#{path}/log/error.log",
+    :standard => "#{path}/log/cron.log"
+}
 
-# Example:
-#
+case @environment
+when 'production'
+	every 5.minutes do 
+		runner "Course.say_abc"
+	end
+	every 1.day, :at => '6:00 am' do
+	  runner "Course.send_pre_notice"
+	end
 
-set :output, {:error => "cron_error.log", :standard => "cron.log"}
-every :day do 
-	runner "Course.check_and_send_notice"
+when 'development'
+	every 5.minutes do 
+		runner "Course.batch_update_status"
+	end
 end
-
-every '1 * * * *' do
-  runner "Course.say_abc"
-end
-
-
-#
-# every 2.hours do
-#   command "/usr/bin/some_great_command"
-#   runner "MyModel.some_method"
-#   rake "some:great:rake:task"
-# end
-#
-# every 4.days do
-#   runner "AnotherModel.prune_old_records"
-# end
-
-# Learn more: http://github.com/javan/whenever

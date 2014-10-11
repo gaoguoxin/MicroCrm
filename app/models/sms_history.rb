@@ -7,4 +7,5 @@ class SmsHistory
   field :type, :type => String
   field :status, :type => String
   field :seqid, :type => Integer
+  field :result,:type => Hash
 end

@@ -19,10 +19,10 @@ class Card
   field :type, type: Integer,default:CARD_TYPE_1 # 订单、冲销单
   field :status_payment,type: Integer,default:PAY_STATUS_PAYING #等待付款已付款
   field :status_execution,type: Integer,default:EXEC_STATUS_0 #执行状态
-  field :quantity_purchased,type:Integer,default:0 #购买的人天数
-  field :quantity_used,type: Integer,default:0 #已使用人天数
-  field :amount_payable,type: Integer,default:0 #应付金额人民币
-  field :amount_paid,type: Integer,default:0 #实付金额人民币
+  field :quantity_purchased,type:Float,default:0 #购买的人天数
+  field :quantity_used,type: Float,default:0.0 #已使用人天数
+  field :amount_payable,type: Float,default:0 #应付金额人民币
+  field :amount_paid,type: Float,default:0 #实付金额人民币
   field :date_paid,type: Date # 付款日期
   field :buyer_voucher,type: String #买方付款凭证号
   field :receipt_num,type: String #发票号
@@ -42,7 +42,7 @@ class Card
     
     return true
   end
-
+  #系统管理员查看学习卡
   def self.search(opt)    
     result = self.all
     if opt['company'].present? 
@@ -64,6 +64,7 @@ class Card
     if opt['status'].present?    
       result = result.where(status_payment: opt['status'].to_i)
     end 
+
     if opt['type'].present?    
       result = result.where(type: opt['type'].to_i)
     end 
@@ -84,6 +85,19 @@ class Card
   def self.check_serial(opt)
     card = Card.where(serial_number:opt[:num]).first
   end
+
+  #执行状态
+  def status_execution
+    if self.quantity_used.to_f > 0
+      return EXEC_STATUS_1
+    elsif self.quantity_used.to_f >= self.quantity_purchased
+      return EXEC_STATUS_2
+    else
+      return EXEC_STATUS_0
+    end
+
+  end
+
 
 
 end

@@ -1,0 +1,1 @@
+(function(){$(function(){return $("body").on("click",".fa-search",function(){return $("form.layout-search").submit()}),$("body").on("keydown","#search-name",function(c){return 13===c.wchich?$(".fa-search").click():void 0})})}).call(this);

@@ -6,7 +6,7 @@ class User
   include FindTool
   include Mongoid::Timestamps
 
-  attr_accessor :ref
+  attr_accessor :ref,:ordered
 
   EmailRexg  = '\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z'
   MobileRexg = '^(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$' 
@@ -43,7 +43,7 @@ class User
   field :softskill,type: Boolean,default:true #是否对软技能培训感兴趣(AX+CRM)
   field :status, type: Integer,default:STATUS_ACTIVED #状态
   field :course_count,type:Integer,default:0 #有效报名课程数
-  field :course_manday_count,type: Integer,default:0 # 有效报名人天数
+  field :course_manday_count,type: Float,default:0 # 有效报名人天数
   field :qq, type: String
   field :wechart, type: String
   field :skype, type: String
@@ -66,6 +66,12 @@ class User
   scope :softskill, -> {where(softskill:true)}
   scope :qt, -> {where(crm:false,ax:false,softskill:false)}#其他课程
 
+
+  def self.create_admin
+    password = make_encrypt('111111')
+    self.create(name:'gaohan',email:'naitnix@126.com',mobile:'15210427877',role_of_system:ROLE_ADMIN,password:password)
+  end
+
   #注册用户
   def self.regist(opt,is_admin=false,is_manager=false,creater=nil)
     #is_admin 标示当前的添加用户行为是否由管理员进行
@@ -80,8 +86,8 @@ class User
     account[:type_of_position]  = opt[:type_of_position] || '销售'
     account[:creater]           = creater
     opt[:password]              = opt[:password].downcase
-
-    
+    account[:company_id]        = opt[:company_id] if opt[:company_id].present?
+    return ErrorEnum::MOBILE_ERROR unless opt[:mobile].match(/#{MobileRexg}/i)
     return ErrorEnum::NAME_BLANK unless account[:name].present? 
     return ErrorEnum::EMAIL_BLANK unless account[:email].present? unless is_admin
     return ErrorEnum::MOBILE_BLANK unless account[:mobile].present? unless is_admin
@@ -89,48 +95,52 @@ class User
 
     account[:password] = make_encrypt(opt[:password])
 
-    #exist_user = false
 
-    #user = self.find_by_email(account[:email])
-    user = self.where(email:account[:email]).actived.first
+    user = self.where(email:account[:email]).actived.first if account[:email].present?
     return ErrorEnum::EMAIL_EXIST if user.present?
-    #user = self.find_by_mobile(account[:mobile]) if(!user.present? && account[:mobile].present?)
+
     user = self.where(mobile:account[:mobile]).actived.first  if(!user.present? && account[:mobile].present?)
     return ErrorEnum::MOBILE_EXIST if user.present?
-    # exist_user = true if user.present?
-    # return ErrorEnum::USER_EXIST if exist_user
+
     if is_manager
       manager = User.find(creater)
       opt[:company_id] = manager.companies.first.id.to_s
       account[:company_id] = opt[:company_id]
     end
-    company = Company.where(id:opt[:company_id]).first unless is_admin
+    # company = Company.where(id:opt[:company_id]).first unless is_admin
+    company = Company.where(id:opt[:company_id]).first
 
     unless is_admin
       return ErrorEnum::COMPANY_NOT_EXIST unless company.present?
     end
     user = self.create(account)
-    
+    if account[:role_of_system].to_i == ROLE_MANAGER && company.present?
+      company.manager.update_attributes(role_of_system:ROLE_EMPLOYEE)
+      user.company.update_attributes(manager_id:user.id.to_s)
+    end
     if is_admin
       if user.mobile.present?
         if user.is_manager?
           #系统管理员添加企业管理员
-          #SmsWorker.perform_async("admin_add_manager",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_manager",user.mobile,{pwd:opt[:password]})
         elsif user.is_viewer?
           #系统管理员添加观察员
-          #SmsWorker.perform_async("admin_add_viewer",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_viewer",user.mobile,{pwd:opt[:password]})
         else
           #系统管理员添加学员
-          #SmsWorker.perform_async("admin_add_user",user.mobile,{password:opt[:password]})
+          #SmsWorker.perform_async("admin_add_user",user.mobile,{pwd:opt[:password]})
         end
       end      
     elsif is_manager
       #企业管理员添加学员
-      #SmsWorker.perform_async("manager_add_user",user.mobile,{password:opt[:password]})
+      #SmsWorker.perform_async("manager_add_user",user.mobile,{pwd:opt[:password],company:manager.companies.first.name})
     else 
       #用户自己注册
-      manager_mobile = company.manager.mobile
-      #SmsWorker.perform_async("user_regist",manager_mobile,{user:user.id.to_s})
+      if company.present? && company.manager.present? && company.manager.mobile.present?
+        manager_mobile = company.manager.mobile
+        #这里有个疑问，普通用户注册后还有必要通知其选择的企业的管理员么，系统里没有涉及到注册员工需要企业管理员审核的功能
+        #SmsWorker.perform_async("user_regist",manager_mobile,{user:user.id.to_s})
+      end
     end
     return user
   end
@@ -227,7 +237,7 @@ class User
       result = result.where(company_id:opt['company'])
     end
     if opt['city'].present?
-      result = result.where(city:opt['city'])
+      result = result.where(city:/#{opt['city']}/)
     end
     if opt['interest'].present?
       if opt['interest'] == 'AX培训'
@@ -318,6 +328,13 @@ class User
     else
       opt.delete('password')
     end
+    if opt[:company_id].present?
+      company = Company.find(opt[:company_id])
+      if opt[:role_of_system].to_i ==  ROLE_MANAGER
+        company.manager.update_attributes(role_of_system:ROLE_EMPLOYEE)
+        company.update_attributes(manager_id:inst.id.to_s)
+      end
+    end
     inst.update(opt)
     return inst
   end
@@ -327,6 +344,43 @@ class User
     return self.where(role_of_system:ROLE_EMPLOYEE).actived.crm.count if content_type == 'CRM'
     return self.where(role_of_system:ROLE_EMPLOYEE).actived.ax.crm.count if content_type == 'AX+CRM'
   end
+
+
+  #系统管理员为学员代理报名的时候做的代理搜索
+  def self.search_proxy(params)
+    course = Course.find(params['proxy_cid'])
+
+    users = self.actived
+    if params['company'].present?
+      users = self.where(company_id:params[:company]).actived
+    end
+    if params[:name].present?
+      users = users.where(name:params[:name].to_s.downcase)
+    end
+    if params[:email].present?
+      users = users.where(email:params[:name].to_s.downcase)
+    end
+    if params[:mobile].present?
+      users = users.where(mobile:params[:mobile])
+    end
+    data = []
+    users.each do |user|
+      tmp_obj = {}
+      tmp_obj['name'] = user.name
+      tmp_obj['uid']  = user.id.to_s
+      tmp_obj['email'] = user.email
+      order = user.orders.where(course_id:params['proxy_cid']).first
+      if order.present?
+        tmp_obj['ordered'] = true
+      else
+        tmp_obj['ordered'] = false
+      end
+      data << tmp_obj
+    end
+    return data
+  end
+
+
 
   #我的课程
   def my_course(opt)
@@ -345,14 +399,13 @@ class User
 
   #查询某个用户的反馈
   def get_feedbacks(params)
-    if params[:t] == 'w' #等待填写的反馈
       course_id = self.orders.where(is_cancel:false,state:Order::STATE_CODE_1).map{|e| e.course_id.to_s}
       courses = Course.where(:id.in => course_id,:status.in => [Course::STATUS_CODE_2,Course::STATUS_CODE_3])
       courses = courses.select{|e| e.feedbacks.length <= 0}
-    else #已经填写的反馈
-      courses = self.feedbacks.map{|f| f.course}.flatten
-    end
-    return courses
+      feedbacks = self.feedbacks
+      data = {courses:courses,feedbacks:feedbacks}
+
+      return data
   end
 
   def manager_feedbacks(params)

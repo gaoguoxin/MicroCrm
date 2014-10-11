@@ -111,7 +111,7 @@
           </div>
       </form>
     </div>
-    <% if params[:t] == 'p'%>
+    <% if params[:t] == 'o'%>
       <%= link_to "ExportExcel", admin_orders_path(:format => 'xls',:code => params[:code],:name => params[:name],:start => params[:start],:end => params[:end],:state => params[:state],:status => params[:status],:cancel => params[:cancel],:content => params[:content],:city => params[:city],:company => params[:company],:t => params[:t]),:class=> 'gap-bottom gap-right pull-right yellow',:role => 'button'%>  
     <% end %>
     <table class="responsive responsiveTable  <%= @orders.length > 0 ? 'info' : 'error' %>" data-max="15">

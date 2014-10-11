@@ -80,6 +80,21 @@ body{
 	}
 	.container.main{
 		background:#fff;
+		.tabs{
+			ul{
+				li{
+					background: #e7e8eb;
+					&.active{
+						background:#fff;	
+					}					
+				}
+				&.unstyled{
+					li{
+						background:#fafafa;	
+					}
+				}
+			}
+		}
 	}
 }
 

@@ -1,0 +1,19 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/index-bundle" %>
+  <%= javascript_include_tag "pages/default/index-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+<div class="row triple-gap-top triple-pad-top triple-pad-bottom">
+    <div class="container main triple-padded">
+      <article class="row">
+        <div class="one whole box">
+          致电客服:010-85892607
+        </div>
+      </article>  
+    </div>
+</div>

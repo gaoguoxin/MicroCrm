@@ -1,4 +1,6 @@
 <% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/user/feedbacks-bundle" %>
+  <%= javascript_include_tag "pages/user/feedbacks-bundle" %>
   <script type="text/javascript">
   jQuery(function($) {
 
@@ -6,61 +8,21 @@
   </script>
   <%= yield :head %>
 <% end %>
-
-
-<% content_for :left_side do %>
-  <%= render :partial => '/user/partial/left_side' %>
-<% end %>
-
-<% content_for :right_side do %>
-  <div class="row right-head triple-pad-left triple-pad-right">
-    <span class="fa fa-flag-o"></span>
-    <span class="locate">反馈管理<i class="fa fa-angle-double-right"></i><%= if params[:t] == 'w'; '待反馈课程' else '已反馈课程'; end %></span>
-  </div>
-  <div class="row right-notice triple-pad-left triple-pad-right">
-    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
-      <i class="fa fa-info"></i>
-      <span>未审核的反馈可以进行修改，一旦审核，则不能再次修改反馈内容</span>
+<div class="row triple-gap-top triple-pad-top triple-pad-bottom">
+    <div class="container main triple-padded">
+      <article class="row">
+        <div class="tabs ipad">
+          <ul role="tablist" class='tablist'>
+            <li role="tab" class='one fourth' aria-controls="#tab1" href="<%= user_feedbacks_path %>" >已反馈课程</li>
+            <li role="tab" class='one fourth' aria-controls="#tab2" href="<%= user_feedbacks_path(:t =>'w') %>" >未反馈课程</li>
+          </ul>
+          <div id="tab1" role="tabpanel">
+          	<%= render :partial => '/user/feedbacks/tab1',:locals => {:feedbacks => @data[:feedbacks]} %>
+          </div>
+          <div id="tab2" role="tabpanel">
+          	<%= render :partial => '/user/feedbacks/tab2',:locals => {:courses => @data[:courses]} %>    
+          </div>                    
+        </div>
+      </article> 
     </div>
-  </div>
-  <div class="row triple-pad-left triple-pad-right">
-    <table class="responsive responsiveTable>" data-max="15">
-      <thead>
-        <tr>
-          <th>编码</th>
-          <th>名称</th>
-          <th>开始时间</th>
-          <th>结束时间</th>
-          <th>城市</th>
-          <th>内容类型</th>
-          <th>教师姓名</th>
-          <th>状态</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% if @courses['data'].length > 0 %>
-        <% @courses['data'].each do |order|%>
-          <tr>
-            <td><%= course.code%></td>
-            <td><%= course.name_en%></td>
-            <td><%= course.start_date.strftime('%F')%><br><%=course.start_time%></td>
-            <td><%= course.end_date.strftime('%F')%><br><%=course.end_time%></td>
-            <td><%= course.show_city%></td>
-            <td><%= course.delivery_type%></td>
-            <td class='align-center'><%= image_tag(show_small_avatar(course))%><br/><%= course.instructor%></td>
-            <td><%= order.show_state %></td>
-            <td>
-              <a href="/courses/<%= order.course.id.to_s%>" target="_blank">反馈</a>
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td colspan="9" class='align-center'>暂时没有查到数据</td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>   
-  </div>   
-<% end %>
+</div>      

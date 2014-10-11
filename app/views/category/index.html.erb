@@ -10,94 +10,85 @@
 <% end %>
 <div class="row triple-gap-top triple-pad-top triple-pad-bottom">
     <div class="container main triple-padded">
-      <article class="row tool padded">
-        <div>
-          <div class="row select-tool">
-            <div class="blue padded">
-              <ul class="checklist turquoise eleven twelfths">
-                <li class='half-gap-top gap-right pull-right select-all' >全选/全不选</li>
-              </ul> 
-              <button class="round one twelfth multip-start">报名</button>
-            </div>
-          </div>   
-        </div>
-      </article>
-      <%if @courses['data'].length > 0%>
-      <% @courses['data'].each_slice(2) do |c_arr|%>
-        <article class="row">
-          <% c_arr.each do |course|%>
-          <div class="one half">
-            <div class="row">
-              <div class="one fourth padded">
-                <div class="avatar">
-                <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
-                  <%=image_tag(show_thumb_avatar(course)) %>
-                </a>
-                  
-                </div>
+      <% if @courses['data'].length > 0 %>
+        <article class="row tool padded">
+          <div>
+            <div class="row select-tool">
+              <div class="blue padded">
+                <ul class="checklist turquoise eleven twelfths">
+                  <li class='half-gap-top gap-right pull-right select-all' >全选/全不选</li>
+                </ul> 
+                <button class="round one twelfth multip-start">报名</button>
               </div>
-              <div class="three fourth padded">
-                <div class="row">
-                  <div class="eleven twelfth">
-                    <div class="row c-title">
-                      <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
-                        <b>
-                          <span class="code"><%= course.code%>:</span>
-                          <span class="title"><%= course.name_en %></span>
-                        </b>                        
-                      </a>
-
-                    </div>
-                    <div class="row audience">
-                      受众对象:
-                      <span class="audiencer">
-                        <%= course.audience%>
-                      </span>
-                    </div>
-                    <div data-truncate="2" class="row description">
-                      <%= course.description %>
-                    </div>
-                    <div class="row more"><a href="<%=course_path(course)%>" target='_blank'>More</a></div>
-                    <div class="row pagement pad-top">
-                      <div class="one fifth">
-                        <button class="start success half-gap-bottom small" data-id="<%= course.id.to_s %>">报名</button>
-                        <% if course.can_feed && current_user.present? %>
-                          <button class="feedback info small" data-id="<%= course.id.to_s %>">反馈</button>
-                        <% else %>
-                          <button class="small" data-id="<%= course.id.to_s %>">反馈</button>
-                        <% end %>
-                      </div>
-                      <div class="two fifths">
-                        <p class='duration'>时长:<%= course.duration %></p>
-                        <p class="level">LEVEL:<%= course.difficulty_level %></p>
-                      </div>
-                      <div class="two fifths">
-                        <p class="pub">时间:<%= course.start_date.strftime('%Y年%m月%d日')%></p>
-                        <p class="city">城市:<%= course.show_city %></p>
-                      </div>
-                    </div>                  
-                  </div>
-                  <div class="one twelfth">
-                    <ul class="checklist select-list">
-                      <li data-id="<%= course.id.to_s%>"></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>          
+            </div>   
           </div>
-          <% end %>
         </article>
+        <% @courses['data'].each_slice(2) do |c_arr|%>
+          <article class="row">
+            <% c_arr.each do |course|%>
+            <div class="one half">
+              <div class="row">
+                <div class="one fourth padded">
+                  <div class="avatar">
+                  <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
+                    <%=image_tag(show_thumb_avatar(course)) %>
+                  </a>
+                  </div>
+                </div>
+                <div class="three fourth padded">
+                  <div class="row">
+                    <div class="one whole">
+                      <div class="row c-title">
+                        <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
+                          <b>
+                            <span class="title"><%= course.name_cn %></span>
+                          </b>                        
+                        </a>
+                      </div>
+                      <div class="row pagement double-pad-top">
+                        <div class="three fifths">
+                          <p class="pub">开始日期:<%= course.start_date.strftime('%Y年%m月%d日')%></p>
+                          <p class='duration'>时长:<%= course.duration %>天</p>
+                        </div>
+                        <div class="two fifths">
+                          <p class="city">城市:<%= course.show_city %></p>
+                          <div class="row">
+                            <% if course.open?%>
+                              <button class="start success one half" data-id="<%= course.id.to_s %>">报名</button>
+                            <% else%>
+                              <button class="" data-id="<%= course.id.to_s %>">报名</button>
+                            <% end %>   
+                            <ul class="checklist select-list large one half align-center">
+                              <li data-id="<%= course.id.to_s%>"></li>
+                            </ul>                            
+                          </div>
+                        </div>                        
+                      </div>                  
+                    </div>
+                  </div>
+                </div>
+              </div>          
+            </div>
+            <% end %>
+          </article>
+          <%if @courses['total_page'] > 1 %>
+          <article class="paginate triple-padded">
+            <div class="one twelfth">
+              <a href="/category?t=<%=params['t']%>&page=<%=@courses['previous_page']%>">上一页</a>
+            </div>
+            <div class="ten twelfths center">第 <%= @courses['current_page'] %> 页/共 <%= @courses['total_page'] %> 页</div>
+            <div class="one twelfth">
+              <a href="/category?t=<%=params['t']%>&page=<%=@courses['next_page']%>">下一页</a>
+            </div>
+          </article>
+          <% end %>
+        <% end %> 
+      <% else %>
+        <div class="error box align-center no-data">
+          对不起,该分类下暂时没有可以报名的课程
+        </div>
       <% end %>
-      <article class="paginate triple-padded">
-        <div class="one twelfth">
-          <a href="/category?t=<%=params['t']%>&page=<%=@courses['previous_page']%>">上一页</a>
-        </div>
-        <div class="ten twelfths center">第 <%= @courses['current_page'] %> 页/共 <%= @courses['total_page'] %> 页</div>
-        <div class="one twelfth">
-          <a href="/category?t=<%=params['t']%>&page=<%=@courses['next_page']%>">下一页</a>
-        </div>
-      </article>
-      <% end %>                            
+
+                           
     </div>
 </div>

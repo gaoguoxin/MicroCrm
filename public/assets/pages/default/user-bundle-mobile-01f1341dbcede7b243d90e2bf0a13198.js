@@ -1,0 +1,1 @@
+(function(){$(function(){return $("body").on("click","button.info-sub",function(n){return n.preventDefault(),$.post("/users/update_info",$("form").serialize(),function(){return window.location.reload()})})})}).call(this);

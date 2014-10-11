@@ -1,227 +1,113 @@
 #encoding: utf-8
 require 'rubygems'
 require 'httparty'
-
+require 'open-uri'
 class SmsApi # 短信接口
 
   attr_reader :phone_number, :message
 
   include HTTParty
-# base_uri 'http://sdkhttp.eucp.b2m.cn'
-  base_uri 'http://219.239.91.112'
-  format  :xml
 
-  def initialize(phone_number, message)
-    @phone_number = phone_number
-    @message = message
-  end
+  base_uri 'http://yunpian.com/v1'
 
-  # test account
-  # CDKEY = "0SDK-EBB-0130-NEXUR"
-  # PASSWORD = '007266'
-  # real account
-  CDKEY = "3SDK-EMY-0130-PIWST"
-  # PASSWORD = '921256'
-  PASSWORD = 'od@2013'
-  CODE = 4699
-  AUTOGRAPH = '【MicroSoft】'
-  ##### 注意: 不能使用短信接口发送个人信息(如"老地方见","你在哪"之类)                   #####
-  ##### 否则短信平台会封掉接口，测试时只写两个字"内部测试"加其他必要的程序信息(如校验码)#####
-  ##### 注意!注意!注意!注意!注意!注意!注意!注意!注意!注意!注意!注意!注意!注意注意!!注意!#####
-
-  #序列号注册  web容器第一次启动的时候需要激活该序列号
-  def self.regist_serival_number
-    result = get('/sdkproxy/regist.action', :query => {:cdkey => CDKEY,:password => PASSWORD })
-    puts result.parsed_response
-  end
-
-  #注册企业信息  web容器第一次启动的时候，需要注册本企业的相关信息
-  def self.regist_company_info
-    result = get('/sdkproxy/registdetailinfo.action',
-            :query => { :cdkey  => CDKEY,
-                        :password => PASSWORD,
-                        :ename    => '优数调研',
-                        :linkman  => '杨泽曦',
-                        :phonenum => '13488881477',
-                        :mobile   => '13488881477',
-                        :email    => 'yangzexi@oopsdata.com',
-                        :fax      => '010-62800785',
-                        :address  => '北京市海淀区五道口',
-                        :postcode => '100083' })
-
-    puts result.parsed_response
-  end
-
-  def self.get_sent_status
-    result = get('/sdkproxy/getreport.action',
-            :query => { :cdkey => SmsApi::CDKEY,
-                         :password => SmsApi::PASSWORD
-                      })     
-  end
-
-  def self.reset_password
-    result = get('/sdkproxy/changepassword.action', :query => {:cdkey => CDKEY,:password => 'od@2013',:newPassword => PASSWORD})
-  end
+  APIKEY = "af6331b4c5873b9503f4c7fae15a2e6f"
 
   #同步发送即时短信
-  def self.send_sms(type, phone, message)
+  def self.send_sms(type,tplid,phone,message)
     message.gsub!("\n", "")
-    Rails.logger.info "AAAAAAAAAAAAAA"
-    Rails.logger.info phone
-    Rails.logger.info message
-    Rails.logger.info "AAAAAAAAAAAAAA"
-    puts "AAAAAAAAAAAAAA"
-    puts phone
-    puts message
-    puts "AAAAAAAAAAAAAA"
-    return if Rails.env != "production"
     seqid = Random.rand(10000..9999999999999999).to_i
 
-    result = get('/sdkproxy/sendsms.action',
-            :query => { :cdkey => SmsApi::CDKEY,
-                         :password => SmsApi::PASSWORD,
-                         :phone    => phone,
-                         :message  => message,
-                         :seqid => seqid
-                      }) 
-    SmsHistory.create(mobile:phone,type:type,seqid:seqid)
+    result = post("/sms/tpl_send.json",
+        :query => { :apikey => APIKEY,
+            :mobile => phone,
+            :tpl_id => tplid,
+            :tpl_value => URI::encode(message),
+            :uid => seqid },
+        :headers => {"Accept" => "text/plain",'charset' => 'utf-8','Content-Type' => 'application/x-www-form-urlencoded'}
+    )
+
+    SmsHistory.create(mobile:phone,type:type,seqid:seqid,result:result)
     return result
   end
 
-  #查询短信剩余条数
-  def self.get_remainder
-    result = get('/sdkproxy/querybalance.action',
-        :query => {:cdkey    => SmsApi::CDKEY,
-        :password => SmsApi::PASSWORD  
-        })
-    puts result.parsed_response
-    remainder = result.parsed_response['response']['message'].to_f * 10 
-    return remainder
-  end
-
-  #发送定时短信
-  #sendtime format : yyyymmddhhnnss
-  def self.send_time_sms(phone,message, sendtime)
-    get('/sdkproxy/sendtimesms.action',
-            :query => { :cdkey => SmsApi::CDKEY,
-                        :password => SmsApi::PASSWORD,
-                        :phone    => phone,
-                        :message  => AUTOGRAPH + message,
-                        :sendtime => sendtime})
-  end
 
 
   ################### different types of sms ########################
+
+  # 系统管理员添加企业管理员
+  def self.admin_add_manager(type, mobile, opt)
+    msg = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    send_sms(type,497099,mobile,msg)
+  end
+
+  # 系统管理员添加查看员
+  def self.admin_add_viewer(type,mobile,opt)
+    msg = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    send_sms(type,497251,mobile,msg)
+  end
+
+  # 系统管理员添加会员
+  def self.admin_add_user(type,mobile,opt)
+    msg = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    send_sms(type,497267,mobile,msg)
+  end
+
+  # 企业管理员添加员工
+  def self.manager_add_user(type,mobile,opt)
+    msg = "#company#=#{opt[:company]}#&#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    send_sms(type,497289,mobile,msg)    
+  end
+
+  #用户自己注册，短信通知对应的管理员
+  # def self.user_regist(type,mobile,opt)
+  #   msg = "#company=#{opt[:company]}#&#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+  #   send_sms(type,497289,mobile,msg)     
+  # end
+
+
   #开课通知短信到学员
   def self.lesson_published_to_student(type,mlist,opt)
-    @start_date = opt[:date].strftime('%Y年%m月%d日')
-    @city = opt[:city]
-    @lesson_name = opt[:name]    
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_student.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-
-    group_size = 100
-    groups = []
-    while mlist.size >= group_size
-      temp_group = mlist[0..group_size-1]
-      groups << temp_group
-      mlist = mlist[group_size..-1]
-    end
-    groups << mobile_list
-
-    groups.each do |group|
-      self.send_sms("massive_#{type}",mlist, text)
+    msg = "#date#=#{opt[:date].strftime('%Y年%m月%d日')}#&#city#=#{opt[:city]}&#name#=#{opt[:name]}"
+    mlist.each do |mobile|
+      send_sms(type,497343,mobile,msg)
     end
   end
 
   # 开课通知短信到管理员
   def self.lesson_published_to_manager(type,mlist,opt)
-    @start_date = opt[:date].strftime('%Y年%m月%d日')
-    @city = opt[:city]
-    @lesson_name = opt[:name]
-
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_to_manater.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    group_size = 100
-    groups = []
-    while mlist.size >= group_size
-      temp_group = mobile_list[0..group_size-1]
-      groups << temp_group
-      mobile_list = mobile_list[group_size..-1]
+    msg = "#date#=#{opt[:date].strftime('%Y年%m月%d日')}#&#city#=#{opt[:city]}&#name#=#{opt[:name]}"
+    mlist.each do |mobile|
+      send_sms(type,497343,mobile,msg)
     end
-    groups << mobile_list
-
-    groups.each do |group|
-      self.send_sms("massive_#{type}",slist, text)
-    end
-  end 
-
-  #上课提醒短信
-  def self.lesson_published_specify_time(type,mlist,opt)
-    @content = opt[:content]
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_published_specify_time.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    group_size = 100
-    groups = []
-    while mlist.size >= group_size
-      temp_group = mobile_list[0..group_size-1]
-      groups << temp_group
-      mobile_list = mobile_list[group_size..-1]
-    end
-    groups << mobile_list
-
-    groups.each do |group|
-      self.send_sms("massive_#{type}",slist, text)
-    end
-
-  end 
-
-  #课程取消短信
-  def self.lesson_canceled_to_student(type,mlist,opt)
-    @start_date = opt[:date].strftime('%Y年%m月%d日')
-    @city = opt[:city]
-    @lesson_name = opt[:name]  
-
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_canceled_to_student.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-
-    group_size = 100
-    groups = []
-    while mlist.size >= group_size
-      temp_group = mobile_list[0..group_size-1]
-      groups << temp_group
-      mobile_list = mobile_list[group_size..-1]
-    end
-    groups << mobile_list
-
-    groups.each do |group|
-      self.send_sms("massive_#{type}",slist, text)
-    end    
   end
 
+  #课程取消短信
+  def self.lesson_canceled_to_student(type,mobile,opt)
+    # 原定#date#在#city#开课的#name#培训因故取消，您的报名也随之取消！
+    course = Course.find(opt[:course_id])
+    @start_date = course.start_date.strftime('%Y年%m月%d日')
+    @city = course.show_city
+    @lesson_name = course.name_en
+    msg = "#date#=#{@start_date}#&#city#=#{@city}&#name#=#{@lesson_name}"
+    send_sms(type,497381,mobile,msg)
+  end
+
+  #找回密码短信
   def self.find_password(type, mobile, opt)
-    @code = opt[:pwd]
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/find_password.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
+    msg = "#pwd#={opt[:pwd]}"
+    send_sms(type,497349,mobile,msg)
   end
 
 
   # 企业管理员审核拒绝短信
   def self.manager_refused_order(type,mobile,opt)
     course = Course.find(opt['course_id'])
-    @manager = opt['manager']
     @name = course.name_en
-    text_template_file_name = "#{Rails.root}/app/views/sms_text/manager_refused_order.text.erb"
-    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-    text = text_template.result(binding)
-    self.send_sms(type,mobile, text)
+    msg = "#name#={@name}"
+    send_sms(type,497387,mobile,msg)
   end
+
+
 
   # 学员自主创建的报名，短信通知企业管理员
   def self.user_create_order(type,mobile,opt)
@@ -308,142 +194,41 @@ class SmsApi # 短信接口
     text = text_template.result(binding)
     self.send_sms(type,mobile, text)      
   end
-  
 
+  # 系统管理员代理报名
+  def self.admin_generate_order(type,mobile,opt)
+    course = Course.find(opt['course_id'])
+    @name  = course.name_en
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/admin_generate_order.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)    
+  end
 
+  # 课程时间发生变化
+  def self.lesson_time_changed(type,mlist,opt)
+    course = Course.find(opt[:course_id])
+    #抱歉，TTT培训的开课日期变更为YYYY年MM月DD日！DynamicsReadiness.com
+    @name = course.name_en
+    @date = course.start_date.strftime('%F')
+    text_template_file_name = "#{Rails.root}/app/views/sms_text/lesson_time_changed.text.erb"
+    text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
+    text = text_template.result(binding)
+    group_size = 100
+    groups = []
+    while mlist.size >= group_size
+      temp_group = mlist[0..group_size-1]
+      groups << temp_group
+      mlist = mlist[group_size..-1]
+    end
+    groups << mlist
 
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/pre_survey_invitation_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms('pre_survey_invitation', mobile, text)
-  # end
+    groups.each do |group|
+      self.send_sms("massive_#{type}",group, text)
+    end    
+  end
 
-  # def self.invitation_sms(survey_id, sample_id, callback, opt = {})
-  #   sample = User.find_by_id(sample_id)
-  #   return if sample.nil? || sample.mobile.blank?
-  #   mobile = sample.mobile
-  #   survey = Survey.find_by_id(survey_id)
-  #   @survey_title = survey.title
-  #   reward_scheme_id = survey.sms_promote_info["reward_scheme_id"]
-  #   @survey_link = "#{Rails.application.config.quillme_host}/s/#{reward_scheme_id}"
-  #   if sample.status == User::REGISTERED
-  #     sample.auth_key = Encryption.encrypt_auth_key("#{sample._id}&#{Time.now.to_i.to_s}")
-  #     sample.auth_key_expire_time =  -1
-  #     sample.save
-  #     @survey_link += "?auth_key=#{sample.auth_key}"
-  #   end
-  #   @survey_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@survey_link)
-  #   unsubscribe_key = CGI::escape(Encryption.encrypt_activate_key({"email_mobile" => mobile}.to_json))
-  #   @unsubscribe_link = "#{Rails.application.config.quillme_host}/surveys/cancel_subscribe?key=#{unsubscribe_key}"
-  #   @unsubscribe_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@unsubscribe_link)
+  # 课前提醒短信，时间是由系统管理员确定的
+  def self.lesson_pre_notice(type,mlist,opt)
+  end
 
-  #   @reward = ""
-  #   reward_scheme = RewardScheme.find_by_id(reward_scheme_id)
-  #   if reward_scheme && reward_scheme.rewards[0].present?
-  #     case reward_scheme.rewards[0]["type"]
-  #     when RewardScheme::MOBILE
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-  #     when RewardScheme::ALIPAY
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-  #     when RewardScheme::JIFENBAO
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}元现金奖励"
-  #     when RewardScheme::POINT
-  #         @reward = "#{reward_scheme.rewards[0]["amount"]}积分奖励"
-  #     when RewardScheme::LOTTERY
-  #         @reward = "一次抽奖机会"
-  #     end
-  #   end
-
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/invitation_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms('invitation',mobile, text)
-  # end
-
-
-  # def self.change_mobile_sms(mobile, callback, opt)
-  #   @code = opt["code"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/change_mobile_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(mobile, text)
-  # end
-  
-  # def self.rss_subscribe_sms(type, mobile, callback, opt)
-  #   @code = opt["code"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/rss_subscribe_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type,mobile, text)
-  # end
-
-  # def self.activate_sms(type, mobile, callback, opt)
-  #   @code = opt["code"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/activate_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type,mobile, text)
-  # end
-
-  # def self.welcome_sms(type, mobile, callback, opt)
-  #   @code = opt["active_code"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/welcome_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type,mobile, text)
-  # end
-
-  # def self.charge_confirm_sms(type, mobile, callback, opt)
-  #   @gift_name = opt["gift_name"].to_s
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/charge_confirm_sms.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type, mobile, text)
-  # end
-
-  # def self.carnival_re_invitation(type, mobile, callback, opt)
-  #   answer_id = opt["answer_id"]
-  #   @answer_link = "#{Rails.application.config.quillme_host}/a/#{answer_id}"
-  #   @answer_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@answer_link)
-
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/carnival_re_invitation.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type, mobile, text)
-  # end
-
-  # def self.carnival_batch_re_invite_reject(type, mobile, callback, opt)
-  #   @answer_link = "#{Rails.application.config.quillme_host}/carnival/campaigns?mob=#{mobile}"
-  #   @answer_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@answer_link)
-
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/carnival_batch_re_invite_reject.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type, mobile, text)
-  # end
-
-  # def self.carnival_batch_re_invite_blank(type, mobile, callback, opt)
-  #   @answer_link = "#{Rails.application.config.quillme_host}/carnival/campaigns?mob=#{mobile}"
-  #   @answer_link = Rails.application.config.quillme_host + "/" + MongoidShortener.generate(@answer_link)
-
-  #   text_template_file_name = "#{Rails.root}/app/views/sms_text/carnival_batch_re_invite_blank.text.erb"
-  #   text_template = ERB.new(File.new(text_template_file_name).read, nil, "%")
-  #   text = text_template.result(binding)
-  #   self.send_sms(type, mobile, text)
-  # end
-
-  # def self.send_massive_sms(mobile_list, sms_text)
-  #   group_size = 100
-  #   groups = []
-  #   while mobile_list.size >= group_size
-  #     temp_group = mobile_list[0..group_size-1]
-  #     groups << temp_group
-  #     mobile_list = mobile_list[group_size..-1]
-  #   end
-  #   groups << mobile_list
-
-  #   groups.each do |group|
-  #     self.send_sms("massive", group.join(','), sms_text)
-  #   end
-  # end
 end

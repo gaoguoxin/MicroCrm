@@ -74,13 +74,23 @@ $(->
 		$('form.info input,select,textarea').each(->
 			unless $(@).attr('id') == 'course_instructor_avatar'
 				if $(@).is(":visible")
-					if $.trim($(@).val()).length <= 0
-						$(@).parent('.padded').addClass('invalid').removeClass('valid')
-						go = false 
-						top = $(@).offset().top
-						$("html, body").animate({ scrollTop: top }, 500)
-						go = false
-						return false
+					if $('#course_charge_category').val() == '1'
+						if $.trim($(@).val()).length <= 0 &&  $.inArray($(@).attr('id'),['course_price_level1','course_price_level2','course_price_level3']) < 0
+							$(@).parent('.padded').addClass('invalid').removeClass('valid')
+							go = false 
+							top = $(@).offset().top
+							$("html, body").animate({ scrollTop: top }, 500)
+							go = false
+							return false
+
+					else
+						if $.trim($(@).val()).length <= 0
+							$(@).parent('.padded').addClass('invalid').removeClass('valid')
+							go = false 
+							top = $(@).offset().top
+							$("html, body").animate({ scrollTop: top }, 500)
+							go = false
+							return false
 		)
 		if go 
 			if publish == 1
@@ -94,7 +104,7 @@ $(->
 			autoSize:true,
 			# scrolling:no,
 			minWidth:800,
-			minHeight:800,
+			minHeight:500,
 			openEffect:'none',
 			closeEffect:'none',        
 			helpers : {
@@ -108,12 +118,20 @@ $(->
 			},
 			beforeShow:->
 				$('.proxy-box h6').text(obj.parents('td').siblings('td.cname').text())
-				$('.proxy-box .content').html()
-				# $('.proxy-box .multiple_proxy').attr('data-cid',cid)
+				$('.proxy-box #proxy_cid').val(obj.data('id'))
+				$('.proxy-box .content .checklist').html('')
+				$('.proxy-box .multiple_proxy').attr('data-cid',obj.data('id'))
 
 
 		})		
 
+
+	generate_proxy_order = (id_arr,cid)->
+		$.post('/admin/orders/generate_proxy_order',{uarr:id_arr,cid:cid},(ret)->
+			if ret.success
+				$('.select-tool').addClass('yellow')
+				$('.select-tool button').removeClass('info').addClass('success').text('报名成功')
+		)
 
 	$('form.info input,select,textarea').focus(->
 		$(@).parent('.padded').removeClass('invalid')
@@ -169,6 +187,38 @@ $(->
 
 	$('body').on('click','a.proxy',->
 		open_proxy_box($(@))
+	)
+
+	$('body').on('click','.multiple_proxy',(e)->
+		e.preventDefault()
+		$.get("/admin/courses/proxy_search",$('form.proxy-form').serialize(),(ret)->
+			$('.proxy-box .content .checklist').html('')
+			$.each(ret.value,(k,v)->
+				if v.ordered
+					$("<li class='turquoise one fourth' data-uid=#{v.uid} data-ordered=1 aria-checked='true'>#{v.name}</li>").appendTo($('.proxy-box .content .checklist'))
+				else
+					$("<li class='turquoise one fourth' data-uid=#{v.uid} data-ordered=0>#{v.name}</li>").appendTo($('.proxy-box .content .checklist'))
+				
+			)
+		)
+	)
+
+	$('body').on('click','.select-tool li',->
+		if $(@).attr('aria-checked') == 'true'
+			$('.content .checklist li[data-ordered="0"]').attr('aria-checked',true)
+		else	
+			$('.content .checklist li[data-ordered="0"]').attr('aria-checked',false)
+	)
+
+	$('body').on('click','button.multiple_proxy',->
+		cid = $(@).data('cid')
+		if $('.content .checklist li[aria-checked="true"]').length > 0
+			id_arr = []
+			$('.content .checklist li[aria-checked="true"]').each(->
+				id_arr.push $(@).data('uid')
+			)
+			if id_arr.length > 0
+				generate_proxy_order(id_arr,cid)
 	)
 
 

@@ -9,7 +9,7 @@
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
-        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td class='align-center'><%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
         <td>
           <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看/修改</a>
           <% if current_user.is_admin? %>
@@ -34,7 +34,7 @@
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
-        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td class='align-center'><%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
         <td>
           <a href="<%=admin_course_path(course)%>" class='edit-course info small' id="<%= course.id.to_s %>" role='button'>查看/修改</a><br/>
           <a href="javascript:void(0);" class='proxy yellow small' data-id="<%= course.id.to_s %>" role='button'>代理&nbsp;报名</a>
@@ -57,7 +57,7 @@
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
-        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td class='align-center'><%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
         <td>
           <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
         </td>
@@ -79,7 +79,7 @@
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
-        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td class='align-center'><%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
         <td>
           <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
         </td>
@@ -101,7 +101,7 @@
         <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
         <td><%= course.city %></td>
         <td><%= course.content_type%></td>
-        <td class='align-center'><%= image_tag(course.instructor_avatar.thumb.url) if course.instructor_avatar.thumb.url.present? %><br/><%=course.instructor %></td>
+        <td class='align-center'><%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
         <td>
           <a href="<%=admin_course_path(course)%>" class='edit-course' id="<%= course.id.to_s %>">查看</a>
         </td>

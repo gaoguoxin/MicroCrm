@@ -3,8 +3,18 @@
   <%= javascript_include_tag "pages/default/course-bundle" %>
   <script type="text/javascript">
   jQuery(function($) {
-    window.u_id = "<%= current_user.id.to_s%>";
+    window.u_id = "<%= current_user.try(:id).to_s%>";
     window.c_id = "<%= @course.id.to_s %>";
+    window.c_type = "<%= @course.content_type %>";
+    if (window.c_type == '其他'){
+      $('li.qt').attr('aria-selected',true).siblings().attr('aria-selected',false)
+    }else if(window.c_type == 'AX+CRM'){
+      $('li.ax_crm').attr('aria-selected',true).siblings().attr('aria-selected',false)
+    }else if(window.c_type == 'AX'){
+      $('li.ax').attr('aria-selected',true).siblings().attr('aria-selected',false)
+    }else{
+      $('li.crm').attr('aria-selected',true).siblings().attr('aria-selected',false)
+    }
   });
   </script>
   <%= yield :head %>
@@ -14,7 +24,7 @@
     <div class="row triple-padded">
       <div class="show-top one whole double-padded">
         <div class="one third">
-          <%=image_tag(@course.instructor_avatar.banner.url)%>  
+          <%=image_tag(show_banner_avatar(@course))%>  
         </div>
         <div class="two thirds">
           <h2><%= @course.code%>:<%=@course.name_en%></h2>
@@ -30,7 +40,11 @@
               <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
             </div>
             <div class="one third align-right start-container">
-              <button class='yellow start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+              <% if @course.open?%>
+                <button class='yellow start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+              <% else %>
+                <button class='large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+              <% end %>
             </div>
           </div>    
         </div>
@@ -47,7 +61,7 @@
           <div class="bottom-right one fourth ">
             <div class="right-cont double-pad-top">
               <div class="img-container align-center">
-                <%= image_tag(@course.instructor_avatar.small.url)%>  
+                <%= image_tag(show_small_avatar(@course))%>  
               </div>
               <div class="constructor-desc double-padded small-info ">
                 <%= @course.instructor_desc%>
@@ -71,79 +85,6 @@
           </div>        
         </div>
       </div> 
-      <div class="feedback one whole double-gap-top double-padded">
-        <div class="row">
-          <h5>如果您已经上过此课程,请填写如下反馈,以便我们为您提供更好地服务</h5>
-        </div>
-        <div class=" box row">
-          <p class='one whole'><%= Feedback::QUESTION_ONE%><span class="red">*</span></p>
-          <label class='one tenths mobile align-center' for="question_1_1" class="inline"><input id="question_1_1" type="radio" name="question_1" value='1'  <%if checked?(@feedback.try(:question_1),1)%>   checked='checked'<% end %>  >1分</label>
-          <label class='one tenths mobile align-center' for="question_1_2" class="inline"><input id="question_1_2" type="radio" name="question_1" value='2'  <%if checked?(@feedback.try(:question_1),2)%>   checked='checked'<% end %>  >2分</label>
-          <label class='one tenths mobile align-center' for="question_1_3" class="inline"><input id="question_1_3" type="radio" name="question_1" value='3'  <%if checked?(@feedback.try(:question_1),3)%>   checked='checked'<% end %>  >3分</label>
-          <label class='one tenths mobile align-center' for="question_1_4" class="inline"><input id="question_1_4" type="radio" name="question_1" value='4'  <%if checked?(@feedback.try(:question_1),4)%>   checked='checked'<% end %>  >4分</label>
-          <label class='one tenths mobile align-center' for="question_1_5" class="inline"><input id="question_1_5" type="radio" name="question_1" value='5'  <%if checked?(@feedback.try(:question_1),5)%>   checked='checked'<% end %>  >5分</label>
-          <label class='one tenths mobile align-center' for="question_1_6" class="inline"><input id="question_1_6" type="radio" name="question_1" value='6'  <%if checked?(@feedback.try(:question_1),6)%>   checked='checked'<% end %>  >6分</label>
-          <label class='one tenths mobile align-center' for="question_1_7" class="inline"><input id="question_1_7" type="radio" name="question_1" value='7'  <%if checked?(@feedback.try(:question_1),7)%>   checked='checked'<% end %>  >7分</label>
-          <label class='one tenths mobile align-center' for="question_1_8" class="inline"><input id="question_1_8" type="radio" name="question_1" value='8'  <%if checked?(@feedback.try(:question_1),8)%>   checked='checked'<% end %>  >8分</label>
-          <label class='one tenths mobile align-center' for="question_1_9" class="inline"><input id="question_1_9" type="radio" name="question_1" value='9'  <%if checked?(@feedback.try(:question_1),9)%>   checked='checked'<% end %>  >9分</label>
-          <label class='one tenths mobile align-center' for="question_1_0" class="inline"><input id="question_1_0" type="radio" name="question_1" value='10' <%if checked?(@feedback.try(:question_1),10)%>  checked='checked'<% end %> >10分</label>
-        </div>
-        <div class=" box row">
-          <p class='one whole'><%= Feedback::QUESTION_TWO%><span class="red">*</span></p>
-          <label class='one tenths mobile align-center' for="question_2_1" class="inline"><input id="question_2_1" type="radio" name="question_2" value='1'  <%if checked?(@feedback.try(:question_2),1)%>   checked='checked'<% end %>>1分</label>
-          <label class='one tenths mobile align-center' for="question_2_2" class="inline"><input id="question_2_2" type="radio" name="question_2" value='2'  <%if checked?(@feedback.try(:question_2),2)%>   checked='checked'<% end %>>2分</label>
-          <label class='one tenths mobile align-center' for="question_2_3" class="inline"><input id="question_2_3" type="radio" name="question_2" value='3'  <%if checked?(@feedback.try(:question_2),3)%>   checked='checked'<% end %>>3分</label>
-          <label class='one tenths mobile align-center' for="question_2_4" class="inline"><input id="question_2_4" type="radio" name="question_2" value='4'  <%if checked?(@feedback.try(:question_2),4)%>   checked='checked'<% end %>>4分</label>
-          <label class='one tenths mobile align-center' for="question_2_5" class="inline"><input id="question_2_5" type="radio" name="question_2" value='5'  <%if checked?(@feedback.try(:question_2),5)%>   checked='checked'<% end %>>5分</label>
-          <label class='one tenths mobile align-center' for="question_2_6" class="inline"><input id="question_2_6" type="radio" name="question_2" value='6'  <%if checked?(@feedback.try(:question_2),6)%>   checked='checked'<% end %>>6分</label>
-          <label class='one tenths mobile align-center' for="question_2_7" class="inline"><input id="question_2_7" type="radio" name="question_2" value='7'  <%if checked?(@feedback.try(:question_2),7)%>   checked='checked'<% end %>>7分</label>
-          <label class='one tenths mobile align-center' for="question_2_8" class="inline"><input id="question_2_8" type="radio" name="question_2" value='8'  <%if checked?(@feedback.try(:question_2),8)%>   checked='checked'<% end %>>8分</label>
-          <label class='one tenths mobile align-center' for="question_2_9" class="inline"><input id="question_2_9" type="radio" name="question_2" value='9'  <%if checked?(@feedback.try(:question_2),9)%>   checked='checked'<% end %>>9分</label>
-          <label class='one tenths mobile align-center' for="question_2_0" class="inline"><input id="question_2_0" type="radio" name="question_2" value='10' <%if checked?(@feedback.try(:question_2),10)%>  checked='checked'<% end %>>10分</label>
-        </div>
-        <div class=" box row">
-          <p class='one whole'><%= Feedback::QUESTION_THREE%><span class="red">*</span></p>
-          <label class='one tenths mobile align-center' for="question_3_1" class="inline"><input id="question_3_1" type="radio" name="question_3" value='1'  <%if checked?(@feedback.try(:question_3),1)%>   checked='checked'<% end %>>1分</label>
-          <label class='one tenths mobile align-center' for="question_3_2" class="inline"><input id="question_3_2" type="radio" name="question_3" value='2'  <%if checked?(@feedback.try(:question_3),2)%>   checked='checked'<% end %>>2分</label>
-          <label class='one tenths mobile align-center' for="question_3_3" class="inline"><input id="question_3_3" type="radio" name="question_3" value='3'  <%if checked?(@feedback.try(:question_3),3)%>   checked='checked'<% end %>>3分</label>
-          <label class='one tenths mobile align-center' for="question_3_4" class="inline"><input id="question_3_4" type="radio" name="question_3" value='4'  <%if checked?(@feedback.try(:question_3),4)%>   checked='checked'<% end %>>4分</label>
-          <label class='one tenths mobile align-center' for="question_3_5" class="inline"><input id="question_3_5" type="radio" name="question_3" value='5'  <%if checked?(@feedback.try(:question_3),5)%>   checked='checked'<% end %>>5分</label>
-          <label class='one tenths mobile align-center' for="question_3_6" class="inline"><input id="question_3_6" type="radio" name="question_3" value='6'  <%if checked?(@feedback.try(:question_3),6)%>   checked='checked'<% end %>>6分</label>
-          <label class='one tenths mobile align-center' for="question_3_7" class="inline"><input id="question_3_7" type="radio" name="question_3" value='7'  <%if checked?(@feedback.try(:question_3),7)%>   checked='checked'<% end %>>7分</label>
-          <label class='one tenths mobile align-center' for="question_3_8" class="inline"><input id="question_3_8" type="radio" name="question_3" value='8'  <%if checked?(@feedback.try(:question_3),8)%>   checked='checked'<% end %>>8分</label>
-          <label class='one tenths mobile align-center' for="question_3_9" class="inline"><input id="question_3_9" type="radio" name="question_3" value='9'  <%if checked?(@feedback.try(:question_3),9)%>   checked='checked'<% end %>>9分</label>
-          <label class='one tenths mobile align-center' for="question_3_0" class="inline"><input id="question_3_0" type="radio" name="question_3" value='10' <%if checked?(@feedback.try(:question_3),10)%>  checked='checked'<% end %>>10分</label>
-        </div>
-        <div class=" box row">
-          <p class='one whole'><%= Feedback::QUESTION_FOUR%><span class="red">*</span></p>
-          <label class='one tenths mobile align-center' for="question_4_1" class="inline"><input id="question_4_1" type="radio" name="question_4" value='1'  <%if checked?(@feedback.try(:question_4),1)%>   checked='checked'<% end %>>1分</label>
-          <label class='one tenths mobile align-center' for="question_4_2" class="inline"><input id="question_4_2" type="radio" name="question_4" value='2'  <%if checked?(@feedback.try(:question_4),2)%>   checked='checked'<% end %>>2分</label>
-          <label class='one tenths mobile align-center' for="question_4_3" class="inline"><input id="question_4_3" type="radio" name="question_4" value='3'  <%if checked?(@feedback.try(:question_4),3)%>   checked='checked'<% end %>>3分</label>
-          <label class='one tenths mobile align-center' for="question_4_4" class="inline"><input id="question_4_4" type="radio" name="question_4" value='4'  <%if checked?(@feedback.try(:question_4),4)%>   checked='checked'<% end %>>4分</label>
-          <label class='one tenths mobile align-center' for="question_4_5" class="inline"><input id="question_4_5" type="radio" name="question_4" value='5'  <%if checked?(@feedback.try(:question_4),5)%>   checked='checked'<% end %>>5分</label>
-          <label class='one tenths mobile align-center' for="question_4_6" class="inline"><input id="question_4_6" type="radio" name="question_4" value='6'  <%if checked?(@feedback.try(:question_4),6)%>   checked='checked'<% end %>>6分</label>
-          <label class='one tenths mobile align-center' for="question_4_7" class="inline"><input id="question_4_7" type="radio" name="question_4" value='7'  <%if checked?(@feedback.try(:question_4),7)%>   checked='checked'<% end %>>7分</label>
-          <label class='one tenths mobile align-center' for="question_4_8" class="inline"><input id="question_4_8" type="radio" name="question_4" value='8'  <%if checked?(@feedback.try(:question_4),8)%>   checked='checked'<% end %>>8分</label>
-          <label class='one tenths mobile align-center' for="question_4_9" class="inline"><input id="question_4_9" type="radio" name="question_4" value='9'  <%if checked?(@feedback.try(:question_4),9)%>   checked='checked'<% end %>>9分</label>
-          <label class='one tenths mobile align-center' for="question_4_0" class="inline"><input id="question_4_0" type="radio" name="question_4" value='10' <%if checked?(@feedback.try(:question_4),10)%>  checked='checked'<% end %>>10分</label>
-        </div>
-        <div class=" box row">
-          <p class='one whole'><%= Feedback::QUESTION_FIVE%><span class="red">*</span></p>
-          <label class='one tenths mobile align-center' for="question_5_1" class="inline"><input id="question_5_1" type="radio" name="question_5" value='1'  <%if checked?(@feedback.try(:question_5),1)%>   checked='checked'<% end %>>1分</label>
-          <label class='one tenths mobile align-center' for="question_5_2" class="inline"><input id="question_5_2" type="radio" name="question_5" value='2'  <%if checked?(@feedback.try(:question_5),2)%>   checked='checked'<% end %>>2分</label>
-          <label class='one tenths mobile align-center' for="question_5_3" class="inline"><input id="question_5_3" type="radio" name="question_5" value='3'  <%if checked?(@feedback.try(:question_5),3)%>   checked='checked'<% end %>>3分</label>
-          <label class='one tenths mobile align-center' for="question_5_4" class="inline"><input id="question_5_4" type="radio" name="question_5" value='4'  <%if checked?(@feedback.try(:question_5),4)%>   checked='checked'<% end %>>4分</label>
-          <label class='one tenths mobile align-center' for="question_5_5" class="inline"><input id="question_5_5" type="radio" name="question_5" value='5'  <%if checked?(@feedback.try(:question_5),5)%>   checked='checked'<% end %>>5分</label>
-          <label class='one tenths mobile align-center' for="question_5_6" class="inline"><input id="question_5_6" type="radio" name="question_5" value='6'  <%if checked?(@feedback.try(:question_5),6)%>   checked='checked'<% end %>>6分</label>
-          <label class='one tenths mobile align-center' for="question_5_7" class="inline"><input id="question_5_7" type="radio" name="question_5" value='7'  <%if checked?(@feedback.try(:question_5),7)%>   checked='checked'<% end %>>7分</label>
-          <label class='one tenths mobile align-center' for="question_5_8" class="inline"><input id="question_5_8" type="radio" name="question_5" value='8'  <%if checked?(@feedback.try(:question_5),8)%>   checked='checked'<% end %>>8分</label>
-          <label class='one tenths mobile align-center' for="question_5_9" class="inline"><input id="question_5_9" type="radio" name="question_5" value='9'  <%if checked?(@feedback.try(:question_5),9)%>   checked='checked'<% end %>>9分</label>
-          <label class='one tenths mobile align-center' for="question_5_0" class="inline"><input id="question_5_0" type="radio" name="question_5" value='10' <%if checked?(@feedback.try(:question_5),10)%>  checked='checked'<% end %>>10分</label>
-        </div>
-        <div class="row align-center">
-          <button class="one fourths  skip-three pull-right info large double-gap-top feed-btn">提交&nbsp;<i class="icon-circle-arrow-right"></i></button>
-        </div>
-      </div>
     </div>    
   </div>
 </div>

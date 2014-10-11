@@ -1,0 +1,30 @@
+<% if @orders['data'].length > 0 %>
+  <% @orders['data'].each do |order|%>
+    <tr>
+      <td class='align-center'><%= order.course.name_cn%></td>
+      <td class='align-center'><%= order.course.content_type%></td>
+      <td class='align-center'><%= order.course.show_city%></td>
+      <td class='align-center'>
+        <%= order.course.start_date.strftime('%F')%><br/>
+        <%= order.course.end_date.strftime('%F')%>
+      </td>
+      <td class='align-center'><%= Order::STATE_CODE_HASH[order.state] %></td>
+      <td class='align-center' class='align-center'><%= Order::STATUS_CODE_HASH[order.status] %></td>
+      <td class='align-center'>
+        <% if order.can_cancel%>
+          <a href="javascript:void(0);" data-id="<%=order.id.to_s%>" class='cancel-order'>取消</a>
+        <%else%>
+          <% if order.is_cancel%>
+            <a href="javascript:void(0);" class=''>已取消</a>
+          <% else %>
+             --       
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="7" class='align-center'>未查到相关记录</td>
+  </tr>
+<% end %>

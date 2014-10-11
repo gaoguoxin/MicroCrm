@@ -4,6 +4,9 @@ class User::OrdersController <  User::UserController
   def index
     params[:t] = 'w' unless params[:t]
     @orders = auto_paginate current_user.my_course(params)
+    if request.xhr?
+      render :partial => 'user/orders/index.js.erb', :locals => { :orders => @orders }
+    end
   end
 
   def cancel

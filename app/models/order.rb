@@ -29,7 +29,7 @@ class Order
   field :is_cancel,type:Boolean,default: false #该报名是否已经取消
   field :cancel_type, type:Integer #谁取消的报名
   field :cancel_at,type:DateTime # 取消报名的时间
-  field :presence,type: Float #出席情况
+  field :presence,type: Boolean #出席情况
   field :passed,type: Boolean,default: false #该订单是否已经过期
 
   belongs_to :user
@@ -90,7 +90,9 @@ class Order
         end
       else
         #报名不存在，创建一个新的报名记录，即代学员报名，但是不发送短信
-        Order.create(source:SOURCE_CODE_1,status:STATUS_CODE_1,status_at:[Time.now],user_id:user_id,course_id:course_id)
+        if type == 'enroll'
+          order = Order.create(source:SOURCE_CODE_1,status:STATUS_CODE_1,status_at:[Time.now],user_id:user_id,course_id:course_id)  
+        end
       end
     end  
     return true
@@ -105,6 +107,8 @@ class Order
       obj = {}
       obj['c_name']     = e.course.name_en
       obj['u_name']     = e.user.name
+      obj['status']     = STATUS_CODE_HASH[e.status]
+      obj['state']      = STATE_CODE_HASH[e.state]
       obj['oid']        = e.id.to_s 
       obj['c_id']       = e.course.id.to_s
       obj['u_id']       = e.user.id.to_s
@@ -157,20 +161,11 @@ class Order
       u = User.find(user_id)
       user = order.user
 
-      if u.is_admin?
-        # if order.state == STATE_CODE_1  # 取消有效报名 系统管理员删除有效报名的时候没有三天时间的限制
-        #   order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
-        #   #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:course_id})            
-        # else #取消无效报名
-        #   if order.status == STATUS_CODE_0 && order.state == STATE_CODE_0
-        #     #只有系统管理员和企业管理员都没有审核的情况下发送 短信
-        #     #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
-        #   end
-        #   order.destroy    
-        # end
-      elsif u.is_manager?
+      if u.is_manager?
         if order.state == STATE_CODE_1  # 取消有效报名
           if order.start_date - Date.today > 3
+            order.count_effictive_course
+            order.reset_card_num #计算学习卡
             return order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
             #SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})            
           else
@@ -187,6 +182,8 @@ class Order
         #用户自己取消报名
         if order.state == STATE_CODE_1  # 取消有效报名
           if order.start_date - Date.today > 3
+            order.count_effictive_course
+            order.reset_card_num #计算学习卡
             order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_0,cancel_at:Time.now) #用户自己取消有效报名  
             manager = u.company.manager
             if manager.present? && manager.mobile.present?
@@ -213,6 +210,9 @@ class Order
       if o.present?
         if o.state == STATE_CODE_1  # 取消有效报名 系统管理员删除有效报名的时候没有三天时间的限制
           o.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
+          o.count_effictive_course
+          o.reset_card_num
+          o.set_company_enroll
           #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:o.course_id.to_s})            
         else #取消无效报名
           if o.status == STATUS_CODE_0 && order.state == STATE_CODE_0
@@ -221,6 +221,22 @@ class Order
           end
           order.destroy    
         end
+      end
+    end
+    return true
+  end
+
+  # 系统管理员代理学员报名
+  def self.generate_proxy_order(params)
+    params[:uarr].each do |uid|
+      order = Order.where(user_id:uid,course_id:params[:cid]).first
+      unless order.present?
+        order = Order.create(source:SOURCE_CODE_2,state:STATE_CODE_1,state_at:[Time.now],user_id:uid,course_id:params[:cid])
+        order.count_effictive_course(1)
+        order.reset_card_num(1) # 计算学习卡
+        order.set_company_enroll(1)
+        user = User.find(uid)
+        #SmsWorker.perform_async("admin_generate_order",user.mobile,{couser_id:params[:cid]}) # 发送系统审核拒绝的短信
       end
     end
     return true
@@ -301,9 +317,15 @@ class Order
 
       if params[:type] == 'allow'
         o.update_attributes(state:STATE_CODE_1,state_at:state_at) if o.state != STATE_CODE_1 # 只有在订单没有审核或者审核拒绝的情况下做允许的操作
+        o.count_effictive_course(1)
+        o.reset_card_num(1)
+        o.set_company_enroll(1)
         #SmsWorker.perform_async("admin_allow_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核通过的短信
       else
         o.update_attributes(state:STATE_CODE_2,state_at:state_at) if o.state != STATE_CODE_2 # 只有在订单没有审核或者审核通过的情况下做拒绝操作
+        o.count_effictive_course
+        o.reset_card_num
+        o.set_company_enroll
         #SmsWorker.perform_async("admin_refuse_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核拒绝的短信
       end
     end
@@ -318,22 +340,66 @@ class Order
       o.update_attributes(presence:true)  if params[:type] == 'attend'
     end
     return true
+  end 
+
+  #系统管理员审核通过后，计算个人的有效报名情况
+  def count_effictive_course(type=0)
+    user = self.user
+    course = self.course
+    if type == 0
+      c_count = user.course_count - 1 #该用户的有效报名课程数量加1
+      c_count = 0 if c_count < 0
+      duration = user.course_manday_count - course.duration #该用户的有效报名天数
+      duration = 0 if duration < 0
+    else
+      c_count = user.course_count + 1 #该用户的有效报名课程数量加1
+      duration = user.course_manday_count + course.duration #该用户的有效报名天数(因为每个人生成一个订单，所以人天数就等于人数乘以课程持续时间数)
+    end
+
+    user.update_attributes(course_count:c_count,course_manday_count:duration) 
   end
 
-  # def self.to_csv
-  #   file = Spreadsheet::Workbook.new
-  #   Spreadsheet.client_encoding = 'UTF-8'
-  #   sheet1 = file.create_worksheet
-  #   sheet1.name = '数据导出报告'  
-  #   sheet1.insert_row 0, self.col
-  #   self.where(:status.ne => EDIT).each_with_index do |ans,idx|
-  #     sheet1.insert_row idx+1, ans.ad
-  #   end
-  #   path = Rails.root.to_s + "/public/export_data.xls"
-  #   file.write path
-  #   return path
-  # end
+  #每次系统管理员审核通过或者拒绝，都要重新计算学习卡中计数量
+  def reset_card_num(type=0)
+    company = self.user.company
+    course  = self.course
+    if company.present?
+      card = company.cards.first
+      if card.present?
+        if type == 0 # 0代表取消/拒绝报名
+          if card.quantity_used > 0
+            quantity = (card.quantity_used - course.duration).round(2)
+            card.update_attributes(quantity_used:quantity)  #学习卡已使用的人天数减少(发生在报名已生效,后来又取消/拒绝的情况)
+          end
+        else #代表审核通过报名
+          quantity = (card.quantity_used.to_f + course.duration.to_f).round(2)
+          card.update_attributes(quantity_used:quantity)  #学习卡已使用的人天数增加   
+          if card.quantity_used >= card.quantity_purchased
+            card.update_attributes(status_execution:Card::EXEC_STATUS_2,finished_at:Date.today)
+          end
+        end
+      end
+    end
+  end
 
+  def set_company_enroll(type=0)
+    company_id = self.user.company.id.to_s
+    course = self.course
+    if company_id.present?
+      company = Company.find(company_id)
+      if company.present?
+        if type == 0 # 0代表取消/拒绝报名
+          if company.enroll_count > 0
+            quantity = (company.enroll_count - course.duration).round(2)
+            company.update_attributes(enroll_count:quantity) 
+          end
+        else #代表审核通过报名
+          quantity = (company.enroll_count + course.duration).round(2)
+          company.update_attributes(enroll_count:quantity) 
+        end
+      end
+    end    
+  end
 
 
   def show_state
@@ -354,7 +420,7 @@ class Order
   end
 
   def can_cancel
-    self.course.start_date - Date.today >= 3
+    self.course.start_date - Date.today >= 3 && self.is_cancel == false
   end
 
 
