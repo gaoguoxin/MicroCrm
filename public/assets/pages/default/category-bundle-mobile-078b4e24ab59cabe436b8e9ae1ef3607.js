@@ -1,1 +1,0 @@
-(function(){$(function(){return $("body").on("click",".multip-start",function(){var t;return t=[],$("li[aria-checked=true]").each(function(){return t.push($(this).data("id"))}),t.length>0?$.post("/orders",{data:t},function(t){return t.success?window.location.href=t.value===!1?"/login":"/orders?w=true":void 0}):void 0})})}).call(this);
