@@ -16,3 +16,5 @@
 /tmp
 /public/uploads/*
 /public/assets/*
+/config/mongoid.yml
+/config/unicorn.rb
