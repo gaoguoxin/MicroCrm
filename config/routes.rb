@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'welcome#index'
+  get '/tel' => 'welcome#tel'
   get '/regist' => 'users#new'
   get '/login'  => 'sessions#new'
   delete '/logout' => 'sessions#destroy'
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
         post 'make_attend'
         post 'check_order'
         post 'cancel_order'
+        post 'generate_proxy_order'
       end
     end
     resources :companies do 
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
       collection do 
         get 'match_manager'
         get 'match_student'
+        get 'proxy_search'
       end
     end
     resources :cards do

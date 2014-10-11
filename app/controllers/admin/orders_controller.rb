@@ -36,6 +36,10 @@ class Admin::OrdersController < Admin::AdminController
     render_json_auto Order.admin_cancel(params)
   end
 
+  def generate_proxy_order
+    render_json_auto Order.generate_proxy_order(params)
+  end
+
   private
   def xls_content_for(obj)
     obj = obj['data']

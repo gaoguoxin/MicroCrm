@@ -8,7 +8,7 @@
     <div class="row search-container">
       <label for="manager">管理者&nbsp;<span class='error'>(创建新用户时,密码默认6个1)</span></label>
       <div class="three small-tablet fifths">
-        <input id="manager" type="text" name='company[manager_id]' placeholder="manager email or mobile" value="<%= company.try(:manager).try(:email) || company.try(:manager).try(:mobile) %>">
+        <input id="manager" type="text" name='company[manager_id]' placeholder="mobile" value="<%= company.try(:manager).try(:mobile) %>">
       </div>
       <div class="two small-tablet fifths">
         <span class="suffix search-manager">search</span>

@@ -5,6 +5,7 @@ $(->
 	mobile_ipt   = $('#mobile')
 	password_ipt = $('#password')
 	confirm_ipt  = $('#confirm_password')
+	delay = (ms, func) -> setTimeout func, ms
 
 	check_presense = ->
 		if $.trim(name_ipt.val()).length == 0
@@ -35,6 +36,7 @@ $(->
     	    method: "POST",
     	    success: (ret)->
     	      $('.pass-submit').removeClass('info').addClass('success').text('修改成功!')
+    	      delay 2000, ->  window.location.reload()
     	})
 
 
@@ -42,6 +44,7 @@ $(->
 		$.post('/user/users/update_info',$('form.info').serialize(),(ret)->
 			if ret.success
 				$('button.info-submit').removeClass('info').addClass('success').text('修改成功!')
+				delay 2000, ->  window.location.reload()
 			else
 				if ret.value.error_code == 'error_5'
 					add_flag(email_ipt,'该邮箱已经存在!')

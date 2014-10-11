@@ -18,7 +18,10 @@
 	cursor:pointer;
 }
 .avatar{
-	border:1px solid #ddd;
+	img{
+		border:1px solid #ddd;	
+	}
+	
 }
 .audience{
 	color:#999;
@@ -40,4 +43,12 @@
 		background:#fff;
 		outline:none;
 	}
+}
+
+.no-data{
+	@include border-radius(0px);
+}
+
+.c-title{
+	height:3em;
 }

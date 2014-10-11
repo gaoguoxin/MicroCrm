@@ -99,53 +99,40 @@
 <article class="proxy-box row"> 
   <div class="one whole padded">
     <h6 class='box info align-center'></h6> 
-<form action="#" method="post">
-  <fieldset>
-    <legend>会员搜索</legend>
-    <div class="row">
-      <div class="one fifth padded mobile">
-        <span class="select-wrap">
-          <select class="unselected">
-            <option value="" disabled="" selected="">公司名称</option>
-            <option value="AL">Alabama</option>
-            <option value="AK">Alaska</option>
-            <option value="AZ">Arizona</option>
-          </select>
-        </span>
-      </div>    
-      <div class="one fifth padded mobile">
-        <input id="name" type="text" placeholder="会员姓名">
-      </div>
-      <div class="one fifth padded mobile">
-        <input id="email" type="email" placeholder="会员邮箱">
-      </div>
-      <div class="one fifth padded">
-        <input id="name" type="text" placeholder="会员手机号">
-      </div>
-      <div class="one fifth padded">
-        <button class="info  multiple_proxy block">搜索</button>
-      </div>
-    </div>
-
-  </fieldset>
-</form>
+    <form action="" method="post" class='proxy-form'>
+      <fieldset>
+        <legend>会员搜索</legend>
+        <div class="row">
+          <div class="one fifth padded mobile">
+            <span class="select-wrap">
+              <select class="unselected" name='company'>
+                <option value="" disabled="" selected="">所属公司</option>
+                <% Company.actived.each do |company| %>
+                  <option value="<%= company.id.to_s%>"><%=company.name%></option>
+                <% end %>
+              </select>
+            </span>
+          </div>    
+          <div class="one fifth padded mobile">
+            <input id="name" name='name' type="text" placeholder="会员姓名">
+          </div>
+          <div class="one fifth padded mobile">
+            <input id="email" name='email' type="email" placeholder="会员邮箱">
+          </div>
+          <div class="one fifth padded">
+            <input id="name"  name='mobile' type="text" placeholder="会员手机号">
+            <input id="proxy_cid" name='proxy_cid'  type="hidden" >
+          </div>
+          <div class="one fifth padded">
+            <button class="info  multiple_proxy block">搜索</button>
+          </div>
+        </div>
+    
+      </fieldset>
+    </form>
 
     <div class="content row success box double-gap-top">  
       <ul class="checklist">
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
-        <li class="turquoise one fourth">Turquoise checklist item</li>
       </ul>
     </div>     
     <div class="row double-gap-top double-pad-bottom box select-tool">

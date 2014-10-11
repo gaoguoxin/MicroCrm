@@ -13,23 +13,6 @@
 		}		
 	}
 }
-.feedback{
-	border: 1px solid #ddd;	
-	.box{
-		@include border-radius(0px);
-	}
-	button{
-		@include border-radius(0px);
-		border:0px;
-		outline:none;
-	}
-	.msg-notice{
-		z-index: 999;
-		color:#fff;
-		background: #e74c3c;
-		width:inherit;
-	}
-}
 
 .right-cont{
 	border-left:1px solid #ddd;

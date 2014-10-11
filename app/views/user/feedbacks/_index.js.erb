@@ -1,0 +1,6 @@
+<% if feedbacks.present? %>
+  $('#tab1 table tbody').html("<%= escape_javascript(render :partial => 'tab1', :locals => { :feedbacks => @feedbacks }) %>");
+<% else%>
+
+  $('#tab2 table tbody').html("<%= escape_javascript(render :partial => 'tab2', :locals => { :courses => @courses }) %>");
+<% end %>

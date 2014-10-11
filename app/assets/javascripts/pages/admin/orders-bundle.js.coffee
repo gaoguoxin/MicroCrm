@@ -37,28 +37,29 @@ $(->
 
 
 	$('body').on('click','.check-tool button',->
-		if $('td.opera .checklist li[aria-checked="true"]').length > 0
-			id_arr = []
-			$('td.opera .checklist li[aria-checked="true"]').each(->
-				id_arr.push $(@).data('id')
-			)
-			if id_arr.length > 0
-				if $(@).hasClass('absent')
-					#缺席
-					make_attend(id_arr,'absent')
-				if $(@).hasClass('attend')
-					#出席
-					make_attend(id_arr,'attend')
-				if $(@).hasClass('allow')
-					#允许
-					check_order(id_arr,'allow')
-				if $(@).hasClass('refuse')
-					#拒绝
-					check_order(id_arr,'refuse')
-				if $(@).hasClass('cancel')
-					#取消
-					confirm_cancel(id_arr)
-					
+		unless $(@).hasClass('disabled')
+			if $('td.opera .checklist li[aria-checked="true"]').length > 0
+				id_arr = []
+				$('td.opera .checklist li[aria-checked="true"]').each(->
+					id_arr.push $(@).data('id')
+				)
+				if id_arr.length > 0
+					if $(@).hasClass('absent')
+						#缺席
+						make_attend(id_arr,'absent')
+					if $(@).hasClass('attend')
+						#出席
+						make_attend(id_arr,'attend')
+					if $(@).hasClass('allow')
+						#允许
+						check_order(id_arr,'allow')
+					if $(@).hasClass('refuse')
+						#拒绝
+						check_order(id_arr,'refuse')
+					if $(@).hasClass('cancel')
+						#取消
+						confirm_cancel(id_arr)
+					$(@).addClass('disabled')			
 	)	
 
 

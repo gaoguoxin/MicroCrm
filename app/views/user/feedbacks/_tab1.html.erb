@@ -1,0 +1,74 @@
+<% if feedbacks.length > 0 %>
+	<div class="box info">
+		<ul class="unstyled question_list">
+			<li><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
+			<li><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
+			<li><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
+			<li><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
+			<li><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>
+	</ul>
+	</div>          	
+	<% feedbacks.each do |feedback|%>
+		<div class="box info half-gap-top">
+			<div class="box success">
+				<div class="row">
+					<div class="one third"><%= feedback.course.name_cn %></div>
+					<div class="one third"><%= feedback.course.start_date.strftime('%F')%></div>
+					<div class="one third"><%= feedback.course.show_city %></div>
+				</div>
+			</div>
+	<table>
+	  <thead>
+	    <tr>
+	      <th class='align-center' >问题</th>
+	      <th class='align-center' >1分</th>
+	      <th class='align-center' >2分</th>
+	      <th class='align-center' >3分</th>
+	      <th class='align-center' >4分</th>
+	      <th class='align-center' >5分</th>
+	      <th class='align-center' >6分</th>
+	      <th class='align-center' >7分</th>
+	      <th class='align-center' >8分</th>
+	      <th class='align-center' >9分</th>
+	      <th class='align-center' >10分</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	<% 1.upto(5).each do |i|%>
+	  		<% val = feedback["question_#{i}"] %>
+	  		<tr>
+	  			<td  class='align-center'>Question <%=i%></td>
+	  			<% 1.upto(10).each do |m|%>
+
+	    			<td  class='align-center'>
+	    				<label for="question_<%=i%>_<%m%>">
+	    					<% if val.to_i == m %>
+								<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>" checked='checked'><span class='half-gap-left'><%=m%>分</span>
+	    					<% else %>
+	    						<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>"><span class='half-gap-left'><%=m%>分</span>
+	    					<% end %>
+	    				</label>
+	    			</td>    					  		
+	  			<% end %>
+	  		</tr>	    	
+	  	<% end %>
+	  </tbody>
+	  <% if feedback.status == Feedback::STATUS_UN_CHECK %>
+  	<tfoot>
+	  		<tr>
+	  		  <td colspan="11" class='no-data align-center' ><button data-cid="<%=feedback.course.id.to_s%>" class='info'>提交</button></td>
+	  		</tr>
+	  	</tfoot>
+	  <% end %>
+	</table>
+		</div>
+	<% end %>
+<% else %>
+	<div class="box info">
+		<div class="box success">
+			<div class="row">
+				<div class="one whole align-center">您还没有填写任何反馈信息!</div>
+			</div>
+		</div> 
+	</div>        		
+<% end %>

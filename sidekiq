@@ -4,11 +4,11 @@ ENVIRONMENT="$2"
 
 # verify parameters
 case $COMMAND in
-start|stop|restart)
+start|stop|restart|bstart|bstop)
 	;;
 *)
 	echo "The command $COMMAND is not supported."
-	echo "Supported commands include: start, stop, and restart"
+	echo "Supported commands include: start, stop, restart and batch"
 	exit
 	;;
 esac
@@ -25,10 +25,16 @@ esac
 
 # check whether the pid file exists
 pid_file="tmp/pids/sidekiq.pid"
+batch_file="tmp/pids/batch.pid"
 if [ -f "$pid_file" ]; then
 	pid_file_exist=1
 else
 	pid_file_exist=0
+fi
+if [ -f "$batch_file" ]; then
+	batch_file_exist=1
+else
+	batch_file_exist=0
 fi
 
 # execute the command
@@ -41,6 +47,14 @@ start)
 	fi
 	bundle exec sidekiq -C config/sidekiq.yml -q microcrm_$ENVIRONMENT -e $ENVIRONMENT -d
 	;;
+bstart)
+	if [ $batch_file_exist = 1 ]; then
+		echo "A sidekiq batch pid file already exists at tmp/pids."
+		echo "You need to first stop the sidekiq process, or remove the batch pid file if you can confirm no sidekiq process is running."
+		exit
+	fi
+	bundle exec sidekiq -C config/batch.yml -e $ENVIRONMENT -r ./app/workers/batch_worker.rb -d
+	;;	
 stop)
 	if [ $pid_file_exist = 0 ]; then
 		echo "Cannot find sidekie.pid at tmp/pids."
@@ -49,6 +63,14 @@ stop)
 	fi
 	bundle exec sidekiqctl stop tmp/pids/sidekiq.pid 60
 	;;
+bstop)
+	if [ $batch_file_exist = 0 ]; then
+		echo "Cannot find batch.pid at tmp/pids."
+		echo "No sidekiq process to stop"
+		exit
+	fi
+	bundle exec sidekiqctl stop tmp/pids/batch.pid 60
+	;;	
 restart)
 	if [ $pid_file_exist = 0 ]; then
 		echo "Cannot find sidekie.pid at tmp/pids."

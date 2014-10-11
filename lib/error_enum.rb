@@ -16,5 +16,6 @@ module ErrorEnum
 	MOBILE_BLANK       	 = "error_14"
 	NAME_BLANK         	 = "error_15"
 	ORDER_NOT_EXIST    	 = "error_16"
-	ORDER_CAN_NOT_CANCEL =  "error_17" 
+	ORDER_CAN_NOT_CANCEL = "error_17" 
+	MOBILE_ERROR         = "error_18"
 end 

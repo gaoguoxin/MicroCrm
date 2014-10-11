@@ -7,7 +7,7 @@ $(->
 					li_before  = "<div class='row'>
 						<div class='box one whole success'>
 							<div class='two sixths'>(编号)名字:(#{v.c_code})#{v.c_name}</div>
-							<div class='one sixth'>城市#{v.c_city}</div>
+							<div class='one sixth'>城市:#{v.c_city}</div>
 							<div class='one sixth'>日期:#{v.c_start}</div>
 							<div class='one sixth'>教师:#{v.c_instructor}</div>
 							<div class='one sixth'>剩余名额:#{v.c_remain}</div>
@@ -64,9 +64,9 @@ $(->
 		$.get('/manager/orders/get_order_list',{id:course_id},(ret)->
 			$.each(ret.value,(k,v)->
 				tr_pre = "<tr>
-				<td>#{v.c_name}</td><td>#{v.u_name}</td>
-				<td>#{v.presence}</td>
-				<td>"
+				<td class='align-center'>#{v.c_name}</td><td class='align-center'>#{v.u_name}</td><td class='align-center'>#{v.state}</td><td class='align-center'>#{v.status}</td>
+				<td class='align-center'>#{v.presence}</td>
+				<td class='align-center'>"
 
 				atmp = ""
 				if opera
@@ -74,12 +74,12 @@ $(->
 						atmp += "<a href='javascript:void(0);'>已取消报名</a>"
 					else
 						if v.can_cancel	
-							atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' data-id=#{v.oid} class='cancel-order'>取消报名</a>"
+							atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' data-id=#{v.oid} class='cancel-order'>取消报名</a>&nbsp;"
 						if v.is_check
 							if v.check_ok
-								atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='refuse-order'>拒绝报名</a>"
+								atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='refuse-order'>拒绝报名</a>&nbsp;"
 							else
-								atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='check-order'>允许报名</a>"
+								atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='check-order'>允许报名</a>&nbsp;"
 						else
 							atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='check-order'>允许报名</a><br/>"
 							atmp += "<a href='javascript:void(0);' data-c='#{v.c_id}' data-u='#{v.u_id}' class='refuse-order'>拒绝报名</a>"

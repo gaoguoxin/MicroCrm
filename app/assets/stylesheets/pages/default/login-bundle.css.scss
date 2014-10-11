@@ -65,4 +65,17 @@ body.login{
 
 	}
 
+	.forget-box{
+		display:none;
+		.box{
+			background-color: #f9f9f9;
+			border:0px;
+		}
+	}
+	.suffix.yellow{
+		background:#f1c40f;
+		border-color:#dab10d;
+		cursor:pointer;
+	}
+
 }

@@ -3,8 +3,8 @@ class OrdersController < ApplicationController
   def index
     unless  params[:m].present?
       redirect_to '/admin/orders?t=w' and return  if current_user.is_admin? || current_user.is_viewer?
-      redirect_to '/manager/orders?t=w' and return  if current_user.manager?
-      redirect_to '/user/orders?t=w' and return  if current_user.manager?
+      redirect_to '/manager/orders?t=w' and return  if current_user.is_manager?
+      redirect_to '/user/orders?t=w' and return  if current_user.is_employee?
     else
       @orders = current_user.my_course(params)  
     end

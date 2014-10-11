@@ -26,10 +26,10 @@ module ApplicationHelper
     end
   end
 
-  def nav_actived?(cont,act_arr,para=nil)
+  def nav_actived?(cont,act,para=nil)
     res = false
     if cont == controller_name
-      if act_arr.include?(action_name)
+      if act == action_name
         if para.present?
           if para == params[:t]
             res = true
@@ -147,7 +147,7 @@ module ApplicationHelper
     if course.instructor_avatar.small.url
       return course.instructor_avatar.small.url
     else
-      return 'assets/avatar.jpg'
+      return 'small_avatar.jpg'
     end
   end
 
@@ -155,10 +155,17 @@ module ApplicationHelper
     if course.instructor_avatar.thumb.url
       return course.instructor_avatar.thumb.url
     else
-      return 'assets/avatar.jpg'
+      return 'thumb_avatar.jpg'
     end
   end
 
+  def show_banner_avatar(course)
+    if course.instructor_avatar.banner.url
+      return course.instructor_avatar.banner.url
+    else
+      return 'banner_avatar.jpg'
+    end
+  end
 
   def can_feed?(course)
     if course.start_date <= Date.today

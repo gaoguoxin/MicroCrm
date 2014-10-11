@@ -28,7 +28,7 @@ $(->
 		password = password_ipt.val()
 		rem      = $('.remember-me').attr('aria-checked')
 		ref      = window.location.href.split('ref=')[1]
-		$.post("/sessions",{email_mobile:account,password:password,remember:rem},(ret)->
+		$.post("/sessions",{email_mobile:account,password:password,remember:rem,ref:ref},(ret)->
 			if ret.success
 				window.location.href = '/after_sign_in?ref=' + decodeURIComponent(ret.value.ref)
 				# window.location.href = decodeURIComponent(ret.value.ref)
@@ -38,6 +38,30 @@ $(->
 				else
 					flag_notice(password_ipt,'您输入的密码有误')
 		)
+
+
+	open_forget_box = ->
+		$.fancybox.open($('.forget-box'),{
+			padding:0,
+			autoSize:true,
+			scrolling:no,
+			minWidth:500,
+			openEffect:'none',
+			closeEffect:'none',        
+			helpers : {
+			  overlay : {
+			    locked: false,
+			    closeClick: false,
+			    css : {
+			      'background' : 'rgba(51, 51, 51, 0.2)'
+			    }
+			  }
+			},
+			beforeShow:-> 
+				
+			afterClose:->
+				
+		})			
 
 	$('body').on('focus','.form input',->
 		remove_notice($(@))
@@ -53,4 +77,26 @@ $(->
 		if e.which == 13
 			$('.login-btn').click()
 	)
+
+	$('body').on('click','a.forget-password',(e)->
+		open_forget_box()
+	)
+
+	$('body').on('click','span.f-btn',->
+		account = $('.f-mobile').val()
+		if account.length > 0
+			$.post("/sessions/fpwd",{mobile:account},(ret)->
+				if ret.success
+					$('.forget-box .box').text('新密码已发送到您的手机!')
+				else
+					$('.forget-box .box').text('该手机号不存在')	
+			)
+	)
+
+	$('body').on('keydown','.f-mobile',(e)->
+		if e.which == 13
+			$('span.f-btn').click()
+	)
+
+
 )

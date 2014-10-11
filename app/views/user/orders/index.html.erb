@@ -9,63 +9,104 @@
   <%= yield :head %>
 <% end %>
 
+<div class="row triple-gap-top triple-pad-top triple-pad-bottom">
+    <div class="container main triple-padded">
+      <article class="row">
+        <div class="tabs ipad">
+          <ul role="tablist" class='tablist'>
+            <li role="tab" class='one fourth' aria-controls="#tab1" href="<%= user_orders_path(:t => 'w')%>" >已报名的课程</li>
+            <li role="tab" class='one fourth' aria-controls="#tab2" href="<%= user_orders_path(:t => 'n')%>" >正在上的课程</li>
+            <li role="tab" class='one fourth' aria-controls="#tab3" href="<%= user_orders_path(:t => 'p')%>" >参与过的课程</li>
+            <li role="tab" class='one fourth' aria-controls="#tab4" href="<%= user_orders_path(:t => 'c')%>" >已取消的课程</li>
+          </ul>
+          <div id="tab1" role="tabpanel">
+    		<table>
+    		  <thead>
+    		    <tr>
+    		      <th class='align-center' style="width:40%;">名称</th>
+    		      <th class='align-center' style="width:10%;">内容类型</th>
+    		      <th class='align-center' style="width:10%;">城市</th>
+    		      <th class='align-center' style="width:10%;">开始时间<br/>结束时间</th>
+    		      <th class='align-center' style="width:10%;">系统审核</th>
+    		      <th class='align-center' style="width:10%;">企业审核</th>
+    		      <th class='align-center' style="width:10%;">操作</th>
+    		    </tr>
+    		  </thead>
+    		  <tbody>
+    		  	<%= render :partial => '/user/orders/table',:locals => { :orders => @orders } %>
+    		  </tbody>
+    		</table>
+          </div>
+          <div id="tab2" role="tabpanel">
+    		<table>
+    		  <thead>
+    		    <tr>
+    		      <th class='align-center' style="width:40%;">名称</th>
+    		      <th class='align-center' style="width:10%;">内容类型</th>
+    		      <th class='align-center' style="width:10%;">城市</th>
+    		      <th class='align-center' style="width:10%;">开始时间<br/>结束时间</th>
+    		      <th class='align-center' style="width:10%;">系统审核</th>
+    		      <th class='align-center' style="width:10%;">企业审核</th>
+    		      <th class='align-center' style="width:10%;">操作</th>
+    		    </tr>
+    		  </thead>
+    		  <tbody>
+    		  	
+    		  </tbody>
+    		</table>          
+          </div>
+          <div id="tab3" role="tabpanel">
+    		<table>
+    		  <thead>
+    		    <tr>
+    		      <th class='align-center' style="width:40%;">名称</th>
+    		      <th class='align-center' style="width:10%;">内容类型</th>
+    		      <th class='align-center' style="width:10%;">城市</th>
+    		      <th class='align-center' style="width:10%;">开始时间<br/>结束时间</th>
+    		      <th class='align-center' style="width:10%;">系统审核</th>
+    		      <th class='align-center' style="width:10%;">企业审核</th>
+    		      <th class='align-center' style="width:10%;">操作</th>
+    		    </tr>
+    		  </thead>
+    		  <tbody>
+    		  	
+    		  </tbody>
+    		</table>          
+          </div>
+          <div id="tab4" role="tabpanel">
+    		<table>
+    		  <thead>
+    		    <tr>
+    		      <th class='align-center' style="width:40%;">名称</th>
+    		      <th class='align-center' style="width:10%;">内容类型</th>
+    		      <th class='align-center' style="width:10%;">城市</th>
+    		      <th class='align-center' style="width:10%;">开始时间<br/>结束时间</th>
+    		      <th class='align-center' style="width:10%;">系统审核</th>
+    		      <th class='align-center' style="width:10%;">企业审核</th>
+    		      <th class='align-center' style="width:10%;">操作</th>
+    		    </tr>
+    		  </thead>
+    		  <tbody>
+    		  	
+    		  </tbody>
+    		</table>          
+          </div>                    
+        </div>
+      </article>  
 
-<% content_for :left_side do %>
-  <%= render :partial => '/user/partial/left_side' %>
-<% end %>
 
-<% content_for :right_side do %>
-  <div class="row right-head triple-pad-left triple-pad-right">
-    <span class="fa fa-flag-o"></span>
-    <span class="locate">课程管理<i class="fa fa-angle-double-right"></i><%=user_sub_tab_text(params)%></span>
-  </div>
-  <div class="row right-notice triple-pad-left triple-pad-right">
-    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
-      <i class="fa fa-info"></i>
-      <span><%= order_notice(params[:t])%></span>
+  	  <article class="confirm-box row"> 
+  	  	<div class="one whole padded">
+  	  	  <div class="content box  red align-center">  
+  	  	    <strong>确定要取消？</strong>
+  	  	  </div>     
+  	  	  <div class="row double-pad-top double-pad-bottom">
+  	  	    <button class="info one half warning sure-operation">确定</button>
+  	  	    <button class="info one half success cancel-operation">关闭</button>
+  	  	  </div>  
+  	  	</div>
+  	  </article>
+
+
     </div>
-  </div>
-  <div class="row triple-pad-left triple-pad-right">
-    <table class="responsive responsiveTable>" data-max="15">
-      <thead>
-        <tr>
-          <th>编码</th>
-          <th>名称</th>
-          <th>开始时间</th>
-          <th>结束时间</th>
-          <th>城市</th>
-          <th>内容类型</th>
-          <th>教师姓名</th>
-          <th>状态</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% if @orders['data'].length > 0 %>
-        <% @orders['data'].each do |order|%>
-          <tr>
-            <td><%= order.course.code%></td>
-            <td><%= order.course.name_en%></td>
-            <td><%= order.course.start_date.strftime('%F')%><br><%=order.course.start_time%></td>
-            <td><%= order.course.end_date.strftime('%F')%><br><%=order.course.end_time%></td>
-            <td><%= order.course.show_city%></td>
-            <td><%= order.course.delivery_type%></td>
-            <td class='align-center'><%= image_tag(show_small_avatar(order.course))%><br/><%= order.course.instructor%></td>
-            <td><%= order.show_state %></td>
-            <td>
-              <a href="/courses/<%= order.course.id.to_s%>" target="_blank">查看</a><br/>
-              <% if order.can_cancel && !order.is_cancel%>
-              <a href="javascript:void(0);" data-id="<%=order.id.to_s%>" class='cancel-order'>取消</a>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td colspan="9" class='align-center'>您暂时还没有报名的课程</td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>   
-  </div>   
-<% end %>
+</div>

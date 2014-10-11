@@ -29,8 +29,21 @@ $(->
 			if ret.success	
 				window.location.href = '/feedbacks?t=p'
 			else
-				console.log(ret)
 				$('button.feed-btn').text('无权反馈!').css({background:'#e74c3c'})
 		)
 	)
+
+	$('body').on('click','button.large.start',->
+		generate_order([window.c_id])
+	)
+
+	generate_order = (data)->
+		$.post('/orders',{data:data},(ret)->
+			if ret.success
+				if ret.value == false
+					window.location.href = '/login'
+				else
+					window.location.href = '/orders?w=true'
+		)		
+	
 )

@@ -13,53 +13,87 @@
   <header class="pad-top  pad-left pad-right">
     <div class="container">
       <div class="row">
-        <div class="three sixths mobile">
+        <div class="onw whole mobile">
           <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
         </div>
-        <div class="one sixth mobile login-container skip-two">
-          <div class="row">
-          <% if current_user.present?%>
-            <% if current_user.is_admin? || current_user.is_viewer? %>
-              <a href="<%= admin_companies_path %>" class='one half mobile'>管理中心</a>
-            <% elsif current_user.is_manager? %>
-              <a href="<%= manager_users_path %>" class='one half mobile'>管理中心</a>
+        <div class="row">
+          <div class="one fifth skip-four align-right">
+            <% if current_user.present?%>
+              <div class="a-container">
+                <div class="reg-container pull-right">
+                  <% if current_user.is_admin? || current_user.is_viewer? %>
+                    <a href="<%= admin_companies_path %>" class='half-pad-right half-pad-left'>管理中心</a>
+                  <% elsif current_user.is_manager? %>
+                     <a href="<%= manager_users_path %>" class='half-pad-right half-pad-left'>管理中心</a>
+                  <% else %>
+                      <a data-method="delete" class='' href="/logout"><span class="fa fa-sign-out"></span>退出</a>
+                  <% end %>
+                </div>
+                <div class="log-container half-pad-right half-pad-left pull-right">
+                  <a href="<%= user_users_path %>" class='pad-right pad-left'><span class="fa fa-user"></span><%= current_user.name %></a>
+                </div>
+              </div> 
             <% else%>
-              <a href="<%= user_users_path %>" class='one half mobile'>个人中心</a>
-            <% end %>
-            
-            <a data-method="delete" class='one half mobile ' href="/logout">退出</a>
-          <% else%>
-            <a href="/login" class='one half mobile'>登录</a>
-            <a href="/regist" class='one half mobile '>注册</a>          
-          <% end %>
+              <div class="a-container">
+                <div class="reg-container pull-right">
+                  <a href="/regist" class='half-pad-right half-pad-left'>注册</a> 
+                </div>
+                <div class="log-container half-pad-right half-pad-left pull-right">
+                  <a href="/login" class=''>登录</a>
+                </div>
+              </div>   
+            <% end %>            
           </div>
-        </div>        
+        </div>       
       </div>
       <div class="row">
-        <div class="one third">
+        <div class="four fifths">
           <nav role="navigation" class="nav gap-top">
             <ul role="menubar">
-              <li class="one fifth" aria-selected=<%= nav_actived?('welcome',['index'])%>>
+              <li class="one eleventh" aria-selected=<%= nav_actived?('welcome','index')%>>
                 <a href="/" class='triple-padded'>Home</a>
               </li>
-              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'ax')%>>
+              <li class="one eleventh ax" aria-selected=<%= nav_actived?('category','index','ax')%>>
                 <a href="/category?t=ax" class='triple-padded'>AX</a>
               </li>
-              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'crm')%>>
+              <li class="one eleventh crm" aria-selected=<%= nav_actived?('category','index','crm')%>>
                 <a href="/category?t=crm" class='triple-padded'>CRM</a>
               </li>
-              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'ax_crm')%>>
+              <li class="one eleventh ax_crm" aria-selected=<%= nav_actived?('category','index','ax_crm')%>>
                 <a href="/category?t=ax_crm"  class='triple-padded'>AX+CRM</a>
               </li>
-              <li class="one fifth" aria-selected=<%= nav_actived?('category',['index','show'],'qt')%>>
+              <li class="one eleventh free" aria-selected=<%= nav_actived?('category','index','f')%>>
+                <a href="/category?t=f"  class='triple-padded'>免费研讨</a>
+              </li>   
+              <li class="one eleventh personal" aria-selected=<%= nav_actived?('users','index')%>>
+                <a href="/user/users"  class='triple-padded'>个人中心</a>
+              </li>
+              <li class="one eleventh order" aria-selected=<%= nav_actived?('orders','index')%>>
+                <a href="/user/orders"  class='triple-padded'>我的报名</a>
+              </li> 
+              <li class="one eleventh feedback" aria-selected=<%= nav_actived?('feedbacks','index')%>>
+                <a href="/user/feedbacks"  class='triple-padded'>我的反馈</a>
+              </li>  
+              <li class="one eleventh net1" aria-selected=<%= nav_actived?('users','feedbacks')%>>
+                <a href="http://www.microsoft.com/zh-cn/dynamics/default.aspx"  class='triple-padded noicon'>中国官网</a>
+              </li>
+              <li class="one eleventh net2" aria-selected=<%= nav_actived?('users','feedbacks')%>>
+                <a href="https://mbspartner.microsoft.com/Landing"  class='triple-padded noicon'>自学门户</a>
+              </li> 
+              <li class="one eleventh net1" aria-selected=<%= nav_actived?('welcome','tel')%>>
+                <a href="/tel"  class='triple-padded'>致电客服</a>
+              </li>                                                                                                  
+<!--               <li class="one fifth qt" aria-selected=<%#= nav_actived?('category','index','qt')%>>
                 <a href="/category?t=qt"  class='triple-padded'>OTHER</a>
-              </li>              
+              </li>   -->            
             </ul>
           </nav>          
         </div>
-        <div class="one third skip-one search-container">
-          <input id="search-name" type="text" placeholder="课程名称">
-          <span class='fa fa-search absolute top right padded'></span>
+        <div class="one fifth search-container">
+          <form class='layout-search' action='/courses/search' method='get'>
+            <input id="search-name" name='name' type="text" placeholder="课程名称">
+            <span class='fa fa-search absolute top right padded'></span>
+          </form>
         </div>
       </div>
     </div>
