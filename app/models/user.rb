@@ -67,9 +67,9 @@ class User
   scope :qt, -> {where(crm:false,ax:false,softskill:false)}#其他课程
 
 
-  def self.create_admin
+  def self.create_admin(email,mobile)
     password = make_encrypt('111111')
-    self.create(name:'gaohan',email:'naitnix@126.com',mobile:'15210427877',role_of_system:ROLE_ADMIN,password:password)
+    self.create(name:'admin',email:email,mobile:mobile,role_of_system:ROLE_ADMIN,password:password)
   end
 
   #注册用户
