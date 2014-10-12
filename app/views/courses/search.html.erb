@@ -37,55 +37,34 @@
                 </div>
                 <div class="three fourth padded">
                   <div class="row">
-                    <div class="eleven twelfth">
+                    <div class="one whole">
                       <div class="row c-title">
                         <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
                           <b>
-                            <span class="code"><%= course.code%>:</span>
-                            <span class="title"><%= course.name_en %></span>
+                            <span class="title"><%= course.name_cn %></span>
                           </b>                        
                         </a>
                       </div>
-                      <div class="row audience">
-                        受众对象:
-                        <span class="audiencer">
-                          <%= course.audience%>
-                        </span>
-                      </div>
-                      <div data-truncate="2" class="row description">
-                        <%= truncate(course.description,:length => 120) %>
-                      </div>
-                      <div class="row more"><a href="<%=course_path(course)%>" target='_blank'>More</a></div>
-                      <div class="row pagement pad-top">
-                        <div class="one fifth">
-                          <% if course.open?%>
-                            <button class="start success half-gap-bottom small" data-id="<%= course.id.to_s %>">报名</button>
-                          <% else%>
-                            <button class=" half-gap-bottom small" data-id="<%= course.id.to_s %>">报名</button>
-                          <% end %>
-                          <% if course.can_feed? %>
-                            <button class="feedback info small" data-id="<%= course.id.to_s %>">反馈</button>
-                          <% else %>
-                            <button class="small" data-id="<%= course.id.to_s %>">反馈</button>
-                          <% end %>
+                      <div class="row pagement double-pad-top">
+                        <div class="three fifths">
+                          <p class="pub">开始日期:<%= course.start_date.strftime('%Y年%m月%d日')%></p>
+                          <p class='duration'>时长:<%= course.duration %>天</p>
                         </div>
                         <div class="two fifths">
-                          <p class='duration'>时长:<%= course.duration %></p>
-                          <p class="level">LEVEL:<%= course.difficulty_level %></p>
-                        </div>
-                        <div class="two fifths">
-                          <p class="pub">时间:<%= course.start_date.strftime('%Y年%m月%d日')%></p>
                           <p class="city">城市:<%= course.show_city %></p>
-                        </div>
+                          <div class="row">
+                            <% if course.open?%>
+                              <button class="start success one half" data-id="<%= course.id.to_s %>">报名</button>
+                            <% else%>
+                              <button class="" data-id="<%= course.id.to_s %>">报名</button>
+                            <% end %>   
+                            <ul class="checklist select-list large one half align-center">
+                              <li data-id="<%= course.id.to_s%>"></li>
+                            </ul>                            
+                          </div>
+                        </div>                        
                       </div>                  
                     </div>
-                    <% if course.open?%>
-                      <div class="one twelfth">
-                        <ul class="checklist select-list">
-                          <li data-id="<%= course.id.to_s%>"></li>
-                        </ul>
-                      </div>
-                    <% end %>
                   </div>
                 </div>
               </div>          
@@ -106,7 +85,7 @@
         <% end %> 
       <% else %>
         <div class="error box align-center no-data">
-          对不起,没有找到相关课程
+          对不起,该分类下暂时没有可以报名的课程
         </div>
       <% end %>
 

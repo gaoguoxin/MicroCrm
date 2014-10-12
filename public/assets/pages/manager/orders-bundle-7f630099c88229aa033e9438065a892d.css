@@ -1,0 +1,18 @@
+/* line 3, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/manager/orders-bundle.css.scss */
+table tr td {
+  vertical-align: middle;
+}
+
+/* line 8, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/manager/orders-bundle.css.scss */
+.employee-box {
+  display: none;
+}
+/* line 11, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/manager/orders-bundle.css.scss */
+.employee-box ul li {
+  cursor: pointer;
+}
+
+/* line 17, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/manager/orders-bundle.css.scss */
+.order-list {
+  display: none;
+}

@@ -94,16 +94,15 @@ class Course
         set_order_canceled
       end
     else
-      check_city_changed
+      check_address_changed
     end
   end
   #检查城市是否发生了改变
-  def check_city_changed
+  def check_address_changed
     if self.status == STATUS_CODE_1  #只判断处于发布中的课程
-      if self.city_changed? #课程城市的变化相当于取消了该课程，并新建了一个新的课程，并且该课程处于开放状态
-        new_course = Course.create(self.attributes)
-        self.update_attributes(status:STATUS_CODE_4) #取消该课程并取消相关的有效的报名，并发送短信
-        self.set_order_canceled
+      if self.address_changed? #课程城市的变化相当于取消了该课程，并新建了一个新的课程，并且该课程处于开放状态
+        mlist = self.orders.effective.map{|e| e.user.mobile}
+        SmsWorker.perform_async("lesson_address_changed",mlist,{course_id:self.id.to_s})
       else
         check_time_changed
       end

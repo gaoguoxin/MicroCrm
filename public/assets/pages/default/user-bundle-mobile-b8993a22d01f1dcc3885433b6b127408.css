@@ -1,0 +1,23 @@
+/* line 2, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/user-bundle-mobile.css.scss */
+fieldset {
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  background: #fff;
+}
+
+/* line 6, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/user-bundle-mobile.css.scss */
+.logoimg {
+  border-radius: 0px;
+  background: #2d89ef;
+}
+
+/* line 11, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/user-bundle-mobile.css.scss */
+.blue:hover {
+  text-decoration: none;
+}
+
+/* line 14, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/user-bundle-mobile.css.scss */
+button {
+  -o-border-radius: 0px;
+  border-radius: 0px;
+}

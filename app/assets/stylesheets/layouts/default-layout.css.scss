@@ -77,6 +77,15 @@ body{
 				}
 			}
 		}
+		nav.nav{
+			>ul{
+				li{
+					a{
+						font-weight:normal;
+					}
+				}
+			}
+		}
 	}
 	.container.main{
 		background:#fff;
@@ -96,5 +105,10 @@ body{
 			}
 		}
 	}
+	#nav_ax,#nav_crm,#nav_ax_crm,#nav_free,#nav_personal,#nav_order,#nav_feed,#nav_net1,#nav_net2,#nav_tel{
+		font-weight:normal;
+	}
 }
+
+
 

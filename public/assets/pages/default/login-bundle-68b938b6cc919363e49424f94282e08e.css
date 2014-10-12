@@ -1,0 +1,83 @@
+/* line 5, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login {
+  background: #37BC9B;
+}
+/* line 8, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-header .logo-container {
+  margin: 0 auto;
+  float: none;
+  text-align: center;
+}
+/* line 15, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form {
+  float: none;
+  margin: 0 auto;
+  border: 1px solid #fafafa;
+  -o-border-radius: 6px;
+  border-radius: 6px;
+}
+/* line 20, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form .ipt-container {
+  position: relative;
+}
+/* line 22, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form .ipt-container input {
+  outline: none;
+}
+/* line 25, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form .ipt-container .tooltip {
+  display: none;
+  width: 100%;
+  font-size: 1.5em;
+  height: 100%;
+  padding: 0.4em;
+  top: 0px;
+  left: 110%;
+  background: #b94a48;
+  color: #fff;
+  position: absolute;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+/* line 41, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form button {
+  background: #E8AA2E;
+  border-color: #E8AA2E;
+  color: #fff;
+  letter-spacing: 1em;
+  outline: none;
+}
+/* line 47, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form button:hover {
+  background: #ed9c28;
+}
+/* line 51, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form .checklist {
+  color: #fff;
+}
+/* line 54, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form p {
+  color: #fff;
+  text-align: center;
+}
+/* line 57, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .login-wrapper .form p a {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+/* line 68, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .forget-box {
+  display: none;
+}
+/* line 70, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .forget-box .box {
+  background-color: #f9f9f9;
+  border: 0px;
+}
+/* line 75, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/login-bundle.css.scss */
+body.login .suffix.yellow {
+  background: #f1c40f;
+  border-color: #dab10d;
+  cursor: pointer;
+}

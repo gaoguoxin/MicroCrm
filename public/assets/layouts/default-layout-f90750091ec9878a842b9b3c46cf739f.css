@@ -1,0 +1,92 @@
+/* line 22, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body {
+  background: #e7e8eb;
+}
+/* line 24, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header {
+  background: #fff;
+}
+/* line 26, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .logo-container {
+  display: inline-block;
+}
+/* line 28, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .logo-container.mobile {
+  text-align: center;
+}
+/* line 33, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .search-container {
+  margin-top: 1em;
+}
+/* line 35, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .search-container input {
+  outline: none;
+}
+/* line 40, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .login-container a {
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+}
+/* line 48, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav {
+  border: 0px;
+  background: #fff;
+}
+/* line 51, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav a {
+  background: #fff;
+}
+/* line 53, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav a:hover {
+  background: #fff;
+}
+/* line 56, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav a:visited {
+  background: #fff;
+}
+/* line 61, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav ul li {
+  text-align: center;
+}
+/* line 63, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav ul li a {
+  display: inline-block;
+  padding: 1em;
+  width: 100%;
+}
+/* line 67, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav ul li a:hover {
+  background: #e7e8eb;
+}
+/* line 73, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header .nav ul li[aria-selected="true"] a {
+  background: #e7e8eb;
+}
+/* line 83, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body header nav.nav > ul li a {
+  font-weight: normal;
+}
+/* line 90, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body .container.main {
+  background: #fff;
+}
+/* line 94, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body .container.main .tabs ul li {
+  background: #e7e8eb;
+}
+/* line 96, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body .container.main .tabs ul li.active {
+  background: #fff;
+}
+/* line 101, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body .container.main .tabs ul.unstyled li {
+  background: #fafafa;
+}
+/* line 108, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/layouts/default-layout.css.scss */
+body #nav_ax, body #nav_crm, body #nav_ax_crm, body #nav_free, body #nav_personal, body #nav_order, body #nav_feed, body #nav_net1, body #nav_net2, body #nav_tel {
+  font-weight: normal;
+}

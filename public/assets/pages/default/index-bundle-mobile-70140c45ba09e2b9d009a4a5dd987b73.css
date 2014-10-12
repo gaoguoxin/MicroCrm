@@ -1,0 +1,76 @@
+/* line 22, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+article.row > div a {
+  box-shadow: #eeeeee 1px 1px 5px;
+}
+
+/* line 28, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.logoimg {
+  border-radius: 0px;
+  background: #2d89ef;
+}
+
+/* line 33, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.blue:hover {
+  text-decoration: none;
+}
+
+/* line 36, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.blue h6 {
+  color: #fff;
+  margin: 0;
+}
+
+/* line 40, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.crm {
+  background: #ba141a;
+}
+
+/* line 43, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.ax {
+  background: #2d89ef;
+}
+
+/* line 46, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.softkill {
+  background: #9f00a7;
+}
+
+/* line 49, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.free {
+  background: #b91d47;
+}
+
+/* line 52, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.mycourse {
+  background: #00d8cc;
+}
+
+/* line 55, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.feedback {
+  background: #b4009e;
+}
+
+/* line 58, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.net {
+  background: #009e49;
+}
+
+/* line 61, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.cill {
+  background: #7fba00;
+}
+
+/* line 64, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.personal {
+  background: #ffb900;
+}
+
+/* line 67, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.tel {
+  background: #fcd116;
+}
+
+/* line 70, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/default/index-bundle-mobile.scss */
+.search {
+  background: #17a689;
+}

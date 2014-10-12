@@ -1,0 +1,15 @@
+/* line 3, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/user/users-bundle.css.scss */
+.one.half.padded.password-container {
+  float: none;
+  margin: 0 auto;
+}
+
+/* line 11, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/user/users-bundle.css.scss */
+form .row label span {
+  display: inline-block;
+  background: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  margin-left: 1em;
+  padding: 0px 1em;
+}

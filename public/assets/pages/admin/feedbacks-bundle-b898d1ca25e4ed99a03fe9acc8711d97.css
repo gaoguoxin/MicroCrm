@@ -1,0 +1,21 @@
+/* line 1, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/admin/feedbacks-bundle.css.scss */
+table tr td {
+  vertical-align: middle;
+}
+/* line 3, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/admin/feedbacks-bundle.css.scss */
+table tr td.point {
+  cursor: pointer;
+}
+/* line 5, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/admin/feedbacks-bundle.css.scss */
+table tr td.point input {
+  display: none;
+}
+
+/* line 10, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/admin/feedbacks-bundle.css.scss */
+.feedback-box {
+  display: none;
+}
+/* line 13, /Users/x/workspace/projects/ruby_projects/MicroCrm/app/assets/stylesheets/pages/admin/feedbacks-bundle.css.scss */
+.feedback-box .checklist li {
+  cursor: pointer;
+}
