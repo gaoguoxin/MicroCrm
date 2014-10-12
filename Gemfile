@@ -28,11 +28,13 @@ gem 'spring',        group: :development
 gem 'ezcrypto', '~> 0.7.2'
 gem 'kaminari', '~> 0.14.1'
 # gem 'compass-rails'
-gem 'compass-rails', '~> 1'
+gem 'compass-rails'
 gem 'spreadsheet'
-gem 'groundworkcss'
+
+gem 'groundworkcss',group: :assets
 
 gem 'autoprefixer-rails'
+
 gem "font-awesome-rails"
 gem 'mobile-fu', "~> 1.2.2"
 gem 'sidekiq'
