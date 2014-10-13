@@ -1,6 +1,14 @@
 @import "compass/css3/border-radius";
 @import "compass/utilities/general/clearfix";
 .container{
+	padding-top:54px;
+	.seacher{
+		.box{
+			@include border-radius(0px);
+			border:0px;
+			padding:4px;
+		}
+	}
 	article.row{
 		ul.button-group.row{
 			li{
@@ -19,6 +27,9 @@
 	}			
 
 }
+ .name-holder{
+ 	height:2.5em;
+ }
 
 .show-info{
 	button{

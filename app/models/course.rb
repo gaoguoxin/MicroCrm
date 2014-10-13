@@ -245,7 +245,7 @@ class Course
         result = result.uncharge
         return result
       end
-      result = result.where(content_type:/#{para[:t].upcase}/)  
+      result = result.where(content_type:/^#{para[:t].upcase}$/)  
       return result
     end
     if opt[:name].present?

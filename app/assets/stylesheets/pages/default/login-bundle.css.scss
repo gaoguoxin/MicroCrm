@@ -9,7 +9,11 @@ body.login{
 		.logo-container{
 			margin:0 auto;
 			float:none;
-			text-align:center;
+			// text-align:center;
+			img.logo{
+				position:relative;
+				left:-15px;
+			}
 		}
 	}
 	.login-wrapper{
@@ -43,10 +47,10 @@ body.login{
 			}		
 
 			button{
-				background:#E8AA2E;
-				border-color:#E8AA2E;
+				background:#0071c5;
+				border-color:#0071c5;
 				color:#fff;
-				letter-spacing:1em;
+				// letter-spacing:1em;
 				outline:none;
 				&:hover{
 					background:#ed9c28;
