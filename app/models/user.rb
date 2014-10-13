@@ -128,7 +128,7 @@ class User
           #SmsWorker.perform_async("admin_add_viewer",user.mobile,{pwd:opt[:password]})
         else
           #系统管理员添加学员
-          #SmsWorker.perform_async("admin_add_user",user.mobile,{pwd:opt[:password]})
+          SmsWorker.perform_async("admin_add_user",user.mobile,{pwd:opt[:password]})
         end
       end      
     elsif is_manager
@@ -183,7 +183,7 @@ class User
     u = User.where(mobile:mobile).first
     return ErrorEnum::USER_NOT_EXIST unless u.present? 
     new_pwd = Random.rand(999999)
-    #SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
+    SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
     new_pwd = make_encrypt(new_pwd)
     u.update_attributes(password:new_pwd)
   end

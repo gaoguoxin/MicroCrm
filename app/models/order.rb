@@ -54,7 +54,7 @@ class Order
         Order.create(user_id:user_id,course_id:course_id)
         if manager && manager.mobile.present?
           #这里有个疑问，如果用户可以批量创建报名的话，那么会给企业管理员发送多条短信，造成短信炸弹
-          SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
+          #SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
         end
       end
     end

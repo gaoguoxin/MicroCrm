@@ -3,34 +3,14 @@ require 'rubygems'
 require 'httparty'
 require 'open-uri'
 class SmsApi # 短信接口
-
-  attr_reader :phone_number, :message
-
-  include HTTParty
-
-  base_uri 'http://yunpian.com/v1'
-
-  APIKEY = "af6331b4c5873b9503f4c7fae15a2e6f"
+  ChinaSMS.use :yunpian, password: 'af6331b4c5873b9503f4c7fae15a2e6f'
 
   #同步发送即时短信
-  def self.send_sms(type,tplid,phone,message)
-    message.gsub!("\n", "")
-    seqid = Random.rand(10000..9999999999999999).to_i
-
-    result = post("/sms/tpl_send.json",
-        :query => { :apikey => APIKEY,
-            :mobile => phone,
-            :tpl_id => tplid,
-            :tpl_value => URI::encode(message),
-            :uid => seqid },
-        :headers => {"Accept" => "text/plain",'charset' => 'utf-8','Content-Type' => 'application/x-www-form-urlencoded'}
-    )
-
-    SmsHistory.create(mobile:phone,type:type,seqid:seqid,result:result)
-    return result
+  def self.send_sms(type,tplid,phone,tpl_params)
+    return false unless Rails.env == 'production'
+    result = ChinaSMS.to "#{phone}", tpl_params, tpl_id: tplid
+    SmsHistory.create(mobile:phone,type:type,result:result)
   end
-
-
 
   ################### different types of sms ########################
 
@@ -40,7 +20,7 @@ class SmsApi # 短信接口
     date      = course.start_date.strftime('%F')
     name      = course.name_cn 
     address   = course.address + course.classroom
-    tpl_value = "#date#=#{date}&#name#=#{name}&#address#=#{address}"
+    tpl_value = { date:"#{date}", name:"#{name}", address:"#{address}"}
 
     mlist.each do |mobile|
       send_sms(type,499435,mobile,tpl_value)
@@ -52,7 +32,7 @@ class SmsApi # 短信接口
     course    = Course.find(opt[:course_id])
     date      = course.start_date.strftime('%F') + ' ' + cousre.start_time
     name      = course.name_cn 
-    tpl_value = "#name#=#{name}&#date#={date}"  
+    tpl_value = { name:"#{name}", date:"#{date}"}
 
     mlist.each do |mobile|
       send_sms(type,499447,mobile,tpl_value)
@@ -66,7 +46,8 @@ class SmsApi # 短信接口
     name       = course.name_cn
     date       = course.start_date.strftime('%F')
     city       = course.show_city
-    tpl_value  = "#type#=#{type}&#name#=#{name}&#date#=#{date}&#city#=#{city}"
+    tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
+
     mlist.each do |mobile|
       send_sms(type,497343,mobile,tpl_value)
     end
@@ -79,7 +60,8 @@ class SmsApi # 短信接口
     name       = course.name_cn
     date       = course.start_date.strftime('%F')
     city       = course.show_city
-    tpl_value  = "#type#=#{type}&#name#=#{name}&#date#=#{date}&#city#=#{city}"
+    tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
+
     mlist.each do |mobile|
       send_sms(type,497343,mobile,tpl_value)
     end
@@ -91,7 +73,8 @@ class SmsApi # 短信接口
     date         = course.start_date.strftime('%Y年%m月%d日')
     city         = course.show_city
     name         = course.name_cn
-    tpl_value    = "#date#=#{date}#&#city#=#{city}&#name#=#{name}"
+    tpl_value    = { date:"#{date}", city:"#{city}", name:"#{name}"}
+
     send_sms(type,497381,mobile,tpl_value)
   end
 
@@ -101,7 +84,8 @@ class SmsApi # 短信接口
     date         = course.start_date.strftime('%Y年%m月%d日')
     city         = course.show_city
     name         = course.name_cn
-    tpl_value    = "name#=#{name}#date#=#{date}#&#city#=#{city}"
+    tpl_value    = { name:"#{name}", date:"#{date}", city:"#{city}"}
+
     mlist.each do |mobile|
       send_sms(type,499519,mobile,tpl_value)
     end    
@@ -114,6 +98,8 @@ class SmsApi # 短信接口
     uname        = user.name
     name         = course.name_cn
     tpl_value    = "uname#=#{uname}#name#=#{name}"
+    tpl_value    = { uname:"#{uname}", name:"#{name}"}
+
     send_sms(type,499535,mobile,tpl_value)
   end
 
@@ -122,7 +108,8 @@ class SmsApi # 短信接口
     course    = Course.find(opt[:course_id])
     manager   = opt['manager']
     name      = course.name_cn
-    tpl_value = "name#=#{name}#manager#=#{manager}"
+    tpl_value = { name:"#{name}", manager:"#{manager}"}
+
     send_sms(type,499543,mobile,tpl_value)
   end
 
@@ -131,7 +118,8 @@ class SmsApi # 短信接口
     course    = Course.find(opt[:course_i])
     manager   = opt['manager']
     name      = course.name_cn
-    tpl_value = "name#=#{name}#manager#=#{manager}"
+    tpl_value = { name:"#{name}", manager:"#{manager}"}
+
     send_sms(type,499565,mobile,tpl_value)      
   end
 
@@ -140,7 +128,8 @@ class SmsApi # 短信接口
     course    = Course.find(opt[:course_id])
     name      = course.name_cn
     manager   = opt[:manager]
-    tpl_value = "#manager#=#{manager}&#name#=#{name}"
+    tpl_value = { manager:"#{manager}", name:"#{name}"}
+
     send_sms(type,499573,mobile,tpl_value)
   end
 
@@ -149,7 +138,8 @@ class SmsApi # 短信接口
     course    = Course.find(opt['course_id'])
     user      = opt['user']
     name      = course.name_cn
-    tpl_value = "#uname#=#{user}&#name#=#{name}"
+    tpl_value = { uname:"#{user}", name:"#{name}"}
+
     send_sms(type,499605,mobile,tpl_value)
   end
 
@@ -157,7 +147,8 @@ class SmsApi # 短信接口
   def self.admin_cancel_effective_order(type,mobile,opt)
     course    = Course.find(opt['course_id'])
     name      = course.name_cn
-    tpl_value = "#name#=#{name}"
+    tpl_value = { name:"#{name}"}
+
     send_sms(type,499599,mobile,tpl_value)
   end
 
@@ -165,7 +156,8 @@ class SmsApi # 短信接口
   def self.admin_cancel_uneffective_order(type,mobile,opt)
     course    = Course.find(opt['course_id'])
     name      = course.name_cn
-    tpl_value = "#name#=#{name}"
+    tpl_value = { name:"#{name}"}
+
     send_sms(type,499609,mobile,tpl_value)
   end
 
@@ -173,16 +165,18 @@ class SmsApi # 短信接口
   def self.admin_generate_order(type,mobile,opt)
     course    = Course.find(opt['course_id'])
     name      = course.name_cn
-    tpl_value = "#name#=#{name}"
+    tpl_value = { name:"#{name}"}
+
     send_sms(type,499623,mobile,tpl_value) 
   end
 
   #系统管理员审核报名通过
   def self.admin_allow_order(type,mobile,opt)
-    course = Course.find(opt['course_id'])
-    name  = course.name_cn
-    date  = course.start_date.strftime('%F')
-    tpl_value = "#name#=#{name}&#date#=#{date}&#city#=#{city}"
+    course    = Course.find(opt['course_id'])
+    name      = course.name_cn
+    date      = course.start_date.strftime('%F')
+    tpl_value = { name:"#{name}", date:"#{date}",city:"#{city}"}
+
     send_sms(type,499629,mobile,tpl_value)
   end
 
@@ -190,42 +184,42 @@ class SmsApi # 短信接口
   def self.admin_refuse_order(type,mobile,opt)
     course    = Course.find(opt['course_id'])
     name      = course.name_cn
-    tpl_value = "#name#=#{name}"
+    tpl_value = { name:"#{name}"}
     send_sms(type,499637,mobile,tpl_value)  
   end
   # 系统管理员添加企业管理员
   def self.admin_add_manager(type, mobile, opt)
-    tpl_value = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    tpl_value = { mobile:"#{opt[:mobile]}",pwd:"#{opt[:pwd]}"}
     send_sms(type,499761,mobile,tpl_value)
   end
 
   # 系统管理员添加查看员
   def self.admin_add_viewer(type,mobile,opt)
-    tpl_value  = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    tpl_value = { mobile:"#{opt[:mobile]}",pwd:"#{opt[:pwd]}"}
     send_sms(type,499763,mobile,tpl_value)
   end
 
   # 系统管理员添加会员
   def self.admin_add_user(type,mobile,opt)
-    tpl_value = "#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    tpl_value = { mobile:"#{mobile}",pwd:"#{opt['pwd']}"}
     send_sms(type,499765,mobile,tpl_value)
   end
 
   # 企业管理员添加员工
   def self.manager_add_user(type,mobile,opt)
-    tpl_value = "#company#=#{opt[:company]}&#mobile#=#{opt[:mobile]}&#pwd#=#{opt[:pwd]}"
+    tpl_value = { company:"#{opt['company']}",mobile:"#{opt['mobile']}",pwd:"#{opt['pwd']}"}
     send_sms(type,497289,mobile,tpl_value)    
   end
 
   #用户自己注册，短信通知对应的管理员
   def self.user_regist(type,mobile,opt)
-    tpl_value = "#name=#{opt[:name]}"
+    tpl_value = { name:"#{opt['name']}"}
     send_sms(type,499769,mobile,tpl_value)     
   end
 
   #找回密码短信
   def self.find_password(type, mobile, opt)
-    tpl_value = "#pwd#=#{opt[:pwd]}"
+    tpl_value = { pwd:"#{opt['pwd']}"}
     send_sms(type,499773,mobile,tpl_value)
   end
 

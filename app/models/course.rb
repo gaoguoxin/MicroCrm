@@ -103,7 +103,7 @@ class Course
     if self.status == STATUS_CODE_1  #只判断处于发布中的课程
       if self.address_changed? #课程城市的变化相当于取消了该课程，并新建了一个新的课程，并且该课程处于开放状态
         mlist = self.orders.effective.map{|e| e.user.mobile}
-        SmsWorker.perform_async("lesson_address_changed",mlist,{course_id:self.id.to_s})
+        #SmsWorker.perform_async("lesson_address_changed",mlist,{course_id:self.id.to_s})
       else
         check_time_changed
       end
@@ -114,7 +114,7 @@ class Course
   def check_time_changed
     if self.start_date_changed? || self.start_time_changed? 
       mlist = self.orders.effective.map{|e| e.user.mobile}
-      SmsWorker.perform_async("lesson_time_changed",mlist,{course_id:self.id.to_s})
+      #SmsWorker.perform_async("lesson_time_changed",mlist,{course_id:self.id.to_s})
     end
   end
     
@@ -126,8 +126,8 @@ class Course
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
-    SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
-    SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})
+    #SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
+    #SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})
   end
 
   #课程已经交付，将对应的报名表设置为过期
@@ -139,7 +139,7 @@ class Course
   def set_order_canceled
     self.orders.effective.each do |order|
       order.update_attributes(is_cancel:true,cancel_type:Order::CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
-      SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s}) 
+      #SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s}) 
     end
   end
 

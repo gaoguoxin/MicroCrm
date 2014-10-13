@@ -46,19 +46,6 @@ class SmsWorker
       retval = SmsApi.manager_add_user(sms_type, mobile, opt)
     when 'user_regist'
       retval = SmsApi.user_regist(sms_type, mobile, opt)
-
-
-
-
-
-
-
-
-
-
-      
-
-
     when 'find_password'
       retval = SmsApi.find_password(sms_type, mobile, opt)
     end
