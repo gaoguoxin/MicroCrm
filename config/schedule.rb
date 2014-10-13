@@ -10,7 +10,7 @@ set :output, {
 case @environment
 when 'production'
 	every 5.minutes do 
-		runner "Course.say_abc"
+		runner "Course.batch_update_status"
 	end
 	every 1.day, :at => '6:00 am' do
 	  runner "Course.send_pre_notice"
