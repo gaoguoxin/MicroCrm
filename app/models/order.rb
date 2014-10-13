@@ -56,7 +56,6 @@ class Order
           #这里有个疑问，如果用户可以批量创建报名的话，那么会给企业管理员发送多条短信，造成短信炸弹
           SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
         end
-        
       end
     end
     return true
@@ -186,7 +185,7 @@ class Order
             order.reset_card_num #计算学习卡
             order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_0,cancel_at:Time.now) #用户自己取消有效报名  
             manager = u.company.manager
-            if manager.present? && manager.mobile.present?
+            if manager.present? && manager.mobile.present? #注意这里没有发送短信到管理员，下面的代码不用执行，所以保持注释掉即可
               #SmsWorker.perform_async("user_cancel_effective_order",manager.mobile,{couser_id:course_id,user:u.name}) #用户自主取消了有效报名，发短信到对应的管理员 
             end
             return true          
@@ -213,10 +212,12 @@ class Order
           o.count_effictive_course
           o.reset_card_num
           o.set_company_enroll
+          #注意，下面的代码不用打开，因为系统管理员取消有效报名的时候不需要发短信通知相关人
           #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:o.course_id.to_s})            
         else #取消无效报名
           if o.status == STATUS_CODE_0 && order.state == STATE_CODE_0
             #只有系统管理员和企业管理员都没有审核的情况下发送 短信
+            #注意下面这条短信不用发送
             #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
           end
           order.destroy    
@@ -236,6 +237,7 @@ class Order
         order.reset_card_num(1) # 计算学习卡
         order.set_company_enroll(1)
         user = User.find(uid)
+        #注意下面这条短信也不发送
         #SmsWorker.perform_async("admin_generate_order",user.mobile,{couser_id:params[:cid]}) # 发送系统审核拒绝的短信
       end
     end

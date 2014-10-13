@@ -3,7 +3,8 @@
 @import "compass/css3/opacity";
 @import "compass/css3/border-radius";
 body.login{
-	background:#37BC9B;
+	// background:#37BC9B;
+	background:#fafafa;
 	.login-header{
 		.logo-container{
 			margin:0 auto;
@@ -15,12 +16,15 @@ body.login{
 		.form{
 			float:none;
 			margin:0 auto;	
-			border: 1px solid #fafafa;
+			// border: 1px solid #fafafa;
+			border:1px solid #ccc;
+			background:#fdfdfd;
 			@include border-radius(6px);	
 			.ipt-container{
 				position:relative;
 				input{
 					outline:none;
+					@include border-radius(0px);
 				}	
 				.tooltip{
 					display:none;
@@ -49,13 +53,13 @@ body.login{
 				}
 			}
 			.checklist{
-				color:#fff;
+				color:#2b2b2d;
 			}
 			p{
-				color:#fff;
+				color:#2b2b2d;
 				text-align:center;
 				a{
-					color:#fff;
+					color:#2b2b2d;
 					cursor:pointer;
 					text-decoration:none;
 				}	

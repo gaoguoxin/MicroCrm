@@ -97,6 +97,7 @@ class Course
       check_address_changed
     end
   end
+
   #检查城市是否发生了改变
   def check_address_changed
     if self.status == STATUS_CODE_1  #只判断处于发布中的课程
@@ -111,7 +112,7 @@ class Course
 
   #检查时间是否发生了变化
   def check_time_changed
-    if self.start_date_changed?
+    if self.start_date_changed? || self.start_time_changed? 
       mlist = self.orders.effective.map{|e| e.user.mobile}
       SmsWorker.perform_async("lesson_time_changed",mlist,{course_id:self.id.to_s})
     end
@@ -125,8 +126,8 @@ class Course
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
-    #SmsWorker.perform_async("lesson_published_to_manager",mlist,{date:self.start_date,city:self.city,name:self.name_en})
-    #SmsWorker.perform_async("lesson_published_to_student",slist,{date:self.start_date,city:self.city,name:self.name_en})
+    SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
+    SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})
   end
 
   #课程已经交付，将对应的报名表设置为过期
@@ -138,7 +139,7 @@ class Course
   def set_order_canceled
     self.orders.effective.each do |order|
       order.update_attributes(is_cancel:true,cancel_type:Order::CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
-      #SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s}) 
+      SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s}) 
     end
   end
 

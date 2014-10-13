@@ -139,7 +139,7 @@ class User
       if company.present? && company.manager.present? && company.manager.mobile.present?
         manager_mobile = company.manager.mobile
         #这里有个疑问，普通用户注册后还有必要通知其选择的企业的管理员么，系统里没有涉及到注册员工需要企业管理员审核的功能
-        #SmsWorker.perform_async("user_regist",manager_mobile,{user:user.id.to_s})
+        #SmsWorker.perform_async("user_regist",manager_mobile,{user:user.name})
       end
     end
     return user
