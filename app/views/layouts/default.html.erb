@@ -14,7 +14,7 @@
     <div class="container">
       <div class="row">
         <div class="onw whole mobile">
-          <a href="/" class='logo-container'><%=image_tag "logo.png", :class => 'logo',:alt => "logo" %></a>
+          <a href="/" class='logo-container double-pad-left'><%=image_tag "logo.png", :class => 'logo half-gap-left',:alt => "logo" %></a>
         </div>
         <div class="row">
           <div class="one fifth skip-four align-right">
@@ -53,14 +53,14 @@
               <li class="one eleventh" aria-selected=<%= nav_actived?('welcome','index')%>>
                 <a href="/" class='triple-padded'>Home</a>
               </li>
+              <li class="one eleventh crm" aria-selected=<%= nav_actived?('category','index','crm')%>>
+                <a href="/category?t=crm" class='triple-padded' id='nav_crm'>CRM</a>
+              </li>              
               <li class="one eleventh ax" aria-selected=<%= nav_actived?('category','index','ax')%>>
                 <a href="/category?t=ax" class='triple-padded' id='nav_ax'>AX</a>
               </li>
-              <li class="one eleventh crm" aria-selected=<%= nav_actived?('category','index','crm')%>>
-                <a href="/category?t=crm" class='triple-padded' id='nav_crm'>CRM</a>
-              </li>
               <li class="one eleventh ax_crm" aria-selected=<%= nav_actived?('category','index','ax_crm')%>>
-                <a href="/category?t=ax_crm"  class='triple-padded' id='nav_ax_crm'>AX+CRM</a>
+                <a href="/category?t=ax_crm"  class='triple-padded' id='nav_ax_crm'>软技能</a>
               </li>
               <li class="one eleventh free" aria-selected=<%= nav_actived?('category','index','f')%>>
                 <a href="/category?t=f"  class='triple-padded' id='nav_free'>免费研讨</a>
@@ -75,10 +75,10 @@
                 <a href="/user/feedbacks"  class='triple-padded' id='nav_feed'>我的反馈</a>
               </li>  
               <li class="one eleventh net1" aria-selected=<%= nav_actived?('users','feedbacks')%>>
-                <a href="http://www.microsoft.com/zh-cn/dynamics/default.aspx"  class='triple-padded noicon' id='nav_net1'>中国官网</a>
+                <a href="http://www.microsoft.com/zh-cn/dynamics/default.aspx" target='_blank' class='triple-padded noicon' id='nav_net1'>中国官网</a>
               </li>
               <li class="one eleventh net2" aria-selected=<%= nav_actived?('users','feedbacks')%>>
-                <a href="https://mbspartner.microsoft.com/Landing"  class='triple-padded noicon' id='nav_net2'>自学门户</a>
+                <a href="https://mbspartner.microsoft.com/Landing" target='_blank' class='triple-padded noicon' id='nav_net2'>自学门户</a>
               </li> 
               <li class="one eleventh net1" aria-selected=<%= nav_actived?('welcome','tel')%>>
                 <a href="/tel"  class='triple-padded' id='nav_tel'>致电客服</a>
@@ -90,10 +90,14 @@
           </nav>          
         </div>
         <div class="one fifth search-container">
-          <form class='layout-search' action='/courses/search' method='get'>
-            <input id="search-name" name='name' type="text" placeholder="课程名称">
-            <span class='fa fa-search absolute top right padded'></span>
-          </form>
+          <div class="row">
+            <div class="one four fifths skip-one">
+              <form class='layout-search half-pad-top' action='/courses/search' method='get'>
+                <input id="search-name" name='name'  class='pad-left' type="text" placeholder="课程名称">
+                <span class='fa fa-search absolute right padded'></span>
+              </form>              
+            </div>
+          </div>
         </div>
       </div>
     </div>
