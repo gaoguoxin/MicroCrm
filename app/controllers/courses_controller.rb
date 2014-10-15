@@ -18,7 +18,7 @@ class CoursesController < ApplicationController
 
 
   def do_search
-    @courses = Course.all
+    #@courses = Course.all
   end
 
   private

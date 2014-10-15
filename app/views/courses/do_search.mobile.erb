@@ -1,88 +1,99 @@
 <% content_for :app_head do %>
-  <%= stylesheet_link_tag    "pages/default/category-bundle-mobile" %>
-  <%= javascript_include_tag "pages/default/category-bundle-mobile" %>
+  <%= stylesheet_link_tag    "pages/default/search-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/search-bundle-mobile" %>
   <script type="text/javascript">
   jQuery(function($) {
-
+    
   });
   </script>
   <%= yield :head %>
-<% end %>
-<div class="container">
-  <article class="row logo-container">
-    <div class="one whole mobile half-padded">
-      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
-        <%= image_tag('mobile/logom.png')%>
-      </a>
-    </div>
-  </article>
-  <div class="seacher row">
-    <div class="one whole search box ">
-      <div class="row">
-          <div class="four mobile fifths">
-            <input type="text" name="name" placeholder="课程名称">
-          </div>
-          <div class="one mobile fifths"><span class="suffix"><i class="icon-search"></i></span></div>
-        </div>
-    </div>
-  </div> 
-  <% if @courses.length > 0%>
-    <%@courses.each do |course|%>
-      <article class="row box">
-          <div class="one fourth mobile">
-            <a href="<%=course_path(course)%>" >
-              <%= image_tag(show_small_avatar(course))%>  
-            </a>
-          </div>
-          <div class="three fourths mobile half-pad-left">
-            <div class="row">
-              <div class="one whole name-holder">
-                <a href="<%=course_path(course)%>" >
-                  <strong><%= course.name_cn %></strong>
-                </a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="three fourths mobile">
-                <div class="row">
-                  <div class="one whole">
-                    日期:<%= course.start_date.strftime('%Y年%m月%d日')%>
-                  </div>
-                  <div class="one whole">
-                    城市:<%= course.show_city%>
-                  </div>
-                </div>
-              </div>
-              <div class="one fourth mobile">
-                <div class="row">
-                  <div class="one whole align-right">
-                    <%= course.duration%>天
-                  </div>
-<!--                   <div class="one whole">
-                    <ul class="checklist">
-                      <li class="blue pull-right" data-id="<%= course.id.to_s %>">报名</li>
-                    </ul>                    
-                  </div> -->
-                </div>
-              </div>
-            </div>
-          </div>        
-      </article>    
-    <%end%>
-<!--     <article class="row pad-bottom half-pad-top">
-      <div class="one whole">
-        <ul class="button-group row">
-          <li class='one whole block mobile align-center'>
-            <a href="javascript:void(0);" class="blue block large multip-start">确定勾选并报名</a>
-          </li>
-        </ul>
-      </div>
-    </article>  --> 
-  <% else %>
-    <article class="no-data absolute row middle">
-        <div class="one whole box align-center">
-          抱歉，没有查到相关课程
-        </div>
-    </article>
-  <% end %>         
-</div>
+<% end %>  
+<article class="row">
+  <form action="/courses/search" method='get'>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg ">
+    <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
+      <%= image_tag('mobile/logom.png')%>
+    </a>
+  </div>
+
+  <div class="one whole mobile padded bounceInLeft animated box lg">
+    <a href="javascript:void(0);"  class="block  align-center padded city origin">
+      <strong class='response city'>选择城市</strong>
+      <input type="hidden" name='city'>
+      <i class="icon-circle-arrow-right pull-right"></i>
+    </a>
+	<div class="select-container city-select">
+		<%Course::CITY_ARRAY.each do |city|%>
+			<div class="one whole mobile padded bounceInRight animated box lg">
+			  <a href="javascript:void(0);"  class="block  align-center padded city" data-select="<%= city %>">
+			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= city %></strong>
+			  </a>
+			</div>	
+		<% end %>  
+	</div>  
+  </div>
+ 
+  <div class="one whole mobile padded bounceInLeft animated box lg">
+    <a href="javascript:void(0);"  class="block  align-center padded type origin">
+      <strong class='response type'>课程类型</strong>
+      <input type="hidden" name='type'>
+      <i class="icon-circle-arrow-right pull-right"></i>
+    </a>
+	<div class="select-container type-select">
+		<%Course::CONTENT_TYPE_ARRAY.each do |type|%>
+			<div class="one whole mobile padded bounceInRight animated box lg">
+			  <a href="javascript:void(0);"  class="block  align-center padded type" data-select="<%= type %>">
+			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= type %></strong>
+			  </a>
+			</div>	
+		<% end %>  
+	</div>  
+  </div>
+  <div class="one whole mobile padded bounceInLeft animated box lg ">
+    <a href="javascript:void(0);"  class="block align-center padded start origin">
+      <strong class='response start'>开始日期</strong>
+	  <div class="start-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded lg ">
+	  	    <div class="  align-center padded">
+	  	      <input type="date" class='date' name='start_date'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>
+    </a>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block align-center padded">
+      <strong class='response end '>结束日期</strong>  
+	  <div class="end-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded lg ">
+	  	    <div class="  align-center padded">
+	  	      <input type="date" class='date' name='end_date'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>        
+    </a>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block align-center padded">
+	  <div class="keyword-select">
+	  	<article class="row">
+	  	  <div class="one whole mobile padded lg ">
+	  	    <div class="block  align-center padded">
+	  	      <input type="text" name='keyword' placeholder='课程名称'>
+	  	    </div>
+	  	  </div>  	  	
+	  	</article>			
+	  </div>          
+    </a>
+    <span class="container block  align-center padded"><strong class='response'></strong></span>
+  </div>
+  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
+    <button  class="block  yellow align-center padded search-btn">开始搜索 </button>
+  </div>   	
+  </form>
+             
+</article>
