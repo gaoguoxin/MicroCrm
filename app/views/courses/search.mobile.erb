@@ -12,7 +12,7 @@
   <form action="/courses/do_search" method='get'>
   <div class="one whole mobile half-padded bounceInLeft animated box lg ">
     <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
-      <%= image_tag('mobile/logo.png')%>
+      <%= image_tag('mobile/logom.png')%>
     </a>
   </div>
 
@@ -54,9 +54,9 @@
       <strong class='response start'>开始日期</strong>
 	  <div class="start-select">
 	  	<article class="row">
-	  	  <div class="one whole mobile padded box lg ">
-	  	    <div   class="block  align-center padded">
-	  	      <input type="date" name='start_date'>
+	  	  <div class="one whole mobile padded lg ">
+	  	    <div class="  align-center padded">
+	  	      <input type="date" class='date' name='start_date'>
 	  	    </div>
 	  	  </div>  	  	
 	  	</article>			
@@ -68,9 +68,9 @@
       <strong class='response end '>结束日期</strong>  
 	  <div class="end-select">
 	  	<article class="row">
-	  	  <div class="one whole mobile padded box lg ">
-	  	    <div class="block  align-center padded">
-	  	      <input type="date" name='end_date'>
+	  	  <div class="one whole mobile padded lg ">
+	  	    <div class="  align-center padded">
+	  	      <input type="date" class='date' name='end_date'>
 	  	    </div>
 	  	  </div>  	  	
 	  	</article>			
@@ -79,12 +79,11 @@
   </div>
   <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
     <a href="javascript:void(0);"  class="block align-center padded">
-      <strong class='response'>课程名称</strong>
 	  <div class="keyword-select">
 	  	<article class="row">
-	  	  <div class="one whole mobile padded box lg ">
+	  	  <div class="one whole mobile padded lg ">
 	  	    <div class="block  align-center padded">
-	  	      <input type="text" name='keyword'>
+	  	      <input type="text" name='keyword' placeholder='课程名称'>
 	  	    </div>
 	  	  </div>  	  	
 	  	</article>			

@@ -15,7 +15,7 @@
 /log/*.log
 /tmp
 /public/uploads/*
-/public/assets/*ß
+/public/assets/*
 /config/mongoid.yml
 /config/unicorn.rb
 /config/secrets.yml

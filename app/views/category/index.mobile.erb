@@ -9,7 +9,14 @@
   <%= yield :head %>
 <% end %>
 <div class="container">
-  <div class="seacher row absolute top ">
+  <article class="row logo-container">
+    <div class="one whole mobile half-padded">
+      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
+        <%= image_tag('mobile/logom.png')%>
+      </a>
+    </div>
+  </article>
+  <div class="seacher row">
     <div class="one whole search box ">
       <div class="row">
           <div class="four mobile fifths">
@@ -22,7 +29,6 @@
   <% if @courses.length > 0%>
     <%@courses.each do |course|%>
       <article class="row box">
-        
           <div class="one fourth mobile">
             <a href="<%=course_path(course)%>" >
               <%= image_tag(show_small_avatar(course))%>  
@@ -60,12 +66,7 @@
                 </div>
               </div>
             </div>
-          </div>      
-<!--         <p >
-          <ul class="checklist">
-            <li class="blue pull-right" data-id="<%= course.id.to_s %>">勾选报名</li>
-          </ul>
-        </p>  -->     
+          </div>        
       </article>    
     <%end%>
     <article class="row pad-bottom half-pad-top">
