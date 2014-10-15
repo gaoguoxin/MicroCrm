@@ -27,7 +27,9 @@
           <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
         </div>
     </div>
-  </div>   
+  </div> 
+
+
   <% if @courses.length > 0%>
     <%@courses.each do |course|%>
       <article class="row box">
@@ -60,31 +62,17 @@
                   <div class="one whole align-right">
                     <%= course.duration%>天
                   </div>
-                  <div class="one whole">
-                    <ul class="checklist">
-                      <li class="blue pull-right" data-id="<%= course.id.to_s %>">报名</li>
-                    </ul>                    
-                  </div>
                 </div>
               </div>
             </div>
           </div>        
       </article>    
     <%end%>
-    <article class="row pad-bottom half-pad-top">
-      <div class="one whole">
-        <ul class="button-group row">
-          <li class='one whole block mobile align-center'>
-            <a href="javascript:void(0);" class="blue block large multip-start">确定勾选并报名</a>
-          </li>
-        </ul>
-      </div>
-    </article>  
   <% else %>
     <article class="no-data absolute row middle">
         <div class="one whole box align-center">
           抱歉，没有查到相关课程
         </div>
     </article>
-  <% end %>      
+  <% end %>     
 </div>

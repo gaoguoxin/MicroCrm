@@ -9,41 +9,209 @@
   <%= yield :head %>
 <% end %>
 <div class="container">
-  <article class="row pad-bottom">
+<!--   <article class="row pad-bottom">
     <div class="one whole">
       <ul class="button-group row">
         <li class='one third mobile'>
-          <a class="yellow" href="<%=orders_path(:t => 'w')%>" aria-selected=true>当前报名</a>
+          <a class="yellow" href="<%#=orders_path(:t => 'w')%>" aria-selected=true>当前报名</a>
         </li>
         <li class='one third mobile'>
-          <a href="<%=orders_path(:t => 'p')%>" class="orange block">往期报名</a>
+          <a href="<%#=orders_path(:t => 'p')%>" class="orange block">往期报名</a>
         </li>
         <li class='one third mobile'>
-          <a href="<%=orders_path(:t => 'c')%>" class="red block">取消报名</a>
+          <a href="<%#=orders_path(:t => 'c')%>" class="red block">取消报名</a>
         </li>
       </ul>
     </div>
   </article>
-  <% if @orders.length > 0 %>
-  <%@orders.each do |order|%>
-    <article class="row <%=change_bg(params)%> box">
-      <a href="<%=course_path(order.course)%>" class='block'>
-        <div class="one fourth mobile">
-          <%= image_tag(show_small_avatar(order.course))%>  
-        </div>
-        <div class="three fourths mobile pad-left">
-          <p class="name"><strong><%= order.course.name_en %></strong></p>
-          <p class="other">
-            <span class="city pad-right">城市:<%= order.course.show_city%></span>
-            <span class="city">日期:<%= order.course.start_date.strftime('%Y年%m月%d日')%></span>
-          </p>
-        </div>      
+ -->
+  <article class="row logo-container">
+    <div class="one whole mobile half-padded">
+      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
+        <%= image_tag('mobile/logom.png')%>
       </a>
-    </article>    
-  <%end%>  
-  <% else %>
-    <article class="row box align-center">
-      暂无数据
-    </article>    
-  <% end %>           
+    </div>
+  </article>
+  <div class="seacher row">
+    <div class="one whole search box ">
+      <div class="row">
+          <div class="four mobile fifths">
+            <form action="/courses/search" method='get' id='parten-search'>
+              <input type="text" name="name" placeholder="课程名称">  
+            </form>
+          </div>
+          <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
+        </div>
+    </div>
+  </div> 
+  <div class="tabs mobile">
+    <ul role="tablist row">
+      <li role="tab" class='one third mobile' aria-controls="#tab1">当前报名</li>
+      <li role="tab" class='one third mobile' aria-controls="#tab2">往期报名</li>
+      <li role="tab" class='one third mobile' aria-controls="#tab3">取消报名</li>
+    </ul>
+    <div id="tab1" role="tabpanel">
+      <% if @orders.length > 0%>
+        <%@orders.each do |order|%>
+          <article class="row box">
+              <div class="one fourth mobile">
+                <a href="<%=course_path(order.course)%>" >
+                  <%= image_tag(show_small_avatar(order.course))%>  
+                </a>
+              </div>
+              <div class="three fourths mobile half-pad-left">
+                <div class="row">
+                  <div class="one whole name-holder">
+                    <a href="<%=course_path(order.course)%>" >
+                      <strong><%= order.course.name_cn %></strong>
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="three fourths mobile">
+                    <div class="row">
+                      <div class="one whole">
+                        日期:<%= order.course.start_date.strftime('%Y年%m月%d日')%>
+                      </div>
+                      <div class="one whole">
+                        城市:<%= order.course.show_city%>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="one fourth mobile">
+                    <div class="row">
+                      <div class="one whole align-right">
+                        <%= order.course.duration%>天
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>        
+          </article>    
+        <%end%>
+      <% else %>
+        <article class="no-data absolute row middle">
+            <div class="one whole box align-center">
+              抱歉，没有查到相关课程
+            </div>
+        </article>
+      <% end %>  
+    </div>
+    <div id="tab2" role="tabpanel">
+      <% if @orders.length > 0%>
+        <%@orders.each do |order|%>
+          <article class="row box">
+              <div class="one fourth mobile">
+                <a href="<%=course_path(order.course)%>" >
+                  <%= image_tag(show_small_avatar(order.course))%>  
+                </a>
+              </div>
+              <div class="three fourths mobile half-pad-left">
+                <div class="row">
+                  <div class="one whole name-holder">
+                    <a href="<%=course_path(order.course)%>" >
+                      <strong><%= order.course.name_cn %></strong>
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="three fourths mobile">
+                    <div class="row">
+                      <div class="one whole">
+                        日期:<%= order.course.start_date.strftime('%Y年%m月%d日')%>
+                      </div>
+                      <div class="one whole">
+                        城市:<%= order.course.show_city%>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="one fourth mobile">
+                    <div class="row">
+                      <div class="one whole align-right">
+                        <%= order.course.duration%>天
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>        
+          </article>    
+        <%end%>
+      <% else %>
+        <article class="no-data absolute row middle">
+            <div class="one whole box align-center">
+              抱歉，没有查到相关课程
+            </div>
+        </article>
+      <% end %>  
+    </div>
+    <div id="tab3" role="tabpanel">
+      <% if @orders.length > 0%>
+        <%@orders.each do |order|%>
+          <article class="row box">
+              <div class="one fourth mobile">
+                <a href="<%=course_path(order.course)%>" >
+                  <%= image_tag(show_small_avatar(order.course))%>  
+                </a>
+              </div>
+              <div class="three fourths mobile half-pad-left">
+                <div class="row">
+                  <div class="one whole name-holder">
+                    <a href="<%=course_path(order.course)%>" >
+                      <strong><%= order.course.name_cn %></strong>
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="three fourths mobile">
+                    <div class="row">
+                      <div class="one whole">
+                        日期:<%= order.course.start_date.strftime('%Y年%m月%d日')%>
+                      </div>
+                      <div class="one whole">
+                        城市:<%= order.course.show_city%>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="one fourth mobile">
+                    <div class="row">
+                      <div class="one whole align-right">
+                        <%= order.course.duration%>天
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>        
+          </article>    
+        <%end%>
+      <% else %>
+        <article class="no-data absolute row middle">
+            <div class="one whole box align-center">
+              抱歉，没有查到相关课程
+            </div>
+        </article>
+      <% end %>  
+    </div>
+  </div>      
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
