@@ -21,8 +21,13 @@
   <div class="row gap-bottom">
     <h3 class="name"><strong><%=@course.name_en%></strong></h3>
     <%= image_tag(show_banner_avatar(@course),:class => 'whole')%>
-    <% if current_user && current_user.orders.map(&:course_id).map{|e| e.to_s}.include?(@course.id.to_s)%>
+    <% if current_user && current_user.enrolled?(@course.id.to_s)%>
+      <% if  current_user.can_cancel?(@course.id.to_s)%>
+        <button class="whole block yellow can_cancel" data-cid="<%=@course.id.to_s%>">取消报名</button> 
+      <% else %>
         <button class="whole block yellow">您已报名</button> 
+      <% end %>
+        
     <% else %>
       <button class="whole block success start">马上报名</button> 
     <% end %>

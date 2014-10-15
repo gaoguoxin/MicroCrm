@@ -6,7 +6,9 @@ class OrdersController < ApplicationController
       redirect_to '/manager/orders?t=w' and return  if current_user.is_manager?
       redirect_to '/user/orders?t=w' and return  if current_user.is_employee?
     else
-      @orders = current_user.my_course(params)  
+      @worders = current_user.my_course({t:'w'})
+      @porders = current_user.my_course({t:'p'})
+      @corders = current_user.my_course({t:'c'})  
     end
   end
 
@@ -21,6 +23,11 @@ class OrdersController < ApplicationController
     else
       render_json_auto Order.create_new(params,current_user.id.to_s)
     end
+  end
+
+  def cancel
+    order = Order.where(course_id:params[:cid],user_id:current_user.id.to_s).first
+    render_json_auto Order.cancel(order.id.to_s,current_user.id.to_s)
   end
 
 

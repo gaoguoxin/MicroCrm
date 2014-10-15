@@ -111,7 +111,11 @@ Rails.application.routes.draw do
 
   resources :category
 
-  resources :orders
+  resources :orders do 
+    collection do
+      post 'cancel'
+    end
+  end
 
   resources :courses do 
     collection do 

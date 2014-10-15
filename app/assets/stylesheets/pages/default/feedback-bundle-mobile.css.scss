@@ -8,4 +8,22 @@ ul.button-group li:last-child a, ol.button-group li:last-child a, ul.button-grou
 .box{
 	@include border-radius(0px);
 	background:#fff;
+	&.no-data{
+		.box{
+			background:lightgrey;	
+		}
+		
+	}
+}
+
+
+.name-holder{
+	line-height:2.5em;
+}
+
+a{
+	text-decoration: none;
+	&:hover,:active{
+		text-decoration: none;
+	}
 }

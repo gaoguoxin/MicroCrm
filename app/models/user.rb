@@ -420,6 +420,17 @@ class User
     return courses    
   end
 
+  #判断某个用户是否报名了某个课程
+  def enrolled?(course_id)
+    self.orders.map(&:course_id).map{|e| e.to_s}.include?(course_id)
+  end
+
+  def can_cancel?(course_id)
+    course = Course.find(course_id)
+    order = Order.where(course_id:course.id.to_s,user_id:self.id.to_s,is_cancel:false).first
+    order && enrolled?(course_id) && course.start_date - Date.today > 3 ? true : false
+  end
+
 
   #企业管理员查找自己公司员工的id
   def employees

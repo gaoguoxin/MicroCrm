@@ -180,7 +180,7 @@ class Order
       else
         #用户自己取消报名
         if order.state == STATE_CODE_1  # 取消有效报名
-          if order.start_date - Date.today > 3
+          if order.course.start_date - Date.today > 3
             order.count_effictive_course
             order.reset_card_num #计算学习卡
             order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_0,cancel_at:Time.now) #用户自己取消有效报名  
@@ -406,14 +406,14 @@ class Order
 
   def show_state
     return '待审核'   if self.state == STATE_CODE_0
-    return '审核通过' if self.state == STATE_CODE_1
-    return '审核拒绝' if self.state == STATE_CODE_1
+    return '通过' if self.state == STATE_CODE_1
+    return '拒绝' if self.state == STATE_CODE_1
   end
 
   def show_status
     return '待审核'   if self.status == STATUS_CODE_0
-    return '审核通过' if self.status == STATUS_CODE_1
-    return '审核拒绝' if self.status == STATUS_CODE_2   
+    return '通过' if self.status == STATUS_CODE_1
+    return '拒绝' if self.status == STATUS_CODE_2   
   end
 
   def cancel_or_not

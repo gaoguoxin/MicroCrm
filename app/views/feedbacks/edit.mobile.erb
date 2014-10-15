@@ -1,0 +1,84 @@
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/default/feedback-bundle-mobile" %>
+  <%= javascript_include_tag "pages/default/feedback-bundle-mobile" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+
+<div class="container">
+  <article class="row logo-container">
+    <div class="one whole mobile half-padded">
+      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
+        <%= image_tag('mobile/logom.png')%>
+      </a>
+    </div>
+  </article>
+  <div class="seacher row">
+    <div class="one whole search box ">
+      <div class="row">
+          <div class="four mobile fifths">
+            <form action="/courses/search" method='get' id='parten-search'>
+              <input type="text" name="name" placeholder="课程名称">  
+            </form>
+          </div>
+          <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
+        </div>
+    </div>
+  </div> 
+
+	<div class="box info">
+		<ul class="unstyled question_list">
+			<li><strong class=''><span>Q1、</span></strong><%= Feedback::QUESTION_ONE%></li>
+			<li><strong class=''><span>Q2、</span></strong><%= Feedback::QUESTION_TWO%></li>
+			<li><strong class=''><span>Q3、</span></strong><%= Feedback::QUESTION_THREE%></li>
+			<li><strong class=''><span>Q4、</span></strong><%= Feedback::QUESTION_FOUR%></li>
+			<li><strong class=''><span>Q5、</span></strong><%= Feedback::QUESTION_FIVE%></li>
+		</ul>
+	</div>
+  <form>
+    <table class="responsive">
+      <thead>
+        <tr>
+          <th class='align-center' >Q</th>
+          <th class='align-center' >1分</th>
+          <th class='align-center' >2分</th>
+          <th class='align-center' >3分</th>
+          <th class='align-center' >4分</th>
+          <th class='align-center' >5分</th>
+          <th class='align-center' >6分</th>
+          <th class='align-center' >7分</th>
+          <th class='align-center' >8分</th>
+          <th class='align-center' >9分</th>
+          <th class='align-center' >10分</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% 1.upto(5).each do |i|%>
+          <tr>
+            <td  class='align-center'>Q<%=i%></td>
+            <% 1.upto(10).each do |m|%>
+              <td  class='align-center'>
+                <label for="question_<%=i%>_<%m%>">
+                  <input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>" <% if @feedback["question_#{i}"] == m %> checked='checked' <% end %>>
+                </label>
+              </td>                   
+            <% end %>
+          </tr>       
+        <% end %>
+      </tbody>
+      <% if @feedback.status ==  Feedback::STATUS_UN_CHECK %>
+        <tfoot>
+          <tr>
+            <td colspan="11" class='no-data align-center' ><button data-cid="<%=@feedback.course.id.to_s%>" class='info block submit-feedback' >提交</button></td>
+          </tr>
+        </tfoot>
+      <% end %>
+    </table>      
+  </form>
+  
+
+</div>
