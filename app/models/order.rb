@@ -54,7 +54,7 @@ class Order
         Order.create(user_id:user_id,course_id:course_id)
         if manager && manager.mobile.present?
           #这里有个疑问，如果用户可以批量创建报名的话，那么会给企业管理员发送多条短信，造成短信炸弹
-          #SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
+          SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
         end
       end
     end
@@ -76,10 +76,10 @@ class Order
         if type == 'cancel' # 企业管理员取消报名操作
           if order.state != STATE_CODE_1  # 如果不是有效报名，直接删除记录
             order.destroy
-            #SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:manager.name})
+            SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:manager.name})
           else
             order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
-            #SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:manager.name})
+            SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:manager.name})
           end
         else # 企业管理员审核通过操作
           if order.status != STATUS_CODE_1 # 只有未审核或者审核未通过的时候才会更改为审核通过
@@ -133,7 +133,7 @@ class Order
           status_arr = o.status_at
           status_arr << Time.now
           o.update_attributes(status:STATE_CODE_2,status_at:status_arr)
-          #SmsWorker.perform_async("manager_refused_order",user.mobile,{couser_id:course_id,manager:manager.name})  # 企业管理员拒绝报名，发送短信
+          SmsWorker.perform_async("manager_refused_order",user.mobile,{couser_id:course_id,manager:manager.name})  # 企业管理员拒绝报名，发送短信
           return true
         else
           return true
@@ -166,14 +166,14 @@ class Order
             order.count_effictive_course
             order.reset_card_num #计算学习卡
             return order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
-            #SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})            
+            SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})            
           else
             return ErrorEnum::ORDER_CAN_NOT_CANCEL
           end
         else #取消无效报名
           if order.status == STATUS_CODE_0
             #如果该报名还未被审核就被删除，则发短信通知，否则不发通知
-            #SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:u.name})
+            SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:u.name})
           end
           return order.destroy             
         end
@@ -322,13 +322,13 @@ class Order
         o.count_effictive_course(1)
         o.reset_card_num(1)
         o.set_company_enroll(1)
-        #SmsWorker.perform_async("admin_allow_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核通过的短信
+        SmsWorker.perform_async("admin_allow_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核通过的短信
       else
         o.update_attributes(state:STATE_CODE_2,state_at:state_at) if o.state != STATE_CODE_2 # 只有在订单没有审核或者审核通过的情况下做拒绝操作
         o.count_effictive_course
         o.reset_card_num
         o.set_company_enroll
-        #SmsWorker.perform_async("admin_refuse_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核拒绝的短信
+        SmsWorker.perform_async("admin_refuse_order",user.mobile,{couser_id:o.course_id}) # 发送系统审核拒绝的短信
       end
     end
     return true
