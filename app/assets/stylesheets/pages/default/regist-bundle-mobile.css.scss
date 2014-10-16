@@ -1,6 +1,16 @@
 @import "compass/css3/border-radius";
 body,html{
-		background:#630460;
+		background:#fafafa;
+
+		fieldset{
+			border:none;
+			border-top: 1px solid #dddddd;
+			.prefix, .suffix{
+				background:#fafafa;
+			}
+		}
+
+
 		.wraper{
 			input,button,select{
 				@include border-radius(0px);

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title>注册页</title>     
+    <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 注册'  %></title>     
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/regist-bundle-mobile", :media => "all" %>
@@ -28,49 +28,91 @@
   </head>
   <body>
     <div class="container">
-      <article class="wraper row triple-padded">
-        <div class="one whole mobile">
-          <div class="login-wraper">
-            <div class='form-container'>
-                  <div class="row">
-                    <div class="one whole mobile">
-                      <%=image_tag('mobile/login-avatar.jpg',:class => 'whole')%>
-                    </div>                  
-                    <div class="pad-top pad-bottom one whole align-center">
-                      &nbsp;
-                    </div>                
-                    <div class="pad-top pad-bottom one whole">
-                      <input id="name" name='name' type="text" placeholder="username">
-                    </div>
-                    <div class="pad-top pad-bottom one whole">
-                      <input id="email" name='email' type="text" placeholder="email">
-                    </div>
-                    <div class="pad-top pad-bottom one whole">
-                      <input id="mobile" name='mobile' type="text" placeholder="mobile">
-                    </div>
-                    <div class="pad-top pad-bottom one whole">
-                      <input id="password" name='password' type="password" placeholder="Password">
-                    </div> 
-                    <div class="pad-top pad-bottom one whole">
-                      <span class="select-wrap">
-                        <select class="unselected" name='company'>
-                          <option value="" disabled="" selected="">所属公司</option>
-                          <% @companis.each do |company| %>
-                            <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
-                          <% end %>
-                        </select>
-                      </span>       
-                    </div> 
-                    <div class="pad-top pad-bottom one whole">
-                      <button class="alert block reg-btn">注册</button>
-                    </div>
-                    <div class="pad-top pad-bottom one whole">
-                      <a href="/login" class='pull-right'>登录</a>
-                    </div>                                                    
-                  </div>
-            </div>
+<form action="#" method="post">
+  <fieldset>
+    <legend class='align-center'>Register in</legend>
+    <div class="row">
+      <div class="one third mobile skip-one">
+        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="padded align-center notice">
+        &nbsp;
+      </div>   
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-user"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="name" name='name' type="text" placeholder="username">
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-envelope-alt"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="email" name='email' type="text" placeholder="email">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-mobile-phone"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="mobile" name='mobile' type="text" placeholder="mobile">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-lock"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="password" name='password' type="password" placeholder="Password">
+          </div>
+        </div>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-building"></i></span></div>
+          <div class="five mobile sixths">
+            <span class="select-wrap">
+              <select class="unselected" name='company'>
+                <option value="" disabled="" selected="">所属公司</option>
+                <% @companis.each do |company| %>
+                  <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
+                <% end %>
+              </select>
+            </span>             
+          </div>          
+        </div>
+      </div>
+    </div> 
+
+    <div class="row">
+      <div class="one whole padded mobile">
+        <button class="alert block reg-btn">注册</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="one whole padded mobile">
+        <a href="/login" class='pull-right'>登录</a>
+      </div>
+    </div>
+  </fieldset>
+</form>
       </article>      
     </div>
   </body>

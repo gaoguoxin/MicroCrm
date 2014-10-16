@@ -6,7 +6,7 @@ $(->
 	password_ipt = $('input[name="password"]')
 	company_ipt  = $('select')
 	flag_notice = (msg)->
-		$('.align-center').text(msg)
+		$('.align-center.notice').text(msg)
 	remove_notice = ()->
 		$('.align-center').html('&nbsp;')
 

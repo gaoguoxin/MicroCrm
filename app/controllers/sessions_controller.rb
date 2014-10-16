@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   #登录用户
   def create
     user = User.login(params)
-    refresh_session(user.id.to_s,params[:remember]) if user.present? && user.class == User
+    refresh_session(user.id.to_s,true) if user.present? && user.class == User
     render_json_auto user and return
   end
 

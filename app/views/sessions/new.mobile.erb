@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title>登录页</title>  
+    <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 登录'  %></title>  
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/login-bundle-mobile", :media => "all" %>
@@ -27,41 +27,54 @@
     </script>
   </head>
   <body>
-    <div class="container">
-    <article class="wraper row triple-padded">
-      <div class="one whole mobile">
-        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole')%>
+    <div class="container triple-pad-top">
+<form  class=''>
+  <fieldset>
+    <div class="row">
+      <div class="one third mobile skip-one">
+        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
       </div>
-      <div class="one whole mobile">
-        <div class="login-wraper">
-          <form>
-                <div class="row">
-                  <div class="pad-top pad-bottom one whole align-center">
-                    &nbsp;
-                  </div>                
-                  <div class="pad-top pad-bottom one whole">
-                    <input id="name" name='email_mobile' type="text" placeholder="Email/Mobile">
-                  </div>
-                  <div class="pad-top pad-bottom one whole">
-                    <input id="password" name='password' type="password" placeholder="Password">
-                  </div> 
-                  <div class="pad-top pad-bottom one whole">
-                    <ul class="checklist">
-                      <li aria-checked="true" class='remember-me'>Rememeber Me</li>
-                    </ul>
-                  </div>  
-                  <div class="pad-top pad-bottom one whole">
-                    <button class="alert block login-btn">登录</button>
-                  </div>
-                  <div class="pad-top pad-bottom one whole">
-                    <a href="/regist">注册</a>
-                    <a href="/users/new" class='pull-right'>忘记密码</a>
-                  </div>                                                    
-                </div>
-          </form>
+    </div>
+
+    <div class="row">
+      <div class="padded align-center notice">
+        &nbsp;
+      </div>   
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-mobile-phone"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="name" name='email_mobile' type="text" placeholder="Mobile">
+          </div>
         </div>
       </div>
-    </article>      
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-lock"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="password" name='password' type="password" placeholder="Password">
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="row">
+      <div class="one whole padded mobile">
+        <button class="alert block login-btn">登录</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <a href="/regist">注册</a>
+        <a href="/fpwd" class='pull-right'>忘记密码</a>        
+      </div>
+    </div>
+  </fieldset>
+</form>   
     </div>
 
   </body>

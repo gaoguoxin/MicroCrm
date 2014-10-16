@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title>登录页</title>  
+    <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 找回密码'  %></title>  
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/login-bundle-mobile", :media => "all" %>
@@ -28,9 +28,46 @@
   </head>
   <body>
     <div class="container">
-    <article class="wraper row triple-padded">
+<form  class=''>
+  <fieldset>
+    <div class="row">
+      <div class="one third mobile skip-one">
+        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+      </div>
+    </div>
+    <div class="row">
+      <div class="padded align-center notice">
+        &nbsp;
+      </div>   
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <div class="row">
+          <div class="one mobile sixth"><span class="prefix"><i class="icon-mobile-phone"></i></span></div>
+          <div class="five mobile sixths">
+            <input id="name" name='mobile' type="text" placeholder="Enter Your Mobile">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <button class="alert block find-btn">确定</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one whole padded mobile">
+        <a onclick="history.back();">返回</a>       
+      </div>
+    </div>
+  </fieldset>
+</form>   
+
+
+
+<!--     <article class="wraper row triple-padded">
       <div class="one whole mobile">
-        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole')%>
+        <%#=image_tag('mobile/login-avatar.jpg',:class => 'whole')%>
       </div>
       <div class="one whole mobile">
         <div class="login-wraper">
@@ -52,8 +89,7 @@
           </div>
         </div>
       </div>
-    </article>      
+    </article>   -->    
     </div>
-
   </body>
 </html>
