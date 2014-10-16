@@ -41,7 +41,7 @@
 	  			<% 1.upto(10).each do |m|%>
 	    			<td  class='align-center'>
 	    				<label for="question_<%=i%>_<%m%>">
-	    					<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>"><span class='half-gap-left'><%=m%>分</span>
+	    					<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>" <% if @feedback["question_#{i}"] == m %> checked='checked' <% end %> ><span class='half-gap-left'><%=m%>分</span>
 	    				</label>
 	    			</td>    					  		
 	  			<% end %>

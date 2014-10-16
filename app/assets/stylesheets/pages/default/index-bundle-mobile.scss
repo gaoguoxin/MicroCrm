@@ -27,7 +27,7 @@ article.row{
 }
 .logoimg{
 	border-radius: 0px;
-	background:#2d89ef;
+	background-color:rgb(0,188,242);
 }
 
 .blue:hover{
@@ -37,39 +37,43 @@ article.row{
 	color:#fff;
 	margin:0;
 	&.nets{
-		line-height:1.72em;
+		line-height:1.47em;
 	}
 }
 .crm{
-	background:#ba141a;
+	// background:#ba141a;
+	background-color:rgb(235, 60, 0);
 }
 .ax{
-	background:#2d89ef;
+	background-color:rgb(127, 16, 0);
 }
 .softkill{
-	background:#9f00a7;
+	background-color:rgb(180, 0, 158);
 }
 .free{
-	background:#b91d47;
+	background-color:rgb(0, 188, 242);
 }
 .mycourse{
-	background:#00d8cc;
+	background-color:rgb(255, 185, 0);
 }
 .feedback{
-	background:#b4009e;
+	background-color:rgb(0, 114, 198);
 }
 .net{
-	background:#009e49;
+	background-color:rgb(255, 140, 0);
 }
 .cill{
-	background:#7fba00;
+	background-color:rgb(255, 140, 0);
 }
 .personal{
-	background:#ffb900;
+	background-color:rgb(104, 33, 122);
 }
 .tel{
-	background:#fcd116;
+	background-color:rgb(0, 148, 148);
 }
 .search{
-	background:#17a689;
+	background-color:rgb(0, 24, 143);
+}
+h6{
+	text-transform: capitalize;
 }
