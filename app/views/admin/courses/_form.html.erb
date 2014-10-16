@@ -271,12 +271,12 @@
   </div>
   <div class="one whole padded">
     <h4 class="box info align-center">设置上课提醒短信</h4>
-    <div class="row">
+<!--     <div class="row">
       <div class="one whole padded">
         <label for="course_notice_content">短信内容(建议72字以内,剩余<i class='remain error'>72</i>)</label>
-        <textarea id="box_notice_content" name='course[notice_content]' placeholder="'尊敬的用户'这几个字请不要填写" ><%= @course.try(:notice_content) %></textarea>
+        <textarea id="box_notice_content" name='course[notice_content]' placeholder="'尊敬的用户'这几个字请不要填写" ><%#= @course.try(:notice_content) %></textarea>
       </div>      
-    </div>
+    </div> -->
     <div class="row">
       <div class="one whole padded">
         <label for="box_course_notice_at">提前N天发送(多个天数用逗号隔开)</label>

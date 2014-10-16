@@ -40,11 +40,12 @@
               <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
             </div>
             <div class="one third align-right start-container">
-              <% if @course.open?%>
-                <button class='yellow start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
-              <% else %>
-                <button class='large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
-              <% end %>
+
+            <% if current_user && current_user.enrolled?(@course.id.to_s)%>
+                <button class="whole block yellow">已报名</button> 
+            <% else %>
+              <button class='yellow start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+            <% end %>
             </div>
           </div>    
         </div>

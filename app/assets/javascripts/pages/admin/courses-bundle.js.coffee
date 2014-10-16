@@ -55,11 +55,17 @@ $(->
 
 	check_msg_info = ->
 		going = true
-		$('#match_content_manager,#match_content_student,#box_notice_content,#box_course_notice_at').each(->
+		# $('#match_content_manager,#match_content_student,#box_notice_content,#box_course_notice_at').each(->
+		# 	unless $.trim($(@).val()).length > 0
+		# 		$(@).closest('.one').addClass('invalid').removeClass('valid')
+		# 		going = false
+		# )
+		$('#match_content_manager,#match_content_student,#box_course_notice_at').each(->
 			unless $.trim($(@).val()).length > 0
 				$(@).closest('.one').addClass('invalid').removeClass('valid')
 				going = false
 		)
+
 		submit_info() if going
 
 
