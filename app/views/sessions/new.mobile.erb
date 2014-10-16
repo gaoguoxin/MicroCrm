@@ -10,7 +10,15 @@
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "pages/default/login-bundle-mobile", :media => "all" %>
-    <%= javascript_include_tag "pages/default/login-bundle-mobile", :media => "all" %>      
+    <%= javascript_include_tag "pages/default/login-bundle-mobile", :media => "all" %>  
+    <!--[if IE]>
+    <link type="text/css" rel="stylesheet" href="/assets/groundworkcss/groundwork-ie.css">
+    <![endif]-->  
+    <!--[if lt IE 8]>
+      <div class='low-version' style='color:#fff;height:100px;line-height:100px;background:#9a3d3d;font-weight:bold; text-align:center;'>
+    您当前的浏览器版本过低,请使用IE8及以上版本
+    </div>
+    <![endif]-->        
     <%= csrf_meta_tags %> 
     <script type="text/javascript">
       jQuery(function($) {
