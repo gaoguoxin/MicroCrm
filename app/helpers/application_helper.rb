@@ -189,5 +189,12 @@ module ApplicationHelper
     end
   end
 
+  def show_mobile_nav(str)
+    return "AX培训课" if str == 'ax'
+    return "CRM培训课" if str == 'crm'
+    return "软技能培训课"  if str == 'ax_crm'
+    return "免费研讨班" if str == 'f'
+  end
+
 
 end

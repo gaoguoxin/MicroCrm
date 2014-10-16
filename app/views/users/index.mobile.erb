@@ -9,6 +9,7 @@
     <title>个人信息页</title>     
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
+    <%= stylesheet_link_tag "layouts/default-layout-mobile", :media => "all" %>
     <%= stylesheet_link_tag "pages/default/user-bundle-mobile", :media => "all" %>
     <%= javascript_include_tag "pages/default/user-bundle-mobile", :media => "all" %> 
     <!--[if IE]>
@@ -29,13 +30,27 @@
   </head>
 <body>
   <div class="container">
-  <article class="row">
+<!--   <article class="row">
     <div class="one whole mobile half-padded">
       <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
-        <%= image_tag('mobile/logo.png')%>
+        <%#= image_tag('mobile/logo.png')%>
       </a>
     </div>
-  </article>  
+  </article>  --> 
+  <div class="row location half-gap-top half-gap-bottom padded">
+    <div class="one third mobile">
+      <a href="javascript:history.back();"><i class="icon-chevron-sign-left large"></i></a>
+    </div>
+    <div class="one third mobile">
+      <i class="icon-map-marker hafl-gap-right large"></i>  
+      <span class="locate">个人中心</span>
+    </div>
+    <div class="one third mobile">
+      <a href="/">
+        <i class="icon-home pull-right large"></i>  
+      </a>
+    </div>
+  </div>    
     <form action="#" method="post">
       <fieldset>
         <div class="row">
@@ -82,22 +97,6 @@
               </span>
           </div>           
         </div>
-
-        <div class="row">
-          <div class="one whole padded">
-              <label for="company_id">QQ</label>
-              <input id="qq" type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
-          </div>
-          <div class="one whole padded">
-              <label for="wechart">微信号</label>
-              <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
-          </div>   
-          <div class="one whole padded">
-              <label for="skype">Skype</label>
-              <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
-          </div>   
-        </div>
-
         <div class="row">
           <div class="one whole padded">
             <label for="ax">是否对AX培训感兴趣</label>
@@ -140,9 +139,22 @@
           </div>    
         </div>
         <div class="row">
+          <div class="one whole padded">
+              <label for="company_id">QQ</label>
+              <input id="qq" type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
+          </div>
+          <div class="one whole padded">
+              <label for="wechart">微信号</label>
+              <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
+          </div>   
+          <div class="one whole padded">
+              <label for="skype">Skype</label>
+              <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
+          </div>   
+        </div>
+        <div class="row">
           <button class="block info one whole info-sub">提交</button>
         </div>
-        
       </fieldset>
     </form>         
   </div>
