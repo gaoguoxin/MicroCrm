@@ -2,6 +2,7 @@
 COMMAND="$1"
 ENVIRONMENT="$2"
 
+
 # verify parameters
 case $COMMAND in
 start|stop|restart)
@@ -54,15 +55,16 @@ stop)
 		echo "No unicorn process to stop"
 		exit
 	fi
-	killall -9  unicorn_rails
-	bundle exec unicorn_rails -c config/unicorn.rb  -D -E $ENVIRONMENT
+	unicorn_pid=`cat tmp/pids/unicorn.pid`
+	kill -9 $unicorn_pid
 	;;
 restart)
 	if [ $pid_file_exist = 0 ]; then
 		echo "Cannot find unicorn.pid at tmp/pids."
 		echo "No unicorn process to stop"
 	else
-		killall -9  unicorn_rails
+		unicorn_pid=`cat tmp/pids/unicorn.pid`
+		kill -9 $unicorn_pid
 		if [ $pid_file_exist = 1 ]; then
 			rm -rf $pid_file
 		fi
