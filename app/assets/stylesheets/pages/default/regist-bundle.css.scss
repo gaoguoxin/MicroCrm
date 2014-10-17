@@ -30,6 +30,10 @@ body.login{
 				position:relative;
 				input{
 					outline:none;
+					border:1px solid #dddddd;
+					height:2.23em;
+					line-height:2.23em;		
+					padding-left:1em;			
 					@include border-radius(0px);
 				}
 				.tooltip{

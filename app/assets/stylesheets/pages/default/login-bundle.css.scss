@@ -28,6 +28,10 @@ body.login{
 				position:relative;
 				input{
 					outline:none;
+					border:1px solid #dddddd;
+					height:2.23em;
+					line-height:2.23em;
+					padding-left:1em;
 					@include border-radius(0px);
 				}	
 				.tooltip{
@@ -74,9 +78,14 @@ body.login{
 
 	.forget-box{
 		display:none;
+		border:1px solid #dddddd;
 		.box{
 			background-color: #f9f9f9;
 			border:0px;
+		}
+		input{
+			border:1px solid #dddddd;
+			padding-left:1em;
 		}
 	}
 	span.suffix.f-btn{

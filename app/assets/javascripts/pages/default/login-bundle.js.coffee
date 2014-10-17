@@ -1,6 +1,9 @@
 $(->
 	account_ipt  = $('input[name="email_mobile"]')
 	password_ipt = $('input[name="password"]')
+	$('body').on('load','input,textarea',->
+		$(@).placeholder()
+	) 
 
 	flag_notice = (obj,msg)->
 		obj.parents('.ipt-container').addClass("invalid")
@@ -57,8 +60,7 @@ $(->
 			    }
 			  }
 			},
-			beforeShow:-> 
-				
+			afterShow:-> 
 			afterClose:->
 				
 		})			
