@@ -17,10 +17,10 @@ $(->
 	remove_notice = (obj)->
 		obj.parents('.ipt-container').removeClass("invalid").removeClass('valid')
 		if obj.siblings('.tooltip:visible').length > 0
-			obj.siblings('.tooltip').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('')
+			obj.siblings('.tooltip').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('').hide()
 		else
 			if obj.parents('.ipt-container').find('.tooltip:visible').length > 0
-				obj.parents('.ipt-container').find('.tooltip:visible').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('')	
+				obj.parents('.ipt-container').find('.tooltip:visible').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('').hide()	
 
 	check_format = (obj)->
 		name = obj.attr('name')

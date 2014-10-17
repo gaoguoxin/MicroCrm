@@ -12,7 +12,7 @@ $(->
 	remove_notice = (obj)->
 		obj.parents('.ipt-container').removeClass("invalid")
 		if obj.siblings('.tooltip:visible').length > 0
-			obj.siblings('.tooltip').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('')
+			obj.siblings('.tooltip').removeClass('animated bounceInRight').addClass('animated bounceOutRight').text('').hide()
 
 	check_required = ->
 		email_mobile = $.trim(account_ipt.val())
