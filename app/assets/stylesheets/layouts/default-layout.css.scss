@@ -47,17 +47,23 @@ body{
 				text-decoration: none;
 			}
 		}
-
+		.nav a, .nav a:visited, .nav button{
+			border-top:0px;
+		}
 		.nav{
 			border:0px;
 			background:#fff;
 			a{
+				border:0px;
 				background:#fff;
 				&:hover{
 					background:#fff;
+					border:0px;
 				}
 				&:visited{
 					background:#fff;
+					padding:1em 1em;
+					border:0px;
 				}
 			}
 			ul{
@@ -67,6 +73,7 @@ body{
 						display:inline-block;
 						padding:1em;
 						width:100%;
+						border:0px;
 						&:hover{
 							background:#e7e8eb;
 						}
