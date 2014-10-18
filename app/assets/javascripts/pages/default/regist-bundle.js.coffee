@@ -68,8 +68,8 @@ $(->
 		if mobile.length == 0
 			flag_notice(mobile_ipt,'请输入手机号')
 			return		
-		if password.length == 0
-			flag_notice(password_ipt,'请输入密码')
+		if password.length < 6 
+			flag_notice(password_ipt,'密码至少6位')
 			return
 		unless company 
 			flag_notice(company_ipt,'请选择所属单位')
