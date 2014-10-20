@@ -9,26 +9,20 @@
   <%= yield :head %>
 <% end %>
 <div class="container">
-<!--   <article class="row logo-container">
-    <div class="one whole mobile half-padded">
-      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
-        <%#= image_tag('mobile/logom.png')%>
-      </a>
-    </div>
-  </article> -->
   <div class="row location half-gap-top half-gap-bottom padded">
-    <div class="one third mobile">
-      <a href="javascript:history.back();"><i class="icon-chevron-sign-left large"></i></a>
+    <div class="one whole mobile">
+      <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+      <div class=" mobile pull-left half-gap-top">
+        <i class="icon-map-marker hafl-gap-right"></i>  
+        <span class="locate"><%= show_mobile_nav(params[:t])%></span>
+      </div>
     </div>
-    <div class="one third mobile">
-      <i class="icon-map-marker hafl-gap-right large"></i>  
-      <span class="locate"><%= show_mobile_nav(params[:t])%></span>
-    </div>
-    <div class="one third mobile">
+
+<!--     <div class="one third mobile">
       <a href="/">
         <i class="icon-home pull-right large"></i>  
       </a>
-    </div>
+    </div> -->
   </div>  
   <div class="seacher row">
     <div class="one whole search box ">
@@ -45,20 +39,20 @@
   <% if @courses.length > 0%>
     <%@courses.each do |course|%>
       <article class="row box">
-          <div class="one fourth mobile">
+          <div class="one fourth mobile img-container">
             <a href="<%=course_path(course)%>" >
               <%= image_tag(show_small_avatar(course))%>  
             </a>
           </div>
-          <div class="three fourths mobile half-pad-left">
+          <div class="three fourths mobile half-pad-left info-container">
             <div class="row">
               <div class="one whole name-holder">
-                <a href="<%=course_path(course)%>" >
+                <a href="<%=course_path(course)%>" class='block' >
                   <strong><%= course.name_cn %></strong>
                 </a>
               </div>
             </div>
-            <div class="row">
+            <div class="row half-gap-top oth-container">
               <div class="three fourths mobile">
                 <div class="row">
                   <div class="one whole">

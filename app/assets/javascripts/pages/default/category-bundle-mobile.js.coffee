@@ -1,4 +1,8 @@
 $(->
+	img_height = $('.img-container img').height()
+	console.log(img_height)
+	$('.info-container').height(img_height)
+
 	$('body').on('click','.multip-start',->
 		id_arr = []
 		$('li[aria-checked=true]').each(->

@@ -37,15 +37,17 @@ article.row{
 	color:#fff;
 	margin:0;
 	&.nets{
-		line-height:1.47em;
+		line-height:1.41em;
 	}
 }
+a,a:hover,a:active{
+	text-decoration: none;
+}
 .crm{
-	// background:#ba141a;
 	background-color:rgb(235, 60, 0);
 }
 .ax{
-	background-color:rgb(127, 16, 0);
+	background-color:#7fba00;
 }
 .softkill{
 	background-color:rgb(180, 0, 158);

@@ -178,35 +178,35 @@
 
     <div class="row">
       <div class="one half padded">
-        <label for="course_evaluation_general">课程总评分</label>
-        <%= f.number_field :evaluation_general,step:0.1 %>
+        <label for="course_evaluation_general">课程总评分<span class="red">(系统自动刷新)</span></label>
+        <%= f.number_field :evaluation_general,{:disabled => true,step:0.1} %>
       </div>
       <div class="one half padded">
-        <label for="course_evaluation_instructor">讲师评分</label>
-        <%= f.number_field :evaluation_instructor,step:0.1 %>
+        <label for="course_evaluation_instructor">讲师评分<span class="red">(系统自动刷新)</span></label>
+        <%= f.number_field :evaluation_instructor,{:disabled => true,step:0.1} %>
       </div>      
     </div>  
     <div class="row">
       <div class="one half padded">
-        <label for="course_waiting_acctadmin_approval_num">等待单位同意的人数</label>
+        <label for="course_waiting_acctadmin_approval_num">等待单位同意的人数<span class="red">(系统自动刷新)</span></label>
         <%= f.number_field :waiting_acctadmin_approval_num,{:disabled => true} %>
       </div>
       <div class="one half padded">
-        <label for="course_waiting_sysadmin_approval_num">单位已同意、等系统管理员接受的人数</label>
+        <label for="course_waiting_sysadmin_approval_num">单位已同意、等系统管理员接受的人数<span class="red">(系统自动刷新)</span></label>
         <%= f.number_field :waiting_sysadmin_approval_num,{:disabled => true} %>
       </div>      
     </div>   
     <div class="row">
       <div class="one third padded">
-        <label for="course_valid_registration_num">当前有效报名人数</label>
+        <label for="course_valid_registration_num">当前有效报名人数<span class="red">(系统自动刷新)</span></label>
         <%= f.number_field :valid_registration_num,{:disabled => true} %>
       </div>
       <div class="one third padded">
-        <label for="course_canceled_num">已取消报名的人数</label>
+        <label for="course_canceled_num">已取消报名的人数<span class="red">(系统自动刷新)</span></label>
         <%= f.number_field :canceled_num,{:disabled => true} %>
       </div> 
       <div class="one third padded">
-        <label for="course_attendee_num">实际参训人数</label>
+        <label for="course_attendee_num">实际参训人数<span class="red">(系统自动刷新)</span></label>
         <%= f.number_field :attendee_num,{:disabled => true} %>
       </div>           
     </div>  

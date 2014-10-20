@@ -4,7 +4,7 @@
       <td><%= order.course.code%>:<%= order.course.name_en %></td>
       <td><%= order.course.city %></td>
       <td><%= order.user.name %></td>
-      <td><%= order.user.company.name %></td>
+      <td><%= order.user.company.try(:name) %></td>
       <td class='state'><%= Order::STATE_CODE_HASH[order.state] %></td>
       <td><%= Order::STATUS_CODE_HASH[order.status] %></td>
       <td class='cancel'><%= order.cancel_or_not %></td>

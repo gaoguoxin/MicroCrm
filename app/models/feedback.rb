@@ -7,11 +7,11 @@ class Feedback
   STATUS_CHECK_OK   = 1
   STATUS_CHECK_FAIL = 2
 
-  QUESTION_ONE   = '这里是问题1'
-  QUESTION_TWO   = '这里是问题2'
-  QUESTION_THREE = '这里是问题3'
-  QUESTION_FOUR  = '这里是问题4'
-  QUESTION_FIVE  = '这里是问题5'
+  QUESTION_ONE   = '课程内容与课程表中的课程名称、描述的相符程度，从最低1分到最高10分，您给的评分是：'
+  QUESTION_TWO   = '课程内容密切联系实际工作中的问题，并且与时俱进，从最低1分到最高10分，您给的评分是：'
+  QUESTION_THREE = '对于教学服务与保障，包括：课程发布、报名受理、上课通知与提醒、课室与设备安排、随堂签到/反馈等，从最低1分到最高10分，您给的评分是：'
+  QUESTION_FOUR  = '讲师的口齿和语言表达能力、借助PPT/白板/道具等手段生动化所讲内容的能力，从最低1分到最高10分，您给的评分是：'
+  QUESTION_FIVE  = '讲师能够把理论联系实际案例或热点话题的能力，引导和总结学员做课堂练习的能力、解答学员问题的能力，从最低1分到最高10分，您给的评分是：'
 
   field :status,type: Integer,default: 0 #审核状态
   field :question_1,type: Integer,default:0

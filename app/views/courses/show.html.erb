@@ -27,7 +27,7 @@
           <%=image_tag(show_banner_avatar(@course))%>  
         </div>
         <div class="two thirds">
-          <h2><%= @course.code%>:<%=@course.name_en%></h2>
+          <h2><%= @course.code%>:<%=@course.name_cn%></h2>
           <div class="row">
             <div class="one third">
               <p class="instructor">讲师:<%=@course.instructor%></p>
@@ -42,9 +42,9 @@
             <div class="one third align-right start-container">
 
             <% if current_user && current_user.enrolled?(@course.id.to_s)%>
-                <button class="whole block yellow">已报名</button> 
+                <button class="whole block">已报名</button> 
             <% else %>
-              <button class='yellow start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+              <button class=' start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
             <% end %>
             </div>
           </div>    

@@ -15,10 +15,10 @@
           <div>
             <div class="row select-tool">
               <div class="blue padded">
-                <ul class="checklist turquoise eleven twelfths">
-                  <li class='half-gap-top gap-right pull-right select-all' >全选/全不选</li>
+                <ul class="checklist turquoise one tenth">
+                  <li class='half-gap-top gap-right select-all' >全选/全不选</li>
                 </ul> 
-                <button class="round one twelfth multip-start">报名</button>
+                <button class=" one tenth multip-start">报名</button>
               </div>
             </div>   
           </div>
@@ -28,11 +28,16 @@
             <% c_arr.each do |course|%>
             <div class="one half">
               <div class="row">
-                <div class="one fourth padded">
+                <div class="one fourth padded"> 
                   <div class="avatar">
                   <a href="<%=course_path(course)%>" target='_blank' class='noicon'>
                     <%=image_tag(show_thumb_avatar(course)) %>
                   </a>
+                  </div>
+                  <div class="row">
+                    <ul class="checklist select-list">
+                      <li data-id="<%= course.id.to_s%>">勾选</li>
+                    </ul>                     
                   </div>
                 </div>
                 <div class="three fourth padded">
@@ -57,10 +62,7 @@
                               <button class="start success one half" data-id="<%= course.id.to_s %>">报名</button>
                             <% else%>
                               <button class="" data-id="<%= course.id.to_s %>">报名</button>
-                            <% end %>   
-                            <ul class="checklist select-list large one half align-center">
-                              <li data-id="<%= course.id.to_s%>"></li>
-                            </ul>                            
+                            <% end %>                             
                           </div>
                         </div>                        
                       </div>                  

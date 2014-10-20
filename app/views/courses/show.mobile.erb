@@ -10,25 +10,36 @@
   <%= yield :head %>
 <% end %>
 <div class="container">
-  <article class="row logo-container">
-    <div class="one whole mobile half-padded">
-      <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
-        <%= image_tag('mobile/logom.png')%>
+  <div class="row location half-gap-top half-gap-bottom padded">
+    <div class="two thirds mobile">
+      <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+      <div class=" mobile pull-left half-gap-top">
+        <i class="icon-map-marker hafl-gap-right"></i>  
+        <span class="locate">课程详细信息</span>
+      </div>
+    </div>
+    <div class="one third mobile pull-right">
+      <a href="/">
+        <i class="icon-home pull-right large"></i>  
       </a>
     </div>
-  </article>  
+  </div>  
 <div class="show-info double-padded">
   <div class="row gap-bottom">
-    <h3 class="name"><strong><%=@course.name_en%></strong></h3>
-    <%= image_tag(show_banner_avatar(@course),:class => 'whole')%>
+    <div class="three fourths">
+      <h3 class="name"><strong><%=@course.name_cn%></strong></h3>
+    </div>  
+    <div class="avatar-container one fourth">
+      <%= image_tag(show_banner_avatar(@course),:class => 'whole')%>
+    </div>
     <% if current_user && current_user.enrolled?(@course.id.to_s)%>
       <% if  current_user.can_cancel?(@course.id.to_s)%>
-        <button class="whole block yellow can_cancel" data-cid="<%=@course.id.to_s%>">取消报名</button> 
+        <button class="whole block info can_cancel" data-cid="<%=@course.id.to_s%>">取消报名</button> 
       <% else %>
-        <button class="whole block yellow">您已报名</button> 
+        <button class="whole block info">您已报名</button> 
       <% end %>
     <% else %>
-      <button class="whole block success start">马上报名</button> 
+      <button class="whole block info start">马上报名</button> 
     <% end %>
   </div>
 
@@ -36,8 +47,8 @@
   <div class="tabs ipad">
     <ul role="tablist">
       <li role="tab" aria-controls="#tab1" class='padded'>基本信息</li>
-      <li role="tab" aria-controls="#tab2" class='padded'>教师信息</li>
-      <li role="tab" aria-controls="#tab3" class='padded'>时间/地点</li>
+      <li role="tab" aria-controls="#tab2" class='padded'>课程简介</li>
+      <li role="tab" aria-controls="#tab3" class='padded'>教师信息</li>
     </ul>
     <div id="tab1" role="tabpanel">
       <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
@@ -45,25 +56,11 @@
       <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
       <p class="city">最多容纳:<%=@course.lim_num%>人</p>
       <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
-      <p>受众对象:<%= @course.audience%></p>
-      <p class="one whole">
-        <h5>课程简介:</h5>
-        <div class="description"><%=raw @course.description%></div>
-      </p>    
-    </div>
-    <div id="tab2" role="tabpanel">
-      <p class="instructor">讲师:<%=@course.instructor%></p>
-      <p class="one whole">
-        <h5>讲师简介:</h5>
-        <div class="description"><%= @course.instructor_desc%></div>
-      </p>     
-    </div>
-    <div id="tab3" role="tabpanel">
       <p class="course-stard-end">
-        Start:&nbsp;<%=@course.start_date%>&nbsp;<%= @course.start_time%>
+        开始时间:<%=@course.start_date%>&nbsp;<%= @course.start_time%>
       </p>
       <p class="course-stard-end">
-        End:&nbsp;<%=@course.end_date%>&nbsp;<%= @course.end_time%>
+        结束时间:<%=@course.end_date%>&nbsp;<%= @course.end_time%>
       </p>    
       <p class="course-stard-end">
         Duration:<%= @course.duration%>天
@@ -73,9 +70,22 @@
       </p>                     
       <p class="course-address">
         地址:<%= @course.show_address %>
-      </p>
+      </p>      
+      <p>受众对象:<%= @course.audience%></p>
+      <p class="one whole">
+        
+      </p>    
     </div>
-
+    <div id="tab2" role="tabpanel">
+      <div class="description"><%=raw @course.description%></div>
+    </div>    
+    <div id="tab3" role="tabpanel">
+      <p class="instructor">姓名:<%=@course.instructor%></p>
+      <p class="one whole">
+        <p>简介:</p>
+        <div class="description"><%= @course.instructor_desc%></div>
+      </p>     
+    </div>
   </div>  
 </div>
   

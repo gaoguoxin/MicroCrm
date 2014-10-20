@@ -83,7 +83,7 @@ class Course
 
   #检查状态是否发生了改变
   def check_status
-    if self.status_changed? && self.delivery_type == TYPE_CODE_0  #只有线下课程才会发送短信
+    if self.status_changed?  #只有线下课程才会发送短信
       if self.status == STATUS_CODE_1 # 发布新课程
         send_new_lesson_msg
       end
