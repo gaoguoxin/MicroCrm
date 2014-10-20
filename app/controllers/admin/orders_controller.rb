@@ -54,7 +54,7 @@ class Admin::OrdersController < Admin::AdminController
     sheet1.row(1).concat %w{公司名称 报名人  邮箱  手机号 报名日期    }  
     count_row = 2  
     obj.each do |obj|  
-      sheet1[count_row,0]=  obj.user.company.name  
+      sheet1[count_row,0]=  obj.user.company.try(:name)  
       sheet1[count_row,1]=  obj.user.name
       sheet1[count_row,2]=  obj.user.email
       sheet1[count_row,3]=  obj.user.mobile
