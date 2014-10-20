@@ -49,6 +49,7 @@ class User
   field :skype, type: String
   field :creater,type:String # 创建人 如果是自己注册，这个字段的值为空，否则为创建人的id
   field :updater,type:String # 最近修改人  
+  field :find_time,type:DateTime
 
   belongs_to :company,class_name: "Company",inverse_of: :user
 
@@ -182,10 +183,11 @@ class User
   def self.find_pwd(mobile)
     u = User.where(mobile:mobile).first
     return ErrorEnum::USER_NOT_EXIST unless u.present? 
+    return ErrorEnum::WAIT_FOR_MINUTES unless Time.now - u.find_time > 60
     new_pwd = Random.rand(999999)
     SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
     new_pwd = make_encrypt(new_pwd)
-    u.update_attributes(password:new_pwd)
+    u.update_attributes(password:new_pwd,find_time:Time.now)
   end
 
   def self.check_exist(opt)

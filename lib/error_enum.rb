@@ -18,4 +18,5 @@ module ErrorEnum
 	ORDER_NOT_EXIST    	 = "error_16"
 	ORDER_CAN_NOT_CANCEL = "error_17" 
 	MOBILE_ERROR         = "error_18"
+	WAIT_FOR_MINUTES     = "error_19"
 end 
