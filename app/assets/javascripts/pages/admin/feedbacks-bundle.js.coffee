@@ -30,17 +30,31 @@ $(->
 		$.get('/admin/feedbacks/get_feed_info',{cid:cid},(ret)->
 			if ret.success
 				$.each(ret.value,(k,v)->
-					tr = "<tr>
-						<td>#{v.uname}</td>
-						<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_1' data-id=#{v.f_id} ><span>#{v.q_1}分</span><input type='number' name='point' maxlength=2 value=#{v.q_1}></td>
-						<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_2' data-id=#{v.f_id} ><span>#{v.q_2}分</span><input type='number' name='point' maxlength=2 value=#{v.q_2}></td>
-						<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_3' data-id=#{v.f_id} ><span>#{v.q_3}分</span><input type='number' name='point' maxlength=2 value=#{v.q_3}></td>
-						<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_4' data-id=#{v.f_id} ><span>#{v.q_4}分</span><input type='number' name='point' maxlength=2 value=#{v.q_4}></td>
-						<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_5' data-id=#{v.f_id} ><span>#{v.q_5}分</span><input type='number' name='point' maxlength=2 value=#{v.q_5}></td>
-						<td class='tot'>#{v.tot}分</td>
-						<td class='status'>#{v.status}</td>
-						<td class='check' ><ul class='checklist turquoise large'><li data-uid=#{v.uid} data-cid=#{v.cid} data-id=#{v.f_id} >审核</li></ul></td>	
-					</tr>"
+					if window.is_admin == 'true'
+						tr = "<tr>
+							<td>#{v.uname}</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_1' data-id=#{v.f_id} ><span>#{v.q_1}分</span><input type='number' name='point' maxlength=2 value=#{v.q_1}></td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_2' data-id=#{v.f_id} ><span>#{v.q_2}分</span><input type='number' name='point' maxlength=2 value=#{v.q_2}></td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_3' data-id=#{v.f_id} ><span>#{v.q_3}分</span><input type='number' name='point' maxlength=2 value=#{v.q_3}></td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_4' data-id=#{v.f_id} ><span>#{v.q_4}分</span><input type='number' name='point' maxlength=2 value=#{v.q_4}></td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_5' data-id=#{v.f_id} ><span>#{v.q_5}分</span><input type='number' name='point' maxlength=2 value=#{v.q_5}></td>
+							<td class='tot'>#{v.tot}分</td>
+							<td class='status'>#{v.status}</td>
+							<td class='check' ><ul class='checklist turquoise large'><li data-uid=#{v.uid} data-cid=#{v.cid} data-id=#{v.f_id} >审核</li></ul></td>	
+						</tr>"
+					else
+						tr = "<tr>
+							<td>#{v.uname}</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_1' data-id=#{v.f_id} >#{v.q_1}分</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_2' data-id=#{v.f_id} >#{v.q_2}分</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_3' data-id=#{v.f_id} >#{v.q_3}分</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_4' data-id=#{v.f_id} >#{v.q_4}分</td>
+							<td class='point'  data-uid=#{v.uid} data-cid=#{v.cid} data-q='question_5' data-id=#{v.f_id} >#{v.q_5}分</td>
+							<td class='tot'>#{v.tot}分</td>
+							<td class='status'>#{v.status}</td>
+							<td class='check' >--</td>	
+						</tr>"
+
 					$('.feedback-box .content table tbody').append(tr)
 				)
 		)		

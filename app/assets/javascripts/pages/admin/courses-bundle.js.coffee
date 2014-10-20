@@ -78,7 +78,7 @@ $(->
 		go = true
 		publish = parseInt($('#course_status').val())
 		$('form.info input,select,textarea').each(->
-			unless $(@).attr('id') == 'course_instructor_avatar'
+			unless ($(@).attr('id') == 'course_instructor_avatar' || $(@).attr('id') == 'course_name_en' )
 				if $(@).is(":visible")
 					if $('#course_charge_category').val() == '1'
 						if $.trim($(@).val()).length <= 0 &&  $.inArray($(@).attr('id'),['course_price_level1','course_price_level2','course_price_level3']) < 0

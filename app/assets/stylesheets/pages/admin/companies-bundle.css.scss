@@ -1,28 +1,7 @@
-// table{
-// 	tr{
-// 		th,td{
-// 			text-align:center;
-// 			font-size:1em;
-// 		}
-// 		td.no-data{
-// 			text-align:center;
-// 		}
-// 		td a{
-// 			display:block;
-// 		}		
-// 	}
-// }
-
-
-// form{
-// 	input,select{
-// 		outline:none;
-// 	}
-// 	.search-manager{
-// 		cursor:pointer;
-// 	}
-// }
 
 .search-manager{
 	cursor:pointer;
+}
+.search_mannager.row{
+	display:none;
 }

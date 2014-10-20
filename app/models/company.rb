@@ -42,42 +42,44 @@ class Company
   end
 
   def self.create_manager(opt,creater)
-    user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
-    user = User.find_by_mobile(opt[:manager_id]) unless user.present?
-
-    unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
-      if !opt[:name].include?('其他')
-        # “其他” 这个特殊的公司不给创建管理员
-        account = {}
-        account[:name]               =  '企业管理员'#opt[:manager_id].split('@').first #企业管理员的名字默认为手机号或者邮箱的前部分
-        account[:email]              =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
-        account[:mobile]             =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::MobileRexg}/i)
-        account[:role_of_system]     =  User::ROLE_MANAGER
-        account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
-        user = User.regist(account,true,false,creater)
-      else
-        user = User.where(role_of_system:User::ROLE_ADMIN).first  #其他这个企业的管理员是系统管理员
-      end
-    end
-
+    # user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
+    # user = User.find_by_mobile(opt[:manager_id]) unless user.present?
+    user = User.where(id:opt[:manager_id]).first
+    return ErrorEnum::USER_NOT_EXIST unless user.present?
+    # unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
+    #   if !opt[:name].include?('其他')
+    #     # “其他” 这个特殊的公司不给创建管理员
+    #     account = {}
+    #     account[:name]               =  '企业管理员'#opt[:manager_id].split('@').first #企业管理员的名字默认为手机号或者邮箱的前部分
+    #     account[:email]              =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
+    #     account[:mobile]             =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::MobileRexg}/i)
+    #     account[:role_of_system]     =  User::ROLE_MANAGER
+    #     account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
+    #     user = User.regist(account,true,false,creater)
+    #   else
+    #     user = User.where(role_of_system:User::ROLE_ADMIN).first  #其他这个企业的管理员是系统管理员
+    #   end
+    # end
+    user.update_attributes(role_of_system:User::ROLE_MANAGER)
     company = self.create(opt)
     user.companies << company
     user.update_attributes(company_id:company.try(:id).to_s)
   end
 
   def self.update_info(opt,inst,creater)
-    user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
-    user = User.find_by_mobile(opt[:manager_id]) unless user.present?
-
-    unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
-      account = {}
-      account[:name]               =  '企业管理员'#opt[:manager_id].split('@').first #企业管理员的名字默认为手机号或者邮箱的前部分
-      account[:email]              =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
-      account[:mobile]             =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::MobileRexg}/i)
-      account[:role_of_system]     =  User::ROLE_MANAGER
-      account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
-      user = User.regist(account,true,false,creater)
-    end
+    # user = User.find_by_email(opt[:manager_id]) if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
+    # user = User.find_by_mobile(opt[:manager_id]) unless user.present?
+    user = User.where(id:opt[:manager_id]).first
+    return ErrorEnum::USER_NOT_EXIST unless user.present?
+    # unless user.present? # 用户不存在的时候可以创建一个,并设置为该企业的管理员
+    #   account = {}
+    #   account[:name]               =  '企业管理员'#opt[:manager_id].split('@').first #企业管理员的名字默认为手机号或者邮箱的前部分
+    #   account[:email]              =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::EmailRexg}/i)
+    #   account[:mobile]             =  opt[:manager_id].to_s.downcase  if opt[:manager_id].to_s.downcase.match(/#{User::MobileRexg}/i)
+    #   account[:role_of_system]     =  User::ROLE_MANAGER
+    #   account[:password]           =  '111111' #创建公司时创建的企业管理员，密码6个1
+    #   user = User.regist(account,true,false,creater)
+    # end
     inst.manager.update_attributes(role_of_system:User::ROLE_EMPLOYEE)
     user.update_attributes(role_of_system:User::ROLE_MANAGER,company_id:inst.id.to_s)
     opt[:manager_id] = user.id.to_s

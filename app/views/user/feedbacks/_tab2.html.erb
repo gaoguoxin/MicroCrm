@@ -1,11 +1,11 @@
 <% if courses.length > 0 %>
 	<div class="box info">
 		<ul class="unstyled question_list">
-			<li><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
-			<li><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
-			<li><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
-			<li><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
-			<li><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>
+			<li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
+			<li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
+			<li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
+			<li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
+			<li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>
 	</ul>
 	</div>
 
@@ -41,7 +41,7 @@
 	  			<% 1.upto(10).each do |m|%>
 	    			<td  class='align-center'>
 	    				<label for="question_<%=i%>_<%m%>">
-	    					<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>" <% if @feedback["question_#{i}"] == m %> checked='checked' <% end %> ><span class='half-gap-left'><%=m%>分</span>
+	    					<input type="radio" name="question_<%=i%>" id="question_<%=i%>_<%=m%>" value="<%= m %>" <% if course["question_#{i}"] == m %> checked='checked' <% end %> ><span class='half-gap-left'><%=m%>分</span>
 	    				</label>
 	    			</td>    					  		
 	  			<% end %>
@@ -57,8 +57,8 @@
 		</div>
 	<% end %>
 <% else %>
-	<div class="box info">
-		<div class="box success">
+	<div class="box yellow">
+		<div class="box yellow">
 			<div class="row">
 				<div class="one whole align-center">您目前没有需要反馈的任何课程!</div>
 			</div>

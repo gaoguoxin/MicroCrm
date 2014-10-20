@@ -1,7 +1,7 @@
 <% if orders['data'].length > 0 %>
   <% orders['data'].each do |order|%>
     <tr>
-      <td><%= order.course.code%>:<%= order.course.name_en %></td>
+      <td><%= order.course.code%>:<%= order.course.name_cn %></td>
       <td><%= order.course.city %></td>
       <td><%= order.user.name %></td>
       <td><%= order.user.company.try(:name) %></td>
@@ -13,14 +13,18 @@
         <td><%= order.presence ? '出席' : '缺席'%></td>
       <% end %>
       <td class='opera'>
-        <% if params[:t] == 'p'%>         
-          <ul class="checklist">
-            <li class="blue" data-id="<%= order.id.to_s %>">出/缺席</li>
-          </ul>  
-        <% elsif params[:t] == 'o'%>
-          <ul class="checklist">
-            <li class="blue" data-id="<%= order.id.to_s %>">拒绝/通过/取消</li>
-          </ul>          
+        <% if current_user.is_admin? %>
+          <% if params[:t] == 'p'%>         
+            <ul class="checklist">
+              <li class="blue" data-id="<%= order.id.to_s %>">出/缺席</li>
+            </ul>  
+          <% elsif params[:t] == 'o'%>
+            <ul class="checklist">
+              <li class="blue" data-id="<%= order.id.to_s %>">拒绝/通过/取消</li>
+            </ul>          
+          <% else %>
+            --
+          <% end %>
         <% else %>
           --
         <% end %>

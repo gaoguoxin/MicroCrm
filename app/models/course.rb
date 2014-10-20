@@ -26,10 +26,10 @@ class Course
  
   CONTENT_TYPE_AX  = 'AX'
   CONTENT_TYPE_CRM = 'CRM'
-  CONTENT_TYPE_AX_CRM = 'AX+CRM'
+  CONTENT_TYPE_AX_CRM = '软技能'
   CONTENT_TYPE_QT     = '其他'
 
-  CONTENT_TYPE_ARRAY = %w(AX CRM AX+CRM 其他)
+  CONTENT_TYPE_ARRAY = %w(AX CRM 软技能 其他)
 
   CITY_ARRAY = %w(上海市 北京市 广州市 其他城市 在线)
 
@@ -39,7 +39,7 @@ class Course
   field :difficulty_level,type:String #难易程度 Level 100, Level 200, Level 300, Level 400
   field :delivery_type,type:Integer,default:TYPE_CODE_0 # 课程类型
   field :charge_category,type:Integer,default:CHARGE_TYPE_0 #收费
-  field :content_type,type:String,default:CONTENT_TYPE_AX # 内容类型
+  field :content_type,type:String # 内容类型
   field :status,type:Integer,default:STATUS_CODE_0 #课程状态
   field :audience,type:String # 受众对象  limit 64 letter 
   field :instructor,type:String   # 教师姓名 limit 12 letter  
@@ -124,7 +124,7 @@ class Course
     mlist = Company.where(:name.ne => '其他',pri_serv:/#{content_type}/).actived.map{|e| e.manager.try(:mobile)} #企业管理员电话号码
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == 'AX+CRM'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == '软技能'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
     SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
     SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})

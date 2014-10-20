@@ -211,8 +211,9 @@ class User
 
   def self.search_manager(opt)
     account = opt[:account]
-    user = self.find_by_email(account)  if account.match(/#{EmailRexg}/i)
-    user = self.find_by_mobile(account) unless user.present?
+    user = self.where(name:/#{account}/) 
+    user = self.where(email:/#{account}/)  unless user.present?
+    user = self.where(mobile:/#{account}/) unless user.present?
     return user
   end
 

@@ -34,10 +34,15 @@
               <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
               <p class="content_type">内容类型:<%= @course.content_type %></p>
               <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
-            </div>
-            <div class="one third">
               <p class="city">最多容纳:<%=@course.lim_num%>人</p>
               <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
+            </div>
+            <div class="one third">
+              <p>城市:<%=@course.show_city%></p>
+              <p>地址:<%= @course.show_address %></p>
+              <p>开始时间:<%=@course.start_date%>&nbsp;<%= @course.start_time%></p>
+              <p>结束时间:<%=@course.end_date%>&nbsp;<%= @course.end_time%></p>
+              <p>持续时间:<%= @course.duration%>天</p>
             </div>
             <div class="one third align-right start-container">
 
@@ -48,42 +53,25 @@
             <% end %>
             </div>
           </div>    
+          <div class="row">
+            <div class="two thirds info">
+              受众对象:<%= @course.audience%>  
+            </div>
+          </div>
         </div>
       </div>
       <div class="show-bottom one whole   double-gap-top">
-        <div class="row">
-          <div class="bottom-left three fourths double-padded">
-            <div class="one whole box success">受众对象:<%= @course.audience%></div>
-            <div class="one whole double-pad-top">
+        <div class="row pad-bottom">
+          <div class="bottom-left double-padded">
+            <div class="one whole">
               <h5>课程简介:</h5>
               <div class="description"><%=raw @course.description%></div>
             </div>
-          </div>
-          <div class="bottom-right one fourth ">
-            <div class="right-cont double-pad-top">
-              <div class="img-container align-center">
-                <%= image_tag(show_small_avatar(@course))%>  
-              </div>
-              <div class="constructor-desc double-padded small-info ">
-                <%= @course.instructor_desc%>
-              </div> 
-              <div class="course-stard-end double-padded  small-info">
-                Start:&nbsp;<%=@course.start_date%>&nbsp;<%= @course.start_time%>
-              </div>
-              <div class="course-stard-end double-padded  small-info">
-                End:&nbsp;<%=@course.end_date%>&nbsp;<%= @course.end_time%>
-              </div>    
-              <div class="course-stard-end double-padded  small-info">
-                duration:<%= @course.duration%>天
-              </div>   
-              <div class="course-city double-padded  small-info">
-                城市:<%=@course.show_city%>
-              </div>                     
-              <div class="course-address double-padded">
-                地址:<%= @course.show_address %>
-              </div>           
+            <div class="one whole gap-top">
+              <h5>教师简介:</h5>
+              <%= @course.instructor_desc%>
             </div>
-          </div>        
+          </div>     
         </div>
       </div> 
     </div>    

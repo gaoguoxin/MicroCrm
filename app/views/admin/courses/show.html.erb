@@ -86,7 +86,9 @@
           <div class="one whole double-pad-top">
             <a href='<%= admin_courses_path(:status => @course.status)%>'>返回</a>
             <% if [Course::STATUS_CODE_0,Course::STATUS_CODE_1].include?(@course.status)%>
-              <a href='<%= edit_admin_course_path(@course)%>'>修改</a>
+              <% if current_user.is_admin? %>
+                <a href='<%= edit_admin_course_path(@course)%>'>修改</a>
+              <% end %>
             <% end %>
           </div>
         </div>

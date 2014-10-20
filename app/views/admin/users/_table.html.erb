@@ -11,9 +11,12 @@
       <td><%= user.course_manday_count %></td>
       <td><%= User::STATUS_HASH[user.status] %></td>
       <td>
-        <a href="javascript:void(0);" class='edit-user' id="<%= user.id.to_s %>">
-          修改/查看
-        </a>
+      <% if current_user.is_admin? %>
+        <a href="javascript:void(0);" class='edit-user' id="<%= user.id.to_s %>">修改/查看</a>
+      <% else %>
+        <a href="javascript:void(0);" class='edit-user' id="<%= user.id.to_s %>">查看</a>
+      <% end %>
+        
         <% if current_user.is_admin? && user.status == User::STATUS_INACTIVED %>
           <a href="javascript:void(0)" class="delete-user" data-cid="<%= user.id.to_s %>">停用</a>
         <% end %>

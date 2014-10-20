@@ -26,7 +26,9 @@
     <div class="tabs ipad">
       <ul role="tablist">
         <li role="tab" aria-controls="#tab1" class='one fourth tab-nav'>学员列表</li>
+        <% if current_user.is_admin? %>
           <li role="tab" aria-controls="#tab2" class='one fourth tab-nav'>新增/编辑&nbsp;学员</li>
+        <% end %>
       </ul>
       <div id="tab1" role="tabpanel">
         <div class="search-container">

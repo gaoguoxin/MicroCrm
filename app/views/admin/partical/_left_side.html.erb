@@ -12,9 +12,11 @@
 </dl>
 <dl class="menu">
     <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>课程管理</dt>
-	<dd class="menu_item double-pad-left <%= actived('courses','new')%>">
-		<a href="<%=  new_admin_course_path %>" class="triple-pad-left">新建课程</a>
-	</dd>
+    <% if current_user.is_admin? %>
+		<dd class="menu_item double-pad-left <%= actived('courses','new')%>">
+			<a href="<%=  new_admin_course_path %>" class="triple-pad-left">新建课程</a>
+		</dd>
+    <% end %>
 	<dd class="menu_item double-pad-left <%= actived('courses','index',params[:status],'0')%>">
 		<a href="<%= admin_courses_path(:status => Course::STATUS_CODE_0) %>" class="triple-pad-left">规划中的课程</a>
 	</dd>	

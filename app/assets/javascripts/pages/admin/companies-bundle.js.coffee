@@ -43,7 +43,40 @@ $(->
 		$.post(ajax_url,data,(ret)->
 			if ret.success
 				flash_notice(msg)
-		)		
+		)	
+
+	open_search_mannager = (data)->
+		$.fancybox.open($('.search_mannager'),{
+			padding:0,
+			autoSize:true,
+			scrolling:no,
+			openEffect:'none',
+			closeEffect:'none',        
+			helpers : {
+			  overlay : {
+			    locked: false,
+			    closeClick: false,
+			    css : {
+			      'background' : 'rgba(51, 51, 51, 0.2)'
+			    }
+			  }
+			},
+			beforeShow:-> 
+				$('ul.zero').html('')
+				$.get("/admin/companies/search_manager",data,(ret)->
+					if ret.success
+						if ret.value.length > 0 
+							$.each(ret.value,(k,v)->
+								str = "<li>
+								  <input id='manager_#{k}' type='radio' name='manager' value='#{v._id.$oid}'>
+								  <label for='manager_#{k}' class='inline'>#{v.name}</label>
+								</li>"
+								$('ul.zero').append(str)
+							)
+						else
+							$('ul.zero').append("<li class='align-center'>没有查到相应用户</li>")	
+				)
+		})			
 
 
 	$('body').on('click','.tab-nav:last',(e)->
@@ -85,22 +118,40 @@ $(->
 	$('body').on('click','.search-manager',(e)->
 		$this = $(@)
 		manager = $.trim($('#manager').val())
-		if $.regex.isMobile(manager) or $.regex.isEmail(manager)
+		if manager.length > 0 
 			data = {account:manager}
-			$.get("/admin/companies/search_manager",data,(ret)->
-				if ret.success
-					if ret.value
-						$this.parents('.padded').addClass('valid')
-						$this.text('匹配成功!')
-					else
-						$this.parents('.padded').addClass('invalid')
-						$this.text('不存在，创建?')		
-			)
+			open_search_mannager(data)
 		else
 			unless $('form.new-company #name').val().indexOf?('其他') >= 0
-				$(@).parents('.padded').addClass('invalid')		
+				$(@).parents('.padded').addClass('invalid')
+
+		# if $.regex.isMobile(manager) or $.regex.isEmail(manager)
+		# 	data = {account:manager}
+
+		# 	# $.get("/admin/companies/search_manager",data,(ret)->
+		# 	# 	if ret.success
+		# 	# 		if ret.value
+		# 	# 			$this.parents('.padded').addClass('valid')
+		# 	# 			$this.text('匹配成功!')
+		# 	# 		else
+		# 	# 			$this.parents('.padded').addClass('invalid')
+		# 	# 			$this.text('不存在，创建?')		
+		# 	# )
+		# else
+		# 	unless $('form.new-company #name').val().indexOf?('其他') >= 0
+		# 		$(@).parents('.padded').addClass('invalid')		
 	)
 
+	$('body').on('click','.select-manager-btn',(e)->
+		e.preventDefault()
+		manager_id = $('input[name="manager"]:checked').val()
+		if manager_id
+			$('#manager').val(manager_id)
+		else
+			$('#manager').val('')
+
+		$.fancybox.close()	
+	)
 
 	$('body').on('keydown','form.new-company #manager',(e)->
 		if e.which == 9

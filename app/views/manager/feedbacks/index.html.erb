@@ -41,7 +41,7 @@
             <% @courses['data'].each do |course|%>
               <tr>
                 <td><%= link_to course.code,course_path(course),:target=>"_blank",:class => 'noicon' %></td>
-                <td><%= link_to course.name_en,course_path(course),:target=>"_blank",:class => 'noicon'%></td>
+                <td><%= link_to course.name_cn,course_path(course),:target=>"_blank",:class => 'noicon'%></td>
                 <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.start_time %></td>
                 <td><%= course.end_date.strftime('%Y/%m/%d') %><br/><%= course.end_time %></td>
                 <td><%= course.city %></td>

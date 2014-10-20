@@ -1,16 +1,12 @@
 <% if courses['data'].length > 0 %>
   <% courses['data'].each do |course|%>
     <tr>
-      <td><%= link_to course.code,course_path(course),:class => 'noicon',:target => '_blank' %></td>
-      <td><%= link_to course.name_en,course_path(course),:class => 'noicon',:target => '_blank'%></td>
-      <td><%= course.start_date.strftime('%Y/%m/%d') %></td>
-      <td><%= course.end_date.strftime('%Y/%m/%d') %></td>
+      <td><%= link_to course.name_cn,course_path(course),:class => 'noicon',:target => '_blank'%></td>
+      <td><%= course.start_date.strftime('%Y/%m/%d') %><br/><%= course.end_date.strftime('%Y/%m/%d') %></td>
+      <td><%= course.evaluation_general %></td>
+      <td><%= course.evaluation_instructor %></td>
       <td><%= course.city %></td>
       <td><%= course.content_type%></td>
-      <td class='align-center'>
-        <a href="/courses/<%=course.id.to_s%>" target="_blank" class="noicon">
-        <%= image_tag(show_thumb_avatar(course)) %><br/><%=course.instructor %></td>
-        </a>
       <td>
         <a href="javascript:void(0);" class='show-feedback' data-id="<%= course.id.to_s %>">查看反馈</a>
       </td>

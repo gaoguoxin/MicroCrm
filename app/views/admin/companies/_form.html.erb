@@ -6,9 +6,9 @@
   </div>
   <div class="one half padded">
     <div class="row search-container">
-      <label for="manager">管理者&nbsp;<span class='error'>(创建新用户时,密码默认6个1)</span></label>
+      <label for="manager">管理者<!-- &nbsp;<span class='error'>(创建新用户时,密码默认6个1)</span> --></label>
       <div class="three small-tablet fifths">
-        <input id="manager" type="text" name='company[manager_id]' placeholder="mobile" value="<%= company.try(:manager).try(:mobile) %>">
+        <input id="manager" type="text" name='company[manager_id]' placeholder="name" value="<%= company.try(:manager).try(:name) %>">
       </div>
       <div class="two small-tablet fifths">
         <span class="suffix search-manager">search</span>
@@ -107,3 +107,19 @@
     <textarea id="description" name='company[description]' placeholder="Enter company  description..." ><%= default(company,'description') %></textarea>
   </div>
 </div>
+
+
+<article class="search_mannager row"> 
+  <div class="one whole padded">
+    <h4 class='box info align-center'>匹配到的企业管理员</h4>
+    <ul class="unstyled zero">                      
+    </ul>
+  </div>
+  <div class="one whole padded">
+    <div class="row double-pad-top double-pad-bottom">
+      <button class="info block select-manager-btn">确定</button>
+    </div>   
+  </div>
+</article>
+
+

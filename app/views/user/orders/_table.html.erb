@@ -1,10 +1,10 @@
 <% if @orders['data'].length > 0 %>
   <% @orders['data'].each do |order|%>
     <tr>
-      <td class='align-center'><%= order.course.name_cn%></td>
-      <td class='align-center'><%= order.course.content_type%></td>
-      <td class='align-center'><%= order.course.show_city%></td>
-      <td class='align-center'>
+      <td class=''><%= order.course.name_cn%></td>
+      <td class=''><%= order.course.content_type%></td>
+      <td class=''><%= order.course.show_city%></td>
+      <td class=''>
         <%= order.course.start_date.strftime('%F')%><br/>
         <%= order.course.end_date.strftime('%F')%>
       </td>

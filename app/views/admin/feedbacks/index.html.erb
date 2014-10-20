@@ -2,6 +2,9 @@
   <%= stylesheet_link_tag    "pages/admin/feedbacks-bundle" %>
   <%= javascript_include_tag "pages/admin/feedbacks-bundle" %>
   <script type="text/javascript">
+  $(function(){
+    window.is_admin = "<%= current_user.is_admin? %>";
+  })
   </script>
   <%= yield :head %>
 <% end %>
@@ -80,13 +83,12 @@
         <table class=" feed-course-container responsive responsiveTable  <%= @courses.length > 0 ? 'info' : 'error' %>" data-max="15">
           <thead>
             <tr>
-              <th>编码</th>
               <th>名称</th>
-              <th>开始时间</th>
-              <th>结束时间</th>
+              <th>开始时间<br/>结束时间</th>
+              <th>课程分数</th>
+              <th>教师分数</th>
               <th>城市</th>
               <th>内容类型</th>
-              <th>教师姓名</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -103,11 +105,11 @@
     <div class="one whole padded">
       <div class="box double-gap-bottom">
         <ul class="unstyled question_list">
-          <li><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
-          <li><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
-          <li><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
-          <li><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
-          <li><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>                
+          <li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 1</span></strong><%= Feedback::QUESTION_ONE%></li>
+          <li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 2</span></strong><%= Feedback::QUESTION_TWO%></li>
+          <li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 3</span></strong><%= Feedback::QUESTION_THREE%></li>
+          <li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 4</span></strong><%= Feedback::QUESTION_FOUR%></li>
+          <li class='gap-top gap-bottom'><strong class='double-gap-right'><span>Question 5</span></strong><%= Feedback::QUESTION_FIVE%></li>                
         </ul>
       </div>   
       <div class="box success align-center"><h6>注意:如果想更改评分的话,需要先更改后审核,不审核的反馈不作为评分你你计算标准!</h6></div> 
@@ -123,22 +125,29 @@
               <th>Question 5</th>
               <th>平均分</th>
               <th>状态</th>
-              <th>选择</th>
+              <% if current_user.is_admin? %>
+                <th>选择</th>
+              <% else %>
+                <th>--</th>
+              <% end %>
             </tr>
           </thead>
           <tbody>
           </tbody>
         </table>         
-      </div>     
-      <div class="row double-pad-top double-pad-bottom ">
-        <div class="one ninth skip-eight check-tool">
-          <ul class="checklist turquoise ">
-            <li>全选/全不选</li>
-          </ul>         
-          <button class='red refuse double-gap-right small gap-top'>拒绝</button>
-          <button class='info pass small gap-top'>通过</button>           
-        </div>      
-      </div>  
+      </div> 
+      <% if current_user.is_admin? %>
+        <div class="row double-pad-top double-pad-bottom ">
+          <div class="one ninth skip-eight check-tool">
+            <ul class="checklist turquoise ">
+              <li>全选/全不选</li>
+            </ul>         
+            <button class='red refuse double-gap-right small gap-top'>拒绝</button>
+            <button class='info pass small gap-top'>通过</button>           
+          </div>      
+        </div> 
+      <% end %>    
+ 
     </div>
   </article>
 

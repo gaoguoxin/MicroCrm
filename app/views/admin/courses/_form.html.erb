@@ -88,11 +88,12 @@
         </span>        
       </div>
       <div class="one half padded">
-        <label for="course_delivery_type">内容类型</label>
+        <label for="course_delivery_type">内容类型<span class="red">(请务必选择)</span></label>
         <span class="select-wrap">
           <select class="unselected" id='course_content_type' name='course[content_type]'>
+            <option value="" disabled="" selected="">请选择</option>
             <% Course::CONTENT_TYPE_ARRAY.each do |k| %>
-              <option value="<%= k %>" <% if f.try(:content_type) == k %>selected='selected' <% end %> ><%= k %></option>
+              <option value="<%= k %>" <% if @course.try(:content_type) == k %>selected='selected' <% end %> ><%= k %></option>
             <% end %>
           </select>
         </span>        
