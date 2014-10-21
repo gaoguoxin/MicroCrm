@@ -60,7 +60,14 @@ class Company
     #     user = User.where(role_of_system:User::ROLE_ADMIN).first  #其他这个企业的管理员是系统管理员
     #   end
     # end
-    user.update_attributes(role_of_system:User::ROLE_MANAGER)
+    unless opt[:name].include?('其他')
+      user.update_attributes(role_of_system:User::ROLE_MANAGER)
+    else
+      unless user.is_admin?
+        user.update_attributes(role_of_system:User::ROLE_MANAGER)
+      end
+    end
+    
     company = self.create(opt)
     user.companies << company
     user.update_attributes(company_id:company.try(:id).to_s)
