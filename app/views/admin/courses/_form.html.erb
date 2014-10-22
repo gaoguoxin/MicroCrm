@@ -220,7 +220,7 @@
         <span class="select-wrap">
           <select class="unselected" id='course_status' name='course[status]'>
             <% Course::STATUS_CODE_HASH.each_pair do |k,v| %>
-              <option value="<%= k %>" <% if f.try(:status) == k %>selected='selected' <% end %> ><%= v %></option>
+              <option value="<%= k %>" <% if @course.try(:status) == k %>selected='selected' <% end %> ><%= v %></option>
             <% end %>
           </select>
         </span>        

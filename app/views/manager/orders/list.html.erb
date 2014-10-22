@@ -1,0 +1,77 @@
+
+<% content_for :app_head do %>
+  <%= stylesheet_link_tag    "pages/manager/orders-bundle" %>
+  <%= javascript_include_tag "pages/manager/orders-list-bundle" %>
+  <script type="text/javascript">
+  jQuery(function($) {
+
+  });
+  </script>
+  <%= yield :head %>
+<% end %>
+
+
+<% content_for :left_side do %>
+  <%= render :partial => 'manager/partical/left_side' %>
+<% end %>
+
+<% content_for :right_side do %>
+  <div class="row right-head triple-pad-left triple-pad-right">
+    <span class="fa fa-flag-o"></span>
+    <span class="locate">报名记录管理<i class="fa fa-angle-double-right"></i><%=manager_order_status(params[:t])%></span>
+  </div>
+  <div class="row right-notice triple-pad-left triple-pad-right">
+    <div class="notice-content double-gap-top double-gap-bottom double-pad-left pad-top pad-bottom">
+      <i class="fa fa-info"></i>
+      <span><%=manager_order_status(params[:t],true)%></span>
+    </div>
+  </div>
+  <div class="row triple-pad-left triple-pad-right">
+    <table class=" main-container   <%= @orders.length > 0 ? 'info' : 'error' %>" data-max="15">
+      <thead>
+        <tr>
+          <th>课程名称</th>
+          <th>开始时间<br/>结束时间</th>
+          <th>城市</th>
+          <th>内容类型</th>
+          <th>报名人</th>
+          <th class='align-center'>
+            操作
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @orders.length > 0 %>
+          <% @orders.each do |order| %>
+            <tr>
+              <td style='width:40%;'><%= order.course.name_cn %></td>
+              <td style='width:12%;'><%= order.course.start_date.strftime('%F')%><br/><%= order.course.end_date.strftime('%F')%></td>
+              <td style='width:12%;'><%= order.course.show_city%></td>
+              <td style='width:12%;'><%= order.course.show_content_type %></td>
+              <td style='width:12%;'><%= order.user.name %></td>
+              <td style='width:12%;' class='align-center'>
+                <% if params[:t] == 'w' %>
+                  <a href="javascript:void(0);" data-uid="<%= order.user.id.to_s %>" data-cid="<%= order.course.id.to_s%>" class='allow'>允许</a><br/>
+                  <a href="javascript:void(0);" data-uid="<%= order.user.id.to_s %>" data-cid="<%= order.course.id.to_s%>" class='refuse'>拒绝</a>
+                <% elsif params[:t] == 'e' || params[:t] == 's' %>
+                  <% if order.can_cancel %>
+                    <a href="javascript:void(0);" data-uid="<%= order.user.id.to_s %>" data-oid="<%= order.id.to_s%>" class='cancel'>取消</a>
+                  <% else %>
+                    --
+                  <% end %>
+
+                <% else%>
+                  --
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <td colspan='6' class='align-center'>
+            没有查到任何报名记录
+          </td>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

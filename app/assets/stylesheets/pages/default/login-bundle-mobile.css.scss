@@ -1,14 +1,29 @@
 @import "compass/css3/border-radius";
 body,html{
 		background:#fafafa;
-
+		a,a:hover,a:visited{
+			text-decoration: none;
+		}
+		.container{
+			padding-top:0px;
+		}
 		fieldset{
 			border:none;
 			.prefix, .suffix{
 				background:#fafafa;
 			}
 		}
-
+		.row.location{
+			background-color:rgb(0,188,242);
+			color:#fff;
+			a{
+				color:#fff;
+				text-decoration: none;	
+				&:hover,&:active{
+					text-decoration: none;
+				}
+			}
+		}
 		.wraper{
 			input,button{
 				@include border-radius(0px);

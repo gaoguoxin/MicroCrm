@@ -33,7 +33,7 @@ body.login{
 					border:1px solid #dddddd;
 					// height:2.23em;
 					line-height:2.23em;		
-					padding-left:1em;			
+					// padding-left:1em;			
 					@include border-radius(0px);
 				}
 				.tooltip{
@@ -53,6 +53,7 @@ body.login{
 			}		
 			select{
 				outline:none;
+				color:#a9a9a9;
 				@include border-radius(0px);
 			}	
 			button{

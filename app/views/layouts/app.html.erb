@@ -33,5 +33,8 @@
   </head>
   <body>
     <%= content_for?(:app_content) ? yield(:app_content) : yield %>
+    <article class="row fixed bottom align-center icp box">
+      <div class="one whole">京ICP证 <%=@icp%></div>
+    </article>    
   </body>
 </html>

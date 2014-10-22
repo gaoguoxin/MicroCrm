@@ -12,10 +12,16 @@ ul.button-group li:last-child a, ol.button-group li:last-child a, ul.button-grou
 		.box{
 			background:lightgrey;	
 		}
-		
 	}
 }
-
+.seacher{
+	.box{
+		background-color:lightgrey;
+		@include border-radius(0px);
+		border:0px;
+		padding:4px;
+	}
+}
 
 .name-holder{
 	line-height:2.5em;

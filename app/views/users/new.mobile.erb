@@ -9,6 +9,7 @@
     <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 注册'  %></title>     
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
+    <%= stylesheet_link_tag "pages/default/default-layout-mobile", :media => "all" %>
     <%= stylesheet_link_tag "pages/default/regist-bundle-mobile", :media => "all" %>
     <%= javascript_include_tag "pages/default/regist-bundle-mobile", :media => "all" %>   
     <!--[if IE]>
@@ -29,14 +30,22 @@
   <body>
     <div class="container">
 <form action="#" method="post">
-  <fieldset>
-    <legend class='align-center'>Register in</legend>
-    <div class="row">
-      <div class="one third mobile skip-one">
-        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+    <div class="row location half-gap-top padded">
+      <div class="one whole mobile">
+        <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+        <div class=" mobile pull-left half-gap-top">
+          <i class="icon-map-marker hafl-gap-right"></i>  
+          <span class="locate">注册账户信息</span>
+        </div>
       </div>
-    </div>
-
+    </div>  
+  <fieldset>
+    <!-- <legend class='align-center'>Register in</legend> -->
+<!--     <div class="row">
+      <div class="one third mobile skip-one">
+        <%#=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+      </div>
+    </div> -->
     <div class="row">
       <div class="padded align-center notice">
         &nbsp;
@@ -113,7 +122,10 @@
     </div>
   </fieldset>
 </form>
-      </article>      
+      </article>  
+    <article class="row fixed bottom align-center icp box">
+      <div class="one whole">京ICP证 <%=@icp%></div>
+    </article>          
     </div>
   </body>
 </html>

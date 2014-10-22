@@ -13,39 +13,33 @@
     <div class="one whole mobile">
       <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
       <div class=" mobile pull-left half-gap-top">
-        <i class="icon-map-marker hafl-gap-right"></i>  
+        <i class="icon-map-marker hafl-gap-right"></i>
         <span class="locate"><%= show_mobile_nav(params[:t])%></span>
       </div>
     </div>
-
-<!--     <div class="one third mobile">
-      <a href="/">
-        <i class="icon-home pull-right large"></i>  
-      </a>
-    </div> -->
-  </div>  
+  </div>
   <div class="seacher row">
     <div class="one whole search box ">
       <div class="row">
           <div class="four mobile fifths">
             <form action="/courses/search" method='get' id='parten-search'>
-              <input type="text" name="name" placeholder="课程名称">  
+              <input type="text" name="name" placeholder="课程名称">
             </form>
           </div>
           <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
         </div>
     </div>
-  </div> 
+  </div>
   <% if @courses.length > 0%>
     <%@courses.each do |course|%>
       <article class="row box">
           <div class="one fourth mobile img-container">
             <a href="<%=course_path(course)%>" >
-              <%= image_tag(show_small_avatar(course))%>  
+              <%= image_tag(show_small_avatar(course))%>
             </a>
           </div>
           <div class="three fourths mobile half-pad-left info-container">
-            <div class="row">
+            <div class="row name_cont">
               <div class="one whole name-holder">
                 <a href="<%=course_path(course)%>" class='block' >
                   <strong><%= course.name_cn %></strong>
@@ -71,8 +65,8 @@
                 </div>
               </div>
             </div>
-          </div>        
-      </article>    
+          </div>
+      </article>
     <%end%>
   <% else %>
     <article class="no-data absolute middle row">
@@ -80,5 +74,5 @@
           <strong>抱歉，没有查到相关课程</strong>
         </div>
     </article>
-  <% end %>     
+  <% end %>
 </div>

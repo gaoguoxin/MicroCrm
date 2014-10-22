@@ -22,7 +22,7 @@ class Order
   CANCEL_CODE_2 = 2 #谁取消的报名  系统管理员
 
   field :source, type: Integer,default: SOURCE_CODE_0 # 报名记录产生的来源
-  field :status, type: Integer,default: STATUS_CODE_0 # 企业管理员审核状态  
+  field :status, type: Integer,default: STATUS_CODE_0 # 企业管理员审核状态
   field :status_at,type:Array,default: []  # 企业管理员审核发生的时间，可能多次改变status值
   field :state, type: Integer,default: STATE_CODE_0  #系统管理员审核状态值
   field :state_at,type:Array,default: [] #系统管理员审核发生的时间，可能多次改变state值
@@ -46,15 +46,15 @@ class Order
     source  = params[:source] || SOURCE_CODE_0
     state   = params[:state]  || STATE_CODE_0
     status  = params[:status] || STATUS_CODE_0
-    user    = User.find(user_id) 
-    manager =  user.company.try(:manager)
+    user    = User.find(user_id)
+    manager = user.company.try(:manager)
     params[:data].each do |course_id|
       order = Order.where(course_id:course_id.to_s,user_id:user_id).first
       unless order.present?
         Order.create(user_id:user_id,course_id:course_id)
         if manager && manager.mobile.present?
           #这里有个疑问，如果用户可以批量创建报名的话，那么会给企业管理员发送多条短信，造成短信炸弹
-          SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})  
+          SmsWorker.perform_async("user_create_order",manager.mobile,{couser_id:course_id,user_id:user_id})
         end
       end
     end
@@ -68,11 +68,11 @@ class Order
       course_id = element['c_id']
       user_id   = element['u_id']
       type      = element['type']
-      order = Order.where(user_id:user_id,course_id:course_id).first 
+      order = Order.where(user_id:user_id,course_id:course_id).first
       user  = User.find(user_id)
       if order.present?
-        status_arr = order.status_at 
-        status_arr << Time.now #追加一个新的操作时间，只有涉及到操作status的时候才会记录这个值        
+        status_arr = order.status_at
+        status_arr << Time.now #追加一个新的操作时间，只有涉及到操作status的时候才会记录这个值
         if type == 'cancel' # 企业管理员取消报名操作
           if order.state != STATE_CODE_1  # 如果不是有效报名，直接删除记录
             order.destroy
@@ -83,17 +83,17 @@ class Order
           end
         else # 企业管理员审核通过操作
           if order.status != STATUS_CODE_1 # 只有未审核或者审核未通过的时候才会更改为审核通过
-            order.update_attributes(status:STATUS_CODE_1,status_at:status_arr) 
+            order.update_attributes(status:STATUS_CODE_1,status_at:status_arr)
             # 这里企业审核通过，不发送短信到报名学员
           end
         end
       else
         #报名不存在，创建一个新的报名记录，即代学员报名，但是不发送短信
         if type == 'enroll'
-          order = Order.create(source:SOURCE_CODE_1,status:STATUS_CODE_1,status_at:[Time.now],user_id:user_id,course_id:course_id)  
+          order = Order.create(source:SOURCE_CODE_1,status:STATUS_CODE_1,status_at:[Time.now],user_id:user_id,course_id:course_id)
         end
       end
-    end  
+    end
     return true
   end
 
@@ -103,12 +103,12 @@ class Order
     uids = manager.employees
     data = []
     self.where(course_id:course_id,:user_id.in =>uids).map do |e|
-      obj = {}
+      obj               = {}
       obj['c_name']     = e.course.name_en
       obj['u_name']     = e.user.name
       obj['status']     = STATUS_CODE_HASH[e.status]
       obj['state']      = STATE_CODE_HASH[e.state]
-      obj['oid']        = e.id.to_s 
+      obj['oid']        = e.id.to_s
       obj['c_id']       = e.course.id.to_s
       obj['u_id']       = e.user.id.to_s
       obj['presence']   = e.passed ? (e.presence ? 'No' : 'Yes') : '--'
@@ -125,7 +125,7 @@ class Order
   def self.check(params,manager_id,is_refuse=false)
     manager = User.find(manager_id)
     course  = Course.find(params['cid'])
-    user    = User.find(params['uid']) 
+    user    = User.find(params['uid'])
     o = Order.where(course_id:params['cid'],user_id:params['uid']).first
     if o.present?
       if is_refuse # 拒绝操作
@@ -142,7 +142,7 @@ class Order
         if o.status != STATUS_CODE_1
           status_arr = o.status_at
           status_arr << Time.now
-          o.update_attributes(status:STATUS_CODE_1,status_at:status_arr)  # 同意报名操作，不发短信         
+          o.update_attributes(status:STATUS_CODE_1,status_at:status_arr)  # 同意报名操作，不发短信
         else
           return true
         end
@@ -162,11 +162,11 @@ class Order
 
       if u.is_manager?
         if order.state == STATE_CODE_1  # 取消有效报名
-          if order.start_date - Date.today > 3
+          if order.course.start_date - Date.today > 3
             order.count_effictive_course
             order.reset_card_num #计算学习卡
             return order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_1,cancel_at:Time.now) #企业管理员取消有效报名
-            SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})            
+            SmsWorker.perform_async("manager_cancel_effective_order",user.mobile,{couser_id:course_id,manager:u.name})
           else
             return ErrorEnum::ORDER_CAN_NOT_CANCEL
           end
@@ -175,7 +175,7 @@ class Order
             #如果该报名还未被审核就被删除，则发短信通知，否则不发通知
             SmsWorker.perform_async("manager_cancel_uneffective_order",user.mobile,{couser_id:course_id,manager:u.name})
           end
-          return order.destroy             
+          return order.destroy
         end
       else
         #用户自己取消报名
@@ -183,18 +183,18 @@ class Order
           if order.course.start_date - Date.today > 3
             order.count_effictive_course
             order.reset_card_num #计算学习卡
-            order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_0,cancel_at:Time.now) #用户自己取消有效报名  
+            order.update_attributes(is_cancel:true,cancel_type:CANCEL_CODE_0,cancel_at:Time.now) #用户自己取消有效报名
             manager = u.company.manager
             if manager.present? && manager.mobile.present? #注意这里没有发送短信到管理员，下面的代码不用执行，所以保持注释掉即可
-              #SmsWorker.perform_async("user_cancel_effective_order",manager.mobile,{couser_id:course_id,user:u.name}) #用户自主取消了有效报名，发短信到对应的管理员 
+              #SmsWorker.perform_async("user_cancel_effective_order",manager.mobile,{couser_id:course_id,user:u.name}) #用户自主取消了有效报名，发短信到对应的管理员
             end
-            return true          
+            return true
           else
             return ErrorEnum::ORDER_CAN_NOT_CANCEL
           end
         else #取消无效报名
-          return order.destroy      
-        end        
+          return order.destroy
+        end
       end
     else
       return ErrorEnum::ORDER_NOT_EXIST
@@ -213,14 +213,14 @@ class Order
           o.reset_card_num
           o.set_company_enroll
           #注意，下面的代码不用打开，因为系统管理员取消有效报名的时候不需要发短信通知相关人
-          #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:o.course_id.to_s})            
+          #SmsWorker.perform_async("admin_cancel_effective_order",user.mobile,{couser_id:o.course_id.to_s})
         else #取消无效报名
           if o.status == STATUS_CODE_0 && order.state == STATE_CODE_0
             #只有系统管理员和企业管理员都没有审核的情况下发送 短信
             #注意下面这条短信不用发送
-            #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人 
+            #SmsWorker.perform_async("admin_cancel_uneffective_order",user.mobile,{couser_id:course_id})   # 系统管理员删除无效报名，发送短信到对应的报名人
           end
-          order.destroy    
+          order.destroy
         end
       end
     end
@@ -244,6 +244,32 @@ class Order
     return true
   end
 
+
+  def self.order_list(manager_id,opt)
+    manager = User.find(manager_id)
+    company = manager.companies.first
+    uids = company.users.map{|e| e.id.to_s}
+    
+    opt[:t] ||= 'w'
+
+    if opt[:t] ==  'w' # 等待企业审核的报名
+      orders = self.where(status:STATUS_CODE_0,state:STATE_CODE_0,passed:false,:user_id.in => uids,)
+    end
+    if opt[:t] == 's' # 企业审核通过,等待系统审核的报名
+      orders = self.where(status:STATUS_CODE_1,state:STATE_CODE_0,passed:false,:user_id.in => uids)
+    end
+    if opt[:t] == 'e' # 有效的报名
+      orders = self.where(state:STATE_CODE_1,passed:false,:user_id.in => uids)
+    end
+    if opt[:t] == 'c' #审核通过但是取消的报名
+      orders = self.where(is_cancel:true,state:STATE_CODE_1,passed:false,:user_id.in => uids,)
+    end
+    if opt[:t] == 'p' # 过期的报名
+      orders = self.where(passed:true,:user_id.in => uids,)
+    end
+    return orders
+
+  end
 
   # 系统管理员做订单检索
   def self.admin_search(params)
@@ -315,7 +341,7 @@ class Order
       user = o.user
 
       state_at = o.state_at
-      state_at << Time.now  
+      state_at << Time.now
 
       if params[:type] == 'allow'
         o.update_attributes(state:STATE_CODE_1,state_at:state_at) if o.state != STATE_CODE_1 # 只有在订单没有审核或者审核拒绝的情况下做允许的操作
@@ -342,7 +368,7 @@ class Order
       o.update_attributes(presence:true)  if params[:type] == 'attend'
     end
     return true
-  end 
+  end
 
   #系统管理员审核通过后，计算个人的有效报名情况
   def count_effictive_course(type=0)
@@ -358,7 +384,7 @@ class Order
       duration = user.course_manday_count + course.duration #该用户的有效报名天数(因为每个人生成一个订单，所以人天数就等于人数乘以课程持续时间数)
     end
 
-    user.update_attributes(course_count:c_count,course_manday_count:duration) 
+    user.update_attributes(course_count:c_count,course_manday_count:duration)
   end
 
   #每次系统管理员审核通过或者拒绝，都要重新计算学习卡中计数量
@@ -375,7 +401,7 @@ class Order
           end
         else #代表审核通过报名
           quantity = (card.quantity_used.to_f + course.duration.to_f).round(2)
-          card.update_attributes(quantity_used:quantity)  #学习卡已使用的人天数增加   
+          card.update_attributes(quantity_used:quantity)  #学习卡已使用的人天数增加
           if card.quantity_used >= card.quantity_purchased
             card.update_attributes(status_execution:Card::EXEC_STATUS_2,finished_at:Date.today)
           end
@@ -393,14 +419,14 @@ class Order
         if type == 0 # 0代表取消/拒绝报名
           if company.enroll_count > 0
             quantity = (company.enroll_count - course.duration).round(2)
-            company.update_attributes(enroll_count:quantity) 
+            company.update_attributes(enroll_count:quantity)
           end
         else #代表审核通过报名
           quantity = (company.enroll_count + course.duration).round(2)
-          company.update_attributes(enroll_count:quantity) 
+          company.update_attributes(enroll_count:quantity)
         end
       end
-    end    
+    end
   end
 
 
@@ -413,7 +439,7 @@ class Order
   def show_status
     return '待审核'   if self.status == STATUS_CODE_0
     return '通过' if self.status == STATUS_CODE_1
-    return '拒绝' if self.status == STATUS_CODE_2   
+    return '拒绝' if self.status == STATUS_CODE_2
   end
 
   def cancel_or_not

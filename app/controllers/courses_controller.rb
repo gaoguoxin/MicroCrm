@@ -16,7 +16,6 @@ class CoursesController < ApplicationController
     @courses = auto_paginate( Course.search(params) )
   end
 
-
   def do_search
     #@courses = Course.all
   end

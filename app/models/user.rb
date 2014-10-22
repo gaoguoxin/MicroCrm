@@ -9,14 +9,14 @@ class User
   attr_accessor :ref,:ordered
 
   EmailRexg  = '\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z'
-  MobileRexg = '^(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$' 
+  MobileRexg = '^(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$'
 
-  ROLE_ADMIN = 1 # 系统管理员   
+  ROLE_ADMIN = 1 # 系统管理员
   ROLE_MANAGER = 2 # 企业管理员
   ROLE_EMPLOYEE = 3 # 普通用户
   ROLE_VIEW     = 4 #查看员
   ROLE_HASH = {1 => '系统管理员',2 => '企业管理员',3 => '普通用户', 4 => '查看员'}
-  
+
   POSITION_ARRAY = ['销售', '售前顾问', '项目经理', '应用顾问',  '技术顾问',  '开发顾问', '其他']
 
   CITY_ARRAY = ['上海','北京','广州','其他']
@@ -24,7 +24,7 @@ class User
   INTEREST_ARRAY = ['AX培训','CRM培训','软技能培训']
 
   CREATER_HASH = {1 => '系统管理员',2 => '企业管理员', 3 => '主动注册'}
-    
+
 
   STATUS_ACTIVED = 1
   STATUS_INACTIVED = 0
@@ -48,7 +48,7 @@ class User
   field :wechart, type: String
   field :skype, type: String
   field :creater,type:String # 创建人 如果是自己注册，这个字段的值为空，否则为创建人的id
-  field :updater,type:String # 最近修改人  
+  field :updater,type:String # 最近修改人
   field :find_time,type:DateTime
 
   belongs_to :company,class_name: "Company",inverse_of: :user
@@ -89,7 +89,7 @@ class User
     opt[:password]              = opt[:password].downcase
     account[:company_id]        = opt[:company_id] if opt[:company_id].present?
     return ErrorEnum::MOBILE_ERROR unless opt[:mobile].match(/#{MobileRexg}/i)
-    return ErrorEnum::NAME_BLANK unless account[:name].present? 
+    return ErrorEnum::NAME_BLANK unless account[:name].present?
     return ErrorEnum::EMAIL_BLANK unless account[:email].present? unless is_admin
     return ErrorEnum::MOBILE_BLANK unless account[:mobile].present? unless is_admin
     return ErrorEnum::PASSWORD_BLANK unless opt[:password].present?
@@ -131,11 +131,11 @@ class User
           #系统管理员添加学员
           SmsWorker.perform_async("admin_add_user",user.mobile,{pwd:opt[:password]})
         end
-      end      
+      end
     elsif is_manager
       #企业管理员添加学员
       #SmsWorker.perform_async("manager_add_user",user.mobile,{pwd:opt[:password],company:manager.companies.first.name})
-    else 
+    else
       #用户自己注册
       if company.present? && company.manager.present? && company.manager.mobile.present?
         manager_mobile = company.manager.mobile
@@ -155,34 +155,34 @@ class User
     return ErrorEnum::PASSWORD_ERROR if user.password != make_encrypt(password)
     if user.is_admin? || user.is_viewer?
       unless opt[:ref].present?
-        user.write_attribute(:ref,'/admin/courses')  
+        user.write_attribute(:ref,'/admin/courses')
       else
-        user.write_attribute(:ref,opt[:ref])  
+        user.write_attribute(:ref,opt[:ref])
       end
-      
+
     end
-    
+
     if user.is_manager?
       unless opt[:ref].present?
-        user.write_attribute(:ref,'/manager/users') 
+        user.write_attribute(:ref,'/manager/users')
       else
-        user.write_attribute(:ref,opt[:ref])  
+        user.write_attribute(:ref,opt[:ref])
       end
     end
     if user.is_employee?
       unless opt[:ref].present?
         user.write_attribute(:ref,'/user/users')
       else
-        user.write_attribute(:ref,opt[:ref])  
-      end      
+        user.write_attribute(:ref,opt[:ref])
+      end
     end
-    
+
     return user
   end
 
   def self.find_pwd(mobile)
     u = User.where(mobile:mobile).first
-    return ErrorEnum::USER_NOT_EXIST unless u.present? 
+    return ErrorEnum::USER_NOT_EXIST unless u.present?
     return ErrorEnum::WAIT_FOR_MINUTES unless Time.now - u.find_time > 60
     new_pwd = Random.rand(999999)
     SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
@@ -197,9 +197,9 @@ class User
     if email.present?
       user = self.where(email:email).actived.first
     else
-      user = self.where(mobile:mobile).actived.first 
+      user = self.where(mobile:mobile).actived.first
     end
-    user = nil if id.present? && user.try(:id).to_s == id  
+    user = nil if id.present? && user.try(:id).to_s == id
     return user
   end
 
@@ -213,7 +213,7 @@ class User
 
   def self.search_manager(opt)
     account = opt[:account]
-    user = self.where(name:/#{account}/) 
+    user = self.where(name:/#{account}/)
     user = self.where(email:/#{account}/)  unless user.present?
     user = self.where(mobile:/#{account}/) unless user.present?
     return user
@@ -266,7 +266,7 @@ class User
 
     if opt['status'].present?
       result = result.where(status:opt['status'].to_i)
-    end 
+    end
 
     if opt['start'].present?
       result = result.where(:created_at.gte => DateTime.parse(opt['start']))
@@ -275,7 +275,7 @@ class User
       result = result.where(:created_at.lte => DateTime.parse(opt['end']))
     end
 
-    return result    
+    return result
   end
 
   def self.manager_search(opt,current_user_id)
@@ -316,18 +316,18 @@ class User
       result = result.where(:created_at.lte => DateTime.parse(opt['end']))
     end
 
-    return result  
+    return result
   end
 
 
   def self.update_info(opt,inst,updater)
-    u = User.where(email:opt[:email].downcase,:id.ne => inst.id.to_s).first
+    u = User.where(email:opt[:email].downcase,:id.ne => inst.id.to_s).first if opt[:email].present?
     return ErrorEnum::EMAIL_EXIST if u.present?
-    u = User.where(mobile:opt[:mobile] .downcase,:id.ne => inst.id.to_s).first
+    u = User.where(mobile:opt[:mobile] .downcase,:id.ne => inst.id.to_s).first if opt[:mobile].present?
     return ErrorEnum::MOBILE_EXIST if u.present?
-    opt[:updater]  = updater  
+    opt[:updater]  = updater
     if opt[:password].present?
-      opt[:password] =  self.make_encrypt(opt[:password]) 
+      opt[:password] =  self.make_encrypt(opt[:password])
     else
       opt.delete('password')
     end
@@ -420,7 +420,7 @@ class User
     else #已经填写的反馈
       courses = Feedback.where(:user_id.in => user_ids).map{|e| e.course}.flatten
     end
-    return courses    
+    return courses
   end
 
   #判断某个用户是否报名了某个课程
@@ -462,7 +462,7 @@ class User
 
       if params[:start].present?
         result = result.where(:start_date.gte => DateTime.parse(params[:start]))
-      end 
+      end
 
       if params[:end].present?
         result = result.where(:end_date.lte => DateTime.parse(params[:end]))
@@ -548,7 +548,7 @@ class User
   end
 
 
-  private 
+  private
 
   def self.make_encrypt(password)
     password = Encryption.encrypt_password(password)

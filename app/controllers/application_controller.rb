@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
   before_filter :init
   before_filter :force_tablet_html
   before_filter :check_devise
-  has_mobile_fu 
+  has_mobile_fu
   helper_method :current_user
-  
+
 
   def check_devise
     if is_mobile_device?
@@ -22,9 +22,10 @@ class ApplicationController < ActionController::Base
   def force_tablet_html
     session[:tablet_view] = false
   end
-  
+
   # init action
   def init
+    @icp = 'xxxxxx'
     refresh_session(cookies[:auth_key])
   end
 
@@ -46,20 +47,20 @@ class ApplicationController < ActionController::Base
                 :success => !!@is_success
               }
   end
-  
+
   def render_json_e(error_code)
     error_code_obj = {
       :error_code => error_code,
       :error_message => ""
     }
-    render_json false do 
+    render_json false do
       error_code_obj
     end
   end
 
 
   def render_json_s(value = true, options={})
-    render_json true do 
+    render_json true do
       value
     end
   end
@@ -95,9 +96,9 @@ class ApplicationController < ActionController::Base
       count ||= value.count
       value = value.slice((page - 1) * per_page, per_page)
     end
-    
+
     if block_given?
-      retval["data"] = yield(value) 
+      retval["data"] = yield(value)
     else
       retval["data"] = value
     end

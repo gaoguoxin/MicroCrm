@@ -59,7 +59,7 @@
         </div> 
         <div class="row padded ipt-container">
           <div class="one small-tablet sixth">
-            <span class="prefix large"><span class="fa fa-mobile "></span></span>
+            <span class="prefix large"><span class="fa fa-mobile large"></span></span>
           </div>
           <div class="five small-tablet sixths">
             <input type="text" name="mobile" class='large' placeholder="手机号码"  >
@@ -84,7 +84,7 @@
               <select class="unselected" name='company'>
                 <option value="" disabled="" selected="">所属公司</option>
                 <% @companis.each do |company| %>
-                  <option class='large' value="<%= company.id.to_s%>"><%=company.name%></option>
+                  <option class='' value="<%= company.id.to_s%>"><%=company.name%></option>
                 <% end %>
               </select>
             </span>
@@ -101,5 +101,8 @@
         </div>        
       </form>
     </div>
+    <article class="row fixed bottom align-center icp box">
+      <div class="one whole">京ICP证 <%=@icp%></div>
+    </article>     
   </body>
 </html>

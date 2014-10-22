@@ -11,10 +11,10 @@
 	</dd>
 </dl>
 <dl class="menu">
-    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名管理</dt> 
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名课程管理</dt>
 	<dd class="menu_item double-pad-left <%= actived('orders','index',params[:t],'o')%>">
 		<a href="<%= manager_orders_path(:t => 'o')%>" class="triple-pad-left">开放中的课程</a>
-	</dd>    
+	</dd>
 	<dd class="menu_item double-pad-left <%= actived('orders','index',params[:t],'w')%>">
 		<a href="<%= manager_orders_path(:t => 'w')%>" class="triple-pad-left">已报名的课程</a>
 	</dd>
@@ -26,10 +26,31 @@
 	</dd>
 	<dd class="menu_item double-pad-left  <%= actived('orders','index',params[:t],'c')%>">
 		<a href="<%= manager_orders_path(:t =>'c')%>" class="triple-pad-left">已取消的课程</a>
-	</dd>	
+	</dd>
 </dl>
+
+
 <dl class="menu">
-    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt> 
+    <dt class="menu_title triple-pad-left"><span class="fa fa-list"></span>报名记录管理</dt>
+  <dd class="menu_item double-pad-left <%= actived('orders','list',params[:t],'w')%>">
+    <a href="<%= list_manager_orders_path(:t => 'w')%>" class="triple-pad-left">等待企业审核的报名</a>
+  </dd>
+  <dd class="menu_item double-pad-left <%= actived('orders','list',params[:t],'s')%>">
+    <a href="<%= list_manager_orders_path(:t => 'p')%>" class="triple-pad-left">等待系统审核的报名</a>
+  </dd>
+  <dd class="menu_item double-pad-left  <%= actived('orders','list',params[:t],'e')%>">
+    <a href="<%= list_manager_orders_path(:t =>'e')%>" class="triple-pad-left">有效的报名</a>
+  </dd>
+  <dd class="menu_item double-pad-left  <%= actived('orders','list',params[:t],'c')%>">
+    <a href="<%= list_manager_orders_path(:t =>'c')%>" class="triple-pad-left">取消的报名</a>
+  </dd>
+  <dd class="menu_item double-pad-left  <%= actived('orders','list',params[:t],'p')%>">
+    <a href="<%= list_manager_orders_path(:t =>'c')%>" class="triple-pad-left">过期的报名</a>
+  </dd>
+</dl>
+
+<dl class="menu">
+    <dt class="menu_title double-pad-left"><span class="fa fa-list"></span>反馈管理</dt>
 	<dd class="menu_item double-pad-left  <%= actived('feedbacks','index',params[:t],'p')%>">
 		<a href="<%= manager_feedbacks_path(:t => 'p')%>" class="triple-pad-left">员工已反馈课程</a>
 	</dd>

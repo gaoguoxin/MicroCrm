@@ -2,25 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 个人信息'  %> </title>     
+    <title><%= @title || 'Microsoft Dynamics培训 | CRM | AX | 个人信息'  %> </title>
     <%= stylesheet_link_tag    'layouts/app-layout', media: 'all' %>
     <%= javascript_include_tag 'layouts/app-layout' %>
     <%= stylesheet_link_tag "layouts/default-layout-mobile", :media => "all" %>
     <%= stylesheet_link_tag "pages/default/user-bundle-mobile", :media => "all" %>
-    <%= javascript_include_tag "pages/default/user-bundle-mobile", :media => "all" %> 
+    <%= javascript_include_tag "pages/default/user-bundle-mobile", :media => "all" %>
     <!--[if IE]>
     <link type="text/css" rel="stylesheet" href="/assets/groundworkcss/groundwork-ie.css">
-    <![endif]-->  
+    <![endif]-->
     <!--[if lt IE 9]>
       <div class='low-version' style='color:#fff;height:100px;line-height:100px;background:#9a3d3d;font-weight:bold; text-align:center;'>
     您当前的浏览器版本过低,请使用IE8及以上版本
     </div>
-    <![endif]-->         
-    <%= csrf_meta_tags %> 
+    <![endif]-->
+    <%= csrf_meta_tags %>
     <script type="text/javascript">
       jQuery(function($) {
         window.u_id = "<%= current_user.id.to_s%>"
@@ -30,78 +30,91 @@
   </head>
 <body>
   <div class="container">
-<!--   <article class="row">
-    <div class="one whole mobile half-padded">
-      <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
-        <%#= image_tag('mobile/logo.png')%>
-      </a>
-    </div>
-  </article>  --> 
   <div class="row location half-gap-top half-gap-bottom padded">
-    <div class="one third mobile">
-      <a href="javascript:history.back();"><i class="icon-chevron-sign-left large"></i></a>
+    <div class="one whole mobile">
+      <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+      <div class=" mobile pull-left half-gap-top">
+        <i class="icon-map-marker hafl-gap-right"></i>
+        <span class="locate">个人中心</span>
+      </div>
     </div>
-    <div class="one third mobile">
-      <i class="icon-map-marker hafl-gap-right large"></i>  
-      <span class="locate">个人中心</span>
+  </div>
+  <!-- <div class="seacher row">
+    <div class="one whole search box ">
+      <div class="row">
+          <div class="four mobile fifths">
+            <form action="/courses/search" method='get' id='parten-search'>
+              <input type="text" name="name" placeholder="课程名称">
+            </form>
+          </div>
+          <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
+        </div>
     </div>
-    <div class="one third mobile">
-      <a href="/">
-        <i class="icon-home pull-right large"></i>  
-      </a>
-    </div>
-  </div>    
+  </div> -->
     <form action="#" method="post">
       <fieldset>
         <div class="row">
-          <div class="one whole padded">
-            <label for="name">用户名</label>
-            <input id="name" name='user[name]' type="text" placeholder="Enter your name " value="<%= @user.name %>" >
+          <div class="one whole half-padded">
+            <label for="name" class='pull-left one fifth mobile'>用户名</label>
+            <input id="name" class='four fifths mobile' name='user[name]' type="text" placeholder="Enter your name " value="<%= @user.name %>" >
           </div>
-          <div class="one whole padded">
-            <label for="name">密码</label>
-            <input id="name" name='user[password]' type="text" placeholder="Enter your name " value="<%= @user['password'] %>" >
-          </div>          
-          <div class="one whole padded">
-            <label for="email">Email</label>
-            <input id="email" type="user[email]" placeholder="you@example.com",value="<%= @user.email%>" disabled='disabled' >
+          <div class="one whole half-padded">
+            <label for="name" class='pull-left one fifth mobile'>密码</label>
+            <input id="name" class='four fifths mobile'  name='user[password]' type="text" placeholder="Enter your name " value="<%= @user['password'] %>" >
           </div>
-        </div>
-        <div class="row">
-          <div class="one whole padded">
-            <label for="address">Mobile</label>
-            <input id="address"  name="userr[mobile]" type="text" placeholder="Enter your mobile" value="<%= @user.mobile%>" disabled='disabled'>
+          <div class="one whole half-padded">
+            <label for="email" class='pull-left one fifth mobile'>Email</label>
+            <input id="email" class='four fifths mobile' type="user[email]" placeholder="you@example.com",value="<%= @user.email%>" disabled='disabled' >
           </div>
         </div>
         <div class="row">
-          <div class="one whole padded">
-              <label for="type_of_position">工作类型</label>
-              <span class="select-wrap">
-                <select class="unselected" id='type_of_position' name='user[type_of_position]'>
+          <div class="one whole half-padded">
+            <label for="address"  class='pull-left one fifth mobile'>Mobile</label>
+            <input id="address"   class='four fifths mobile' name="userr[mobile]" type="text" placeholder="Enter your mobile" value="<%= @user.mobile%>" disabled='disabled'>
+          </div>
+        </div>
+        <div class="row">
+          <div class="one whole half-padded">
+              <label for="type_of_position" class='pull-left one fifth mobile'>工作类型</label>
+              <span class="select-wrap four fifths mobile">
+                <select class="unselected " id='type_of_position' name='user[type_of_position]'>
                   <% User::POSITION_ARRAY.each do |position| %>
                     <option value="<%= position %>" <% if @user.try(:type_of_position) == position %>selected='selected'<% end%> ><%= position %></option>
                   <% end %>
                 </select>
-              </span>      
-          </div>  
+              </span>
+          </div>
         </div>
         <div class="row">
-          <div class="one whole padded">
-              <label for="city">距您最近的城市</label>
-              <span class="select-wrap">
+          <div class="one whole half-padded">
+              <label for="company_id" class='pull-left one fifth mobile'>所属单位</label>
+              <span class="select-wrap four fifths mobile">
+                <select class="unselected" id='company_id' name='user[company_id]'>
+                  <% Company.all.each do |company| %>
+                    <option value="<%= company.id.to_s%>" <% if @user.try(:company_id).to_s == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
+                  <% end %>
+                </select>
+              </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="one whole half-padded">
+              <label for="city" class='pull-left one fifth mobile'>最近城市</label>
+              <span class="select-wrap four fifths mobile">
                 <select class="unselected" id='city' name='user[city]'>
                   <% User::CITY_ARRAY.each do |city| %>
                     <option value="<%= city %>" <% if @user.try(:city) == city %> selected='selected'<% end %> ><%= city %></option>
-                  <% end %>         
+                  <% end %>
                 </select>
               </span>
-          </div>           
+          </div>
         </div>
         <div class="row">
           <div class="one whole padded">
-            <label for="ax">是否对AX培训感兴趣</label>
-            <ul class="unstyled">
-              <li class='double-gap-right double-gap-left pull-left'>
+            <label for="ax" class='pull-left two thirds mobile'>是否对AX培训感兴趣</label>
+            <ul class="unstyled one third mobile">
+              <li class='half-gap-right half-gap-left pull-left'>
                 <input id="ax_1" type="radio" name="user[ax]"  value='1' <% if @user.ax %> checked='checked'<%end%> >
                 <label for="ax_1" class="inline">是</label>
               </li>
@@ -111,10 +124,10 @@
               </li>
             </ul>
           </div>
-          <div class="one whole padded">
-            <label for="ax">是否对CRM培训感兴趣</label>
-            <ul class="unstyled">
-              <li class='double-gap-right double-gap-left pull-left'>
+          <div class="one whole half-padded">
+            <label for="ax" class='pull-left two thirds mobile'>是否对CRM培训感兴趣</label>
+            <ul class="unstyled one third mobile">
+              <li class='half-gap-right half-gap-left pull-left'>
                 <input id="crm_1" type="radio" name="user[crm]"  value='1' <% if @user.crm %> checked='checked'<%end%>>
                 <label for="crm_1" class="inline">是</label>
               </li>
@@ -123,11 +136,11 @@
                 <label for="crm_2" class="inline">否</label>
               </li>
             </ul>
-          </div>  
-          <div class="one whole padded">
-            <label for="ax">是否对软技能培训感兴趣</label>
-            <ul class="unstyled">
-              <li class='double-gap-right double-gap-left pull-left'>
+          </div>
+          <div class="one whole half-padded">
+            <label for="ax" class='pull-left two thirds mobile'>是否对软技能培训感兴趣</label>
+            <ul class="unstyled one third mobile">
+              <li class='half-gap-right half-gap-left pull-left'>
                 <input id="softskill_1" type="radio" name="user[softskill]" value='1' <% if @user.softskill %> checked='checked'<%end%>>
                 <label for="softskill_1" class="inline">是</label>
               </li>
@@ -136,26 +149,29 @@
                 <label for="softskill_2" class="inline">否</label>
               </li>
             </ul>
-          </div>    
+          </div>
         </div>
         <div class="row">
-          <div class="one whole padded">
-              <label for="company_id">QQ</label>
-              <input id="qq" type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
+          <div class="one whole half-padded">
+              <label for="company_id" class='pull-left one fifth mobile'>QQ</label>
+              <input id="qq" class='four fifths mobile' type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
           </div>
-          <div class="one whole padded">
-              <label for="wechart">微信号</label>
-              <input id="wechart" type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
-          </div>   
-          <div class="one whole padded">
-              <label for="skype">Skype</label>
-              <input id="skype" type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
-          </div>   
+          <div class="one whole half-padded">
+              <label for="wechart" class='pull-left one fifth mobile'>微信号</label>
+              <input id="wechart" class='four fifths mobile' type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
+          </div>
+          <div class="one whole half-padded">
+              <label for="skype" class='pull-left one fifth mobile'>Skype</label>
+              <input id="skype" class='four fifths mobile' type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
+          </div>
         </div>
         <div class="row">
           <button class="block info one whole info-sub">提交</button>
         </div>
       </fieldset>
-    </form>         
+    </form>
   </div>
+    <!-- <article class="row fixed bottom align-center icp box">
+      <div class="one whole">京ICP证 <%=@icp%></div>
+    </article> -->
 </body>

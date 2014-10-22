@@ -3,21 +3,33 @@
   <%= javascript_include_tag "pages/default/search-bundle-mobile" %>
   <script type="text/javascript">
   jQuery(function($) {
-    
+
   });
   </script>
   <%= yield :head %>
-<% end %>  
-<article class="row">
-  <form action="/courses/search" method='get'>
-  <div class="one whole mobile half-padded bounceInLeft animated box lg ">
-    <a href="/" title="View Larger Image" class="block blue logoimg align-center pad-top half-pad-left half-pad-right pad-bottom">
+<% end %>
+
+<!-- <article class="row logo-container">
+  <div class="one whole mobile half-padded bounceInLeft animated blue">
+    <a href="/" title="View Larger Image" class="block blue logoimg pad-top half-pad-left half-pad-right pad-bottom">
       <%= image_tag('mobile/logom.png')%>
     </a>
   </div>
+</article> -->
+<div class="row location bounceInLeft animated padded">
+  <div class="one whole mobile">
+    <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+    <div class=" mobile pull-left half-gap-top">
+      <i class="icon-map-marker hafl-gap-right"></i>
+      <span class="locate">课程搜索</span>
+    </div>
+  </div>
+</div>
 
+<article class="row">
+  <form action="/courses/search" method='get'>
   <div class="one whole mobile padded bounceInLeft animated box lg">
-    <a href="javascript:void(0);"  class="block  align-center padded city origin">
+    <a href="javascript:void(0);"  class="block padded city origin">
       <strong class='response city'>选择城市</strong>
       <input type="hidden" name='city'>
       <i class="icon-circle-arrow-right pull-right"></i>
@@ -25,16 +37,16 @@
 	<div class="select-container city-select">
 		<%Course::CITY_ARRAY.each do |city|%>
 			<div class="one whole mobile padded bounceInRight animated box lg">
-			  <a href="javascript:void(0);"  class="block  align-center padded city" data-select="<%= city %>">
+			  <a href="javascript:void(0);"  class="block padded city" data-select="<%= city %>">
 			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= city %></strong>
 			  </a>
-			</div>	
-		<% end %>  
-	</div>  
+			</div>
+		<% end %>
+	</div>
   </div>
- 
+
   <div class="one whole mobile padded bounceInLeft animated box lg">
-    <a href="javascript:void(0);"  class="block  align-center padded type origin">
+    <a href="javascript:void(0);"  class="block   padded type origin">
       <strong class='response type'>课程类型</strong>
       <input type="hidden" name='type'>
       <i class="icon-circle-arrow-right pull-right"></i>
@@ -45,55 +57,74 @@
 			  <a href="javascript:void(0);"  class="block  align-center padded type" data-select="<%= type %>">
 			     <i class="icon-circle-arrow-left pull-left"></i><strong class='response'><%= type %></strong>
 			  </a>
-			</div>	
-		<% end %>  
-	</div>  
+			</div>
+		<% end %>
+	</div>
   </div>
-  <div class="one whole mobile padded bounceInLeft animated box lg ">
-    <a href="javascript:void(0);"  class="block align-center padded start origin">
-      <strong class='response start'>开始日期</strong>
-	  <div class="start-select">
-	  	<article class="row">
-	  	  <div class="one whole mobile padded lg ">
-	  	    <div class="  align-center padded">
-	  	      <input type="date" class='date' name='start_date'>
-	  	    </div>
-	  	  </div>  	  	
-	  	</article>			
-	  </div>
+  <div class="one whole mobile bounceInLeft animated box lg ">
+    <a href="javascript:void(0);"  class="block padded start origin row">
+      <strong class='response start one third block mobile  lg'>开始日期</strong>
+  	  <div class="start-select two thirds mobile">
+  	  	<article class="row">
+  	  	  <div class="one whole mobile lg ">
+  	  	    <div class="  align-center ">
+  	  	      <input type="date" class='date' name='start_date'>
+  	  	    </div>
+  	  	  </div>
+  	  	</article>
+  	  </div>
     </a>
   </div>
-  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
-    <a href="javascript:void(0);"  class="block align-center padded">
-      <strong class='response end '>结束日期</strong>  
-	  <div class="end-select">
-	  	<article class="row">
-	  	  <div class="one whole mobile padded lg ">
-	  	    <div class="  align-center padded">
-	  	      <input type="date" class='date' name='end_date'>
-	  	    </div>
-	  	  </div>  	  	
-	  	</article>			
-	  </div>        
+
+  <div class="one whole mobile bounceInLeft animated box lg ">
+    <a href="javascript:void(0);"  class="block padded end origin row">
+      <strong class='response end one third block mobile  lg'>结束日期</strong>
+      <div class="start-select two thirds mobile">
+        <article class="row">
+          <div class="one whole mobile lg ">
+            <div class="  align-center ">
+              <input type="date" class='date' name='end_date'>
+            </div>
+          </div>
+        </article>
+      </div>
     </a>
   </div>
-  <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
-    <a href="javascript:void(0);"  class="block align-center padded">
+
+
+
+
+  <!-- <div class="one whole mobile bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block  padded mobile ">
+      <strong class='response end one third block mobile  lg '>结束日期</strong>
+  	  <div class="end-select two thirds mobile">
+  	  	<article class="row">
+  	  	  <div class="one whole mobile  lg ">
+  	  	    <div class="  align-center ">
+  	  	      <input type="date" class='date' name='end_date'>
+  	  	    </div>
+  	  	  </div>
+  	  	</article>
+  	  </div>
+    </a>
+  </div> -->
+  <div class="one whole mobile  bounceInLeft animated box lg origin">
+    <a href="javascript:void(0);"  class="block  padded">
 	  <div class="keyword-select">
 	  	<article class="row">
-	  	  <div class="one whole mobile padded lg ">
-	  	    <div class="block  align-center padded">
+	  	  <div class="one whole mobile lg ">
+	  	    <div class="block  align-center">
 	  	      <input type="text" name='keyword' placeholder='课程名称'>
 	  	    </div>
-	  	  </div>  	  	
-	  	</article>			
-	  </div>          
+	  	  </div>
+	  	</article>
+	  </div>
     </a>
     <span class="container block  align-center padded"><strong class='response'></strong></span>
   </div>
   <div class="one whole mobile half-padded bounceInLeft animated box lg origin">
     <button  class="block  yellow align-center padded search-btn">开始搜索 </button>
-  </div>   	
+  </div>
   </form>
-             
+
 </article>

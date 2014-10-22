@@ -3,6 +3,13 @@ fieldset{
 	@include border-radius(0px);
 	background:#fff;
 }
+	.seacher{
+		.box{
+			@include border-radius(0px);
+			border:0px;
+			padding:4px;
+		}
+	}
 .logoimg{
 	border-radius: 0px;
 	background:#2d89ef;
@@ -10,6 +17,9 @@ fieldset{
 
 .blue:hover{
 	text-decoration:none;
+}
+label{
+	display:inline-block;
 }
 button{
 	@include border-radius(0px);

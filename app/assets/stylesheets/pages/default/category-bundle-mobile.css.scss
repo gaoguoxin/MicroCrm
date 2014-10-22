@@ -18,15 +18,15 @@
 					@include border-radius(0px);
 				}
 			}
-		}		
+		}
 	}
 	article.row.box{
 		@include border-radius(0px);
-		background:#fff;	
+		background:#fff;
 	}
 	button#multip-start{
 		@include border-radius(0px);
-	}			
+	}
 
 }
  .name-holder{
@@ -39,17 +39,20 @@
  .oth-container{
 	line-height:1.4em;
 	position:relative;
-	bottom:-8px;
+	// bottom:-8px;
  }
+.name_cont{
+	height:2.5em;
+}
 
 .show-info{
 	button{
 		outline:none;
 		&.success{
-			border-bottom: 3px #759a51 solid;		
+			border-bottom: 3px #759a51 solid;
 		}
 		&.yellow{
-			border-bottom: 3px #dab10d solid;			
+			border-bottom: 3px #dab10d solid;
 		}
 		@include border-radius(0px);
 	}
@@ -57,6 +60,6 @@
 		@include border-radius(0px);
 	}
 	.box{
-		@include border-radius(0px);	
+		@include border-radius(0px);
 	}
 }

@@ -13,8 +13,12 @@ class Manager::OrdersController < Manager::ManagerController
 
   def search
     @courses =  auto_paginate current_user.manager_courses(params)
-  end  
+  end
 
+
+  def  list
+     @orders = Order.order_list(current_user.id.to_s,params)
+  end
 
 
   def get_employee
@@ -24,7 +28,7 @@ class Manager::OrdersController < Manager::ManagerController
   def get_order_list
     render_json_auto Order.get_company_list(current_user.id.to_s,params[:id])
   end
-  
+
   def check
     if params[:type] == 'refuse'
       render_json_auto Order.check(params,current_user.id.to_s,true)

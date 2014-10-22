@@ -1,10 +1,10 @@
 class Course
   include Mongoid::Document
   include Mongoid::Timestamps
-  
+
   mount_uploader :instructor_avatar, AvatarUploader
 
-  STATUS_CODE_0 = 0 #课程状态 规划中      
+  STATUS_CODE_0 = 0 #课程状态 规划中
   STATUS_CODE_1 = 1 #课程状态 已发布
   STATUS_CODE_2 = 2 #课程状态 授课中
   STATUS_CODE_3 = 3 #课程状态 已交付
@@ -19,11 +19,11 @@ class Course
 
   LEVEL_CODE    = ['Level 100', 'Level 200', 'Level 300', 'Level 400']
 
-  CHARGE_TYPE_0 = 0 # 收费 
+  CHARGE_TYPE_0 = 0 # 收费
   CHARGE_TYPE_1 = 1 #免费
 
   CHARGE_TYPE_HASH = {0 => '收费',1 => '免费'}
- 
+
   CONTENT_TYPE_AX  = 'AX'
   CONTENT_TYPE_CRM = 'CRM'
   CONTENT_TYPE_AX_CRM = '软技能'
@@ -33,18 +33,18 @@ class Course
 
   CITY_ARRAY = %w(上海市 北京市 广州市 其他城市 在线)
 
-  field :code,    type:String # 课程编码   limit 12 letter          
-  field :name_cn, type:String # 中文名 limit 128 letter  
-  field :name_en, type:String # 英文名 limit 128 letter 
+  field :code,    type:String # 课程编码   limit 12 letter
+  field :name_cn, type:String # 中文名 limit 128 letter
+  field :name_en, type:String # 英文名 limit 128 letter
   field :difficulty_level,type:String #难易程度 Level 100, Level 200, Level 300, Level 400
   field :delivery_type,type:Integer,default:TYPE_CODE_0 # 课程类型
   field :charge_category,type:Integer,default:CHARGE_TYPE_0 #收费
   field :content_type,type:String # 内容类型
   field :status,type:Integer,default:STATUS_CODE_0 #课程状态
-  field :audience,type:String # 受众对象  limit 64 letter 
-  field :instructor,type:String   # 教师姓名 limit 12 letter  
+  field :audience,type:String # 受众对象  limit 64 letter
+  field :instructor,type:String   # 教师姓名 limit 12 letter
   field :instructor_avatar,type:String # 教师头像
-  field :instructor_desc,type:String #教师简介 limit 1024 letter  
+  field :instructor_desc,type:String #教师简介 limit 1024 letter
   field :start_date,type:Date
   field :start_time,type:String
   field :end_date,type:Date
@@ -65,7 +65,7 @@ class Course
   field :price_level1,type:Float # Managed伙伴价格
   field :price_level2,type:Float # Un-managed伙伴价格
   field :price_level3,type:Float # 公众价格
-  field :manager_condition,type:String # 匹配短信通知管理员的条件  
+  field :manager_condition,type:String # 匹配短信通知管理员的条件
   field :trainee_condition,type:String # 匹配短信通知学员的条件
   field :notice_content,type:String # 管理员自定义提醒短信内容
   field :notice_at,type:String #上课提醒短信提前多少天发送，可以指定很多个，元素代表提前多少天
@@ -112,12 +112,12 @@ class Course
 
   #检查时间是否发生了变化
   def check_time_changed
-    if self.start_date_changed? || self.start_time_changed? 
+    if self.start_date_changed? || self.start_time_changed?
       mlist = self.orders.effective.map{|e| e.user.mobile}
       SmsWorker.perform_async("lesson_time_changed",mlist,{course_id:self.id.to_s})
     end
   end
-    
+
 
   #发布了一门新课程，给所有匹配的企业管理员和学员发送开课短信提醒
   def send_new_lesson_msg
@@ -125,7 +125,7 @@ class Course
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
     slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == '软技能'
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他' 
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他'
     SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
     SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})
   end
@@ -139,7 +139,7 @@ class Course
   def set_order_canceled
     self.orders.effective.each do |order|
       order.update_attributes(is_cancel:true,cancel_type:Order::CANCEL_CODE_2,cancel_at:Time.now) #企业管理员取消有效报名
-      SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s}) 
+      SmsWorker.perform_async("lesson_canceled_to_student",order.user.mobile,{course_id:self.id.to_s})
     end
   end
 
@@ -155,7 +155,7 @@ class Course
         return self.address.split('市').first + '市'
       else
         return self.city
-      end      
+      end
     end
   end
 
@@ -209,10 +209,10 @@ class Course
   def self.admin_search(params)
     courses = Course.where(status:params[:status].to_i)
     if params[:code].present?
-      courses = courses.where(code:/#{params[:code]}/)
+      courses = courses.where(code:/#{params[:code]}/i)
     end
     if params[:name].present?
-      courses = courses.wehre(name:/#{params[:name]}/)
+      courses = courses.wehre(name:/#{params[:name]}/i)
     end
     if params[:content].present?
       courses = courses.where(content_type:params[:content])
@@ -240,16 +240,16 @@ class Course
       if opt[:t].match(/qt/)
         para[:t] = '其他'
       elsif opt[:t].match(/ax_crm/)
-        para[:t] = 'AX\+CRM'
+        para[:t] = '软技能'
       elsif opt[:t] == 'f'
         result = result.uncharge
         return result
       end
-      result = result.where(content_type:/^#{para[:t].upcase}$/)  
+      result = result.where(content_type:/^#{para[:t].upcase}$/)
       return result
     end
     if opt[:name].present?
-      result = result.any_of({:name_cn => /#{opt[:name]}/},{:name_en => /#{opt[:name]}/})
+      result = result.any_of({:name_cn => /#{opt[:name]}/i},{:name_en => /#{opt[:name]}/i})
       return result
     end
     return result
@@ -273,7 +273,7 @@ class Course
         if c.status == Course::STATUS_CODE_3
           c.update_attributes(:status => Course::STATUS_CODE_2)  #将授课中的课程更新为已交付
           c.orders.update_all(passed:true) # 将关联的订单设置为过期
-        end        
+        end
       end
     end
   end
@@ -288,7 +288,7 @@ class Course
           SmsWorker.perform_async("lesson_pre_notice",mlist,{course_id:c.id.to_s})
         end
       end
-    end    
+    end
   end
 
 

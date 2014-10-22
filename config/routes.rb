@@ -8,46 +8,46 @@ Rails.application.routes.draw do
   get '/after_sign_in' => 'sessions#after_sign_in'
 
   namespace :admin do
-    resources :users do 
-      collection do 
+    resources :users do
+      collection do
         post 'check_exist'
         post 'update_info'
       end
     end
-    resources :orders do 
-      collection do 
+    resources :orders do
+      collection do
         post 'make_attend'
         post 'check_order'
         post 'cancel_order'
         post 'generate_proxy_order'
       end
     end
-    resources :companies do 
-      collection do 
+    resources :companies do
+      collection do
         get 'search_manager'
         post 'update_info'
         get 'delete'
         get 'search'
       end
     end
-    resources :courses do 
-      collection do 
+    resources :courses do
+      collection do
         get 'match_manager'
         get 'match_student'
         get 'proxy_search'
       end
     end
     resources :cards do
-      collection do 
+      collection do
         get 'search_manager'
         post 'update_info'
         get 'delete'
         get 'search'
         get 'check_serial'
-      end     
+      end
     end
     resources :feedbacks do
-      collection do 
+      collection do
         get 'get_feed_info'
         post 'change_point'
         post 'check_feedback'
@@ -56,78 +56,79 @@ Rails.application.routes.draw do
   end
 
   namespace :manager do
-    resources :orders do 
-      collection do 
+    resources :orders do
+      collection do
         post 'get_employee'
         get 'get_order_list'
         get 'check'
         get 'cancel'
+        get 'list'
       end
     end
     resources :users do
-      collection do 
+      collection do
         get 'minfo'
         get 'delete'
         post 'update_pwd'
         post 'update_info'
       end
     end
-    resources :feedbacks do 
-      collection do 
+    resources :feedbacks do
+      collection do
         get 'get_feed_info'
       end
     end
   end
 
-  namespace :user do 
-    resources :users do 
-      collection do 
+  namespace :user do
+    resources :users do
+      collection do
         post 'update_info'
         post 'update_pwd'
       end
     end
-    resources :orders do 
-      member do 
+    resources :orders do
+      member do
         get 'cancel'
       end
-    end 
+    end
     resources :feedbacks
   end
 
-  resources :users do 
-    collection do 
+  resources :users do
+    collection do
       post  'check_exist'
       post  'update_info'
     end
   end
 
-  resources :sessions do 
+  resources :sessions do
     collection do
      get 'fpwd'
-     post 'fpwd' 
+     post 'fpwd'
      get 'after_sign_in'
     end
   end
 
   resources :category
 
-  resources :orders do 
+  resources :orders do
     collection do
       post 'cancel'
     end
   end
 
-  resources :courses do 
-    collection do 
+  resources :courses do
+    collection do
       get 'search'
       get 'do_search'
     end
   end
-  
+
   resources :feedbacks
 
 
-  
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

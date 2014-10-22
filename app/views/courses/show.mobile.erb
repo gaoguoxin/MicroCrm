@@ -26,21 +26,12 @@
   </div>  
 <div class="show-info double-padded">
   <div class="row gap-bottom">
-    <div class="three fourths">
-      <h3 class="name"><strong><%=@course.name_cn%></strong></h3>
+<!--     <div class="avatar-container one fourth mobile">
+      <%#= image_tag(show_small_avatar(@course),:class => '')%>
+    </div> -->
+    <div class=" half-pad-left">
+      <strong><%=@course.name_cn%></strong>
     </div>  
-    <div class="avatar-container one fourth">
-      <%= image_tag(show_banner_avatar(@course),:class => 'whole')%>
-    </div>
-    <% if current_user && current_user.enrolled?(@course.id.to_s)%>
-      <% if  current_user.can_cancel?(@course.id.to_s)%>
-        <button class="whole block info can_cancel" data-cid="<%=@course.id.to_s%>">取消报名</button> 
-      <% else %>
-        <button class="whole block info">您已报名</button> 
-      <% end %>
-    <% else %>
-      <button class="whole block info start">马上报名</button> 
-    <% end %>
   </div>
 
 <div class="row">
@@ -63,7 +54,7 @@
         结束时间:<%=@course.end_date%>&nbsp;<%= @course.end_time%>
       </p>    
       <p class="course-stard-end">
-        Duration:<%= @course.duration%>天
+        持续时间:<%= @course.duration%>天
       </p>   
       <p class="course-city">
         城市:<%=@course.show_city%>
@@ -73,7 +64,17 @@
       </p>      
       <p>受众对象:<%= @course.audience%></p>
       <p class="one whole">
-        
+        <div class="row">
+          <% if current_user && current_user.enrolled?(@course.id.to_s)%>
+            <% if  current_user.can_cancel?(@course.id.to_s)%>
+              <button class="  info can_cancel" data-cid="<%=@course.id.to_s%>">取消报名</button> 
+            <% else %>
+              <button class="  info">您已报名</button> 
+            <% end %>
+          <% else %>
+            <button class="  info start">马上报名</button> 
+          <% end %>        
+        </div>        
       </p>    
     </div>
     <div id="tab2" role="tabpanel">

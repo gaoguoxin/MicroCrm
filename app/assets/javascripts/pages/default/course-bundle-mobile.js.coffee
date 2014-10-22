@@ -1,5 +1,5 @@
 $(->
-	$('body').on('click','button.success.start',->
+	$('body').on('click','button.start',->
 		$.post('/orders',{data:[window.c_id]},(ret)->
 			if ret.success
 				if ret.value == false

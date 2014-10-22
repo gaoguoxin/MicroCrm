@@ -29,12 +29,21 @@
   <body>
     <div class="container triple-pad-top">
 <form  class=''>
-  <fieldset>
-    <div class="row">
-      <div class="one third mobile skip-one">
-        <%=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+    <div class="row location half-gap-top padded">
+      <div class="one whole mobile">
+        <a href="javascript:history.back(); " class='block pull-left double-gap-right' ><i class="icon-chevron-sign-left large"></i></a>
+        <div class=" mobile pull-left half-gap-top">
+          <i class="icon-map-marker hafl-gap-right"></i>  
+          <span class="locate">用户登录</span>
+        </div>
       </div>
-    </div>
+    </div>  
+  <fieldset>
+<!--     <div class="row">
+      <div class="one third mobile skip-one">
+        <%#=image_tag('mobile/login-avatar.jpg',:class => 'whole round')%>
+      </div>
+    </div> -->
 
     <div class="row">
       <div class="padded align-center notice">
@@ -76,6 +85,8 @@
   </fieldset>
 </form>   
     </div>
-
+    <article class="row fixed bottom align-center icp box">
+      <div class="one whole">京ICP证 <%=@icp%></div>
+    </article> 
   </body>
 </html>

@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
     else
       @worders = current_user.my_course({t:'w'})
       @porders = current_user.my_course({t:'p'})
-      @corders = current_user.my_course({t:'c'})  
+      @corders = current_user.my_course({t:'c'})
     end
   end
 
@@ -29,11 +29,5 @@ class OrdersController < ApplicationController
     order = Order.where(course_id:params[:cid],user_id:current_user.id.to_s).first
     render_json_auto Order.cancel(order.id.to_s,current_user.id.to_s)
   end
-
-
-
-
-
-
 
 end

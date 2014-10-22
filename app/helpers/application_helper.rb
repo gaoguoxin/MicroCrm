@@ -116,9 +116,12 @@ module ApplicationHelper
     elsif s == 'n'
       return '授课中的报名表' unless desc
       return '授课中的报名表,列出的时当前正在参与授课中的报名人员列表'
-    else
+    elsif s == 'p'
       return '已结课的报名表' unless  desc
       return '在这里您需要对已经结课的报名表做出勤的矫正'
+    else
+      return '取消课程的报名表' unless desc
+      return '这里列出的是系统审核已经通过但是被取消的报名记录'
     end
   end
 

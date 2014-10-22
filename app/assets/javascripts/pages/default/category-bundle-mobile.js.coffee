@@ -1,7 +1,7 @@
 $(->
-	img_height = $('.img-container img').height()
-	console.log(img_height)
-	$('.info-container').height(img_height)
+	# img_height = $('.img-container img').height()
+	# console.log(img_height)
+	# $('.info-container').height(img_height)
 
 	$('body').on('click','.multip-start',->
 		id_arr = []
@@ -16,6 +16,6 @@ $(->
 					else
 						window.location.href = '/orders?w=true'
 			)
-		
+
 	)
 )
