@@ -30,27 +30,29 @@
           <h2><%= @course.code%>:<%=@course.name_cn%></h2>
           <div class="row">
             <div class="one third">
-              <p class="instructor">讲师:<%=@course.instructor%></p>
-              <p class="delivery_type">课程类型:<%= Course::TYPE_HASH[@course.delivery_type] %></p>
-              <p class="content_type">内容类型:<%= @course.content_type %></p>
-              <p class="difficulty_level">难易程度:<%= @course.difficulty_level%></p>
-              <p class="city">最多容纳:<%=@course.lim_num%>人</p>
-              <p class="start_time">当前有效报名:<%= @course.valid_registration_num%>人</p>
+              <p class="instructor">讲师：<%=@course.instructor%></p>
+              <p class="delivery_type">课程类型：<%= Course::TYPE_HASH[@course.delivery_type] %></p>
+              <p class="content_type">内容类型：<%= @course.content_type %></p>
+              <p class="difficulty_level">难易程度：<%= @course.difficulty_level%></p>
+              <p class="city">最多容纳：<%=@course.lim_num%>人</p>
+              <p class="start_time">当前有效报名：<%= @course.valid_registration_num%>人</p>
             </div>
-            <div class="one third">
-              <p>城市:<%=@course.show_city%></p>
-              <p>地址:<%= @course.show_address %></p>
-              <p>开始时间:<%=@course.start_date%>&nbsp;<%= @course.start_time%></p>
-              <p>结束时间:<%=@course.end_date%>&nbsp;<%= @course.end_time%></p>
-              <p>持续时间:<%= @course.duration%>天</p>
-            </div>
-            <div class="one third align-right start-container">
+            <div class="two thirds">
+              <p>是否收费：<%=@course.charge_type %></p>
+              <p>城市：<%=@course.show_city%></p>
+              <p>地址：<%= @course.show_address %></p>
+              <p>开始时间：<%=@course.start_date%>&nbsp;<%= @course.start_time%></p>
+              <p>结束时间：<%=@course.end_date%>&nbsp;<%= @course.end_time%></p>
+              <p>持续时间：<%= @course.duration%>天</p>
 
-            <% if current_user && current_user.enrolled?(@course.id.to_s)%>
-                <button class="whole block">已报名</button> 
-            <% else %>
-              <button class=' start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
-            <% end %>
+              <div class="align-right start-container">
+              <% if current_user && current_user.enrolled?(@course.id.to_s)%>
+                  <button class="whole block">已报名</button> 
+              <% else %>
+                <button class=' start large'>报名&nbsp;<i class="icon-circle-arrow-right"></i></button>
+              <% end %>
+              </div>
+
             </div>
           </div>    
           <div class="row">

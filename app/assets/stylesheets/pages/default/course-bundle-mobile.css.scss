@@ -12,11 +12,14 @@
 	}
 	article.row.box{
 		@include border-radius(0px);
-		background:#fff;	
+		background:#fff;
+		&.icp{
+			background:lightgrey;
+		}	
 	}
 	button#multip-start{
 		@include border-radius(0px);
-	}			
+	}		
 
 }
 

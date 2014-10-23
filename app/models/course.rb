@@ -119,6 +119,11 @@ class Course
   end
 
 
+  def charge_type
+    return '是' if self.charge_category == CHARGE_TYPE_0
+    return '否' if self.charge_category == CHARGE_TYPE_1
+  end
+
   #发布了一门新课程，给所有匹配的企业管理员和学员发送开课短信提醒
   def send_new_lesson_msg
     mlist = Company.where(:name.ne => '其他',pri_serv:/#{content_type}/).actived.map{|e| e.manager.try(:mobile)} #企业管理员电话号码

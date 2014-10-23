@@ -42,12 +42,12 @@
   <!-- <div class="seacher row">
     <div class="one whole search box ">
       <div class="row">
-          <div class="four mobile fifths">
+          <div class="four mobile fourths">
             <form action="/courses/search" method='get' id='parten-search'>
               <input type="text" name="name" placeholder="课程名称">
             </form>
           </div>
-          <div class="one mobile fifths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
+          <div class="one mobile fourths parten-search"><span class="suffix"><i class="icon-search"></i></span></div>
         </div>
     </div>
   </div> -->
@@ -55,28 +55,28 @@
       <fieldset>
         <div class="row">
           <div class="one whole half-padded">
-            <label for="name" class='pull-left one fifth mobile'>用户名</label>
-            <input id="name" class='four fifths mobile' name='user[name]' type="text" placeholder="Enter your name " value="<%= @user.name %>" >
+            <label for="name" class='pull-left one fourth mobile'>用户名</label>
+            <input id="name" class='three fourths mobile' name='user[name]' type="text" placeholder="Enter your name " value="<%= @user.name %>" >
           </div>
           <div class="one whole half-padded">
-            <label for="name" class='pull-left one fifth mobile'>密码</label>
-            <input id="name" class='four fifths mobile'  name='user[password]' type="text" placeholder="Enter your name " value="<%= @user['password'] %>" >
+            <label for="name" class='pull-left one fourth mobile'>密码</label>
+            <input id="name" class='three fourths mobile'  name='user[password]' type="text" placeholder="Enter your name " value="<%= @user['password'] %>" >
           </div>
           <div class="one whole half-padded">
-            <label for="email" class='pull-left one fifth mobile'>Email</label>
-            <input id="email" class='four fifths mobile' type="user[email]" placeholder="you@example.com",value="<%= @user.email%>" disabled='disabled' >
-          </div>
-        </div>
-        <div class="row">
-          <div class="one whole half-padded">
-            <label for="address"  class='pull-left one fifth mobile'>Mobile</label>
-            <input id="address"   class='four fifths mobile' name="userr[mobile]" type="text" placeholder="Enter your mobile" value="<%= @user.mobile%>" disabled='disabled'>
+            <label for="email" class='pull-left one fourth mobile'>Email</label>
+            <input id="email" class='three fourths mobile' type="user[email]" placeholder="you@example.com",value="<%= @user.email%>" disabled='disabled' >
           </div>
         </div>
         <div class="row">
           <div class="one whole half-padded">
-              <label for="type_of_position" class='pull-left one fifth mobile'>工作类型</label>
-              <span class="select-wrap four fifths mobile">
+            <label for="address"  class='pull-left one fourth mobile'>Mobile</label>
+            <input id="address"   class='three fourths mobile' name="userr[mobile]" type="text" placeholder="Enter your mobile" value="<%= @user.mobile%>" disabled='disabled'>
+          </div>
+        </div>
+        <div class="row">
+          <div class="one whole half-padded">
+              <label for="type_of_position" class='pull-left one fourth mobile'>工作类型</label>
+              <span class="select-wrap three fourths mobile">
                 <select class="unselected " id='type_of_position' name='user[type_of_position]'>
                   <% User::POSITION_ARRAY.each do |position| %>
                     <option value="<%= position %>" <% if @user.try(:type_of_position) == position %>selected='selected'<% end%> ><%= position %></option>
@@ -87,8 +87,8 @@
         </div>
         <div class="row">
           <div class="one whole half-padded">
-              <label for="company_id" class='pull-left one fifth mobile'>所属单位</label>
-              <span class="select-wrap four fifths mobile">
+              <label for="company_id" class='pull-left one fourth mobile'>所属单位</label>
+              <span class="select-wrap three fourths mobile">
                 <select class="unselected" id='company_id' name='user[company_id]'>
                   <% Company.all.each do |company| %>
                     <option value="<%= company.id.to_s%>" <% if @user.try(:company_id).to_s == company.id.to_s %>selected='selected' <% end %> ><%=company.name%></option>
@@ -100,8 +100,8 @@
 
         <div class="row">
           <div class="one whole half-padded">
-              <label for="city" class='pull-left one fifth mobile'>最近城市</label>
-              <span class="select-wrap four fifths mobile">
+              <label for="city" class='pull-left one fourth mobile'>最近城市</label>
+              <span class="select-wrap three fourths mobile">
                 <select class="unselected" id='city' name='user[city]'>
                   <% User::CITY_ARRAY.each do |city| %>
                     <option value="<%= city %>" <% if @user.try(:city) == city %> selected='selected'<% end %> ><%= city %></option>
@@ -153,16 +153,16 @@
         </div>
         <div class="row">
           <div class="one whole half-padded">
-              <label for="company_id" class='pull-left one fifth mobile'>QQ</label>
-              <input id="qq" class='four fifths mobile' type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
+              <label for="company_id" class='pull-left one fourth mobile'>QQ</label>
+              <input id="qq" class='three fourths mobile' type="text" name='user[qq]' placeholder="user qq" value="<%= default(@user,'qq') %>">
           </div>
           <div class="one whole half-padded">
-              <label for="wechart" class='pull-left one fifth mobile'>微信号</label>
-              <input id="wechart" class='four fifths mobile' type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
+              <label for="wechart" class='pull-left one fourth mobile'>微信号</label>
+              <input id="wechart" class='three fourths mobile' type="text" name='user[wechart]' placeholder="user wechart" value="<%= default(@user,'wechart') %>">
           </div>
           <div class="one whole half-padded">
-              <label for="skype" class='pull-left one fifth mobile'>Skype</label>
-              <input id="skype" class='four fifths mobile' type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
+              <label for="skype" class='pull-left one fourth mobile'>Skype</label>
+              <input id="skype" class='three fourths mobile' type="text" name='user[skype]' placeholder="user skype" value="<%= default(@user,'skype') %>">
           </div>
         </div>
         <div class="row">

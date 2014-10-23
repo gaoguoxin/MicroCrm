@@ -36,11 +36,11 @@
       <article class="row box">
           <div class="one fourth mobile img-container">
             <a href="<%=course_path(course)%>" >
-              <%= image_tag(show_small_avatar(course))%>  
+              <%= image_tag(show_small_avatar(course))%>
             </a>
           </div>
           <div class="three fourths mobile half-pad-left info-container">
-            <div class="row">
+            <div class="row name_cont">
               <div class="one whole name-holder">
                 <a href="<%=course_path(course)%>" class='block' >
                   <strong><%= course.name_cn %></strong>
@@ -66,8 +66,8 @@
                 </div>
               </div>
             </div>
-          </div>        
-      </article>    
+          </div>
+      </article>
     <%end%>
   <% else %>
     <article class="no-data absolute middle row">
