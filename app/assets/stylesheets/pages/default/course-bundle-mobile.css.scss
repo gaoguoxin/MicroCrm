@@ -14,7 +14,9 @@
 		@include border-radius(0px);
 		background:#fff;
 		&.icp{
-			background:lightgrey;
+			background:#e7e8eb;
+			border-color:#e7e8eb;
+			color:#fafafa;
 		}	
 	}
 	button#multip-start{
