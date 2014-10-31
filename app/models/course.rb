@@ -126,13 +126,13 @@ class Course
 
   #发布了一门新课程，给所有匹配的企业管理员和学员发送开课短信提醒
   def send_new_lesson_msg
-    mlist = Company.where(:name.ne => '其他',pri_serv:/#{content_type}/).actived.map{|e| e.manager.try(:mobile)} #企业管理员电话号码
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.mobile} if self.trainee_condition == 'AX'
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.mobile} if self.trainee_condition == 'CRM'
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.mobile} if self.trainee_condition == '软技能'
-    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.mobile} if self.trainee_condition == '其他'
-    SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s})
-    SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s})
+    mlist = Company.where(:name.ne => '其他',pri_serv:/#{self.manager_condition}/).actived.map{|e| e.manager.try(:email)} #企业管理员email
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.ax.map{|e| e.email} if self.trainee_condition == 'AX'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.crm.map{|e| e.email} if self.trainee_condition == 'CRM'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.softskill.map{|e| e.email} if self.trainee_condition == '软技能'
+    slist = User.where(role_of_system:User::ROLE_EMPLOYEE).actived.qt.map{|e| e.email} if self.trainee_condition == '其他'
+    SmsWorker.perform_async("lesson_published_to_manager",mlist,{course_id:self.id.to_s,condition:self.manager_condition})
+    SmsWorker.perform_async("lesson_published_to_student",slist,{course_id:self.id.to_s,condition:self.trainee_condition})
   end
 
   #课程已经交付，将对应的报名表设置为过期
@@ -268,6 +268,7 @@ class Course
   #batch 用，每五分钟检查一次是否有从发布变为授课中的课程
   #batch 用，每五分钟检查一次是否有从授课中变为已交付的课程
   def self.batch_update_status
+    puts '----in batch update status ----'
     self.each do |c|
       if Time.now >= Time.parse("#{c.start_date} #{c.start_time}") && Time.now < Time.parse("#{c.end_date} #{c.end_time}")
         if c.status == Course::STATUS_CODE_1
@@ -285,6 +286,7 @@ class Course
 
   #batch 用，每天早晨六点查找有没有今天要发送的上课预提醒短信
   def self.send_pre_notice
+    puts '----in send_per_notice -----'
     self.each do |c|
       c.notice_at.split(',').each do |d|
         next if d.class != Fixnum

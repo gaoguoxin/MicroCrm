@@ -40,32 +40,32 @@ class SmsApi # 短信接口
   end
 
   # 开课通知短信到管理员
-  def self.lesson_published_to_manager(type,mlist,opt)
-    course     = Course.find(opt[:course_id])
-    type       = course.trainee_condition
-    name       = course.name_cn
-    date       = course.start_date.strftime('%F')
-    city       = course.show_city
-    tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
+  # def self.lesson_published_to_manager(type,mlist,opt)
+  #   course     = Course.find(opt[:course_id])
+  #   type       = course.trainee_condition
+  #   name       = course.name_cn
+  #   date       = course.start_date.strftime('%F')
+  #   city       = course.show_city
+  #   tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
 
-    mlist.each do |mobile|
-      send_sms(type,497343,mobile,tpl_value)
-    end
-  end  
+  #   mlist.each do |mobile|
+  #     send_sms(type,497343,mobile,tpl_value)
+  #   end
+  # end  
 
   #开课通知短信到学员
-  def self.lesson_published_to_student(type,mlist,opt)
-    course     = Course.find(opt[:course_id])
-    type       = course.trainee_condition
-    name       = course.name_cn
-    date       = course.start_date.strftime('%F')
-    city       = course.show_city
-    tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
+  # def self.lesson_published_to_student(type,mlist,opt)
+  #   course     = Course.find(opt[:course_id])
+  #   type       = course.trainee_condition
+  #   name       = course.name_cn
+  #   date       = course.start_date.strftime('%F')
+  #   city       = course.show_city
+  #   tpl_value  = { type:"#{type}", name:"#{name}", date:"#{date}", city:"#{city}"}
 
-    mlist.each do |mobile|
-      send_sms(type,497343,mobile,tpl_value)
-    end
-  end
+  #   mlist.each do |mobile|
+  #     send_sms(type,497343,mobile,tpl_value)
+  #   end
+  # end
 
   #课程取消短信
   def self.lesson_canceled_to_student(type,mobile,opt)

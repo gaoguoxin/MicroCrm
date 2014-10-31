@@ -9,9 +9,9 @@ class SmsWorker
     when 'lesson_time_changed'
       retval = SmsApi.lesson_time_changed(sms_type, mobile, opt)
     when 'lesson_published_to_manager'
-      retval = SmsApi.lesson_published_to_manager(sms_type, mobile, opt)
+      retval = UserMailer.publish_lesson_to_manager(mobile, opt).deliver
     when 'lesson_published_to_student'
-      retval = SmsApi.lesson_published_to_student(sms_type, mobile, opt)
+      retval = UserMailer.publish_lesson(mobile, opt).deliver
     when 'lesson_canceled_to_student'
       retval = SmsApi.lesson_canceled_to_student(sms_type, mobile, opt)
     when 'lesson_pre_notice'
