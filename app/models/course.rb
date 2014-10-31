@@ -268,7 +268,6 @@ class Course
   #batch 用，每五分钟检查一次是否有从发布变为授课中的课程
   #batch 用，每五分钟检查一次是否有从授课中变为已交付的课程
   def self.batch_update_status
-    puts '----in batch update status ----'
     self.each do |c|
       if Time.now >= Time.parse("#{c.start_date} #{c.start_time}") && Time.now < Time.parse("#{c.end_date} #{c.end_time}")
         if c.status == Course::STATUS_CODE_1
@@ -276,8 +275,8 @@ class Course
         end
       end
       if Time.now >= Time.parse("#{c.end_date} #{c.end_time}")
-        if c.status == Course::STATUS_CODE_3
-          c.update_attributes(:status => Course::STATUS_CODE_2)  #将授课中的课程更新为已交付
+        if c.status == Course::STATUS_CODE_2
+          c.update_attributes(:status => Course::STATUS_CODE_3)  #将授课中的课程更新为已交付
           c.orders.update_all(passed:true) # 将关联的订单设置为过期
         end
       end
@@ -286,7 +285,6 @@ class Course
 
   #batch 用，每天早晨六点查找有没有今天要发送的上课预提醒短信
   def self.send_pre_notice
-    puts '----in send_per_notice -----'
     self.each do |c|
       c.notice_at.split(',').each do |d|
         next if d.class != Fixnum
