@@ -275,7 +275,7 @@ class Course
           c.update_attributes(:status => Course::STATUS_CODE_2)  #将已发布的课程更新为授课中
         end
       end
-      if Time.now >= Time.parse("#{c.start_date} #{c.start_time}")
+      if Time.now >= Time.parse("#{c.end_date} #{c.end_time}")
         if c.status == Course::STATUS_CODE_3
           c.update_attributes(:status => Course::STATUS_CODE_2)  #将授课中的课程更新为已交付
           c.orders.update_all(passed:true) # 将关联的订单设置为过期
