@@ -82,7 +82,7 @@
         <span class="select-wrap">
           <select class="unselected" id='course_charge_category' name='course[charge_category]'>
             <% Course::CHARGE_TYPE_HASH.each do |k,v| %>
-              <option value="<%= k %>" <% if f.try(:charge_category) == k %>selected='selected' <% end %> ><%= v %></option>
+              <option value="<%= k %>" <% if @course.try(:charge_category) == k %>selected='selected' <% end %> ><%= v %></option>
             <% end %>
           </select>
         </span>        

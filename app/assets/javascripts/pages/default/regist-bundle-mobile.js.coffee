@@ -25,7 +25,6 @@ $(->
 		mobile     = $.trim(mobile_ipt.val())
 		password   = $.trim(password_ipt.val())
 		company    = company_ipt.val()
-		console.log(name)
 		if name.length == 0
 			flag_notice('请输入姓名')
 			return 

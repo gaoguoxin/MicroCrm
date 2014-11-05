@@ -41,6 +41,7 @@ $(->
 			msg = '新单位创建成功,点击列表进行查看!'
 
 		$.post(ajax_url,data,(ret)->
+			console.log(ret)
 			if ret.success
 				flash_notice(msg)
 		)	
@@ -123,23 +124,7 @@ $(->
 			open_search_mannager(data)
 		else
 			unless $('form.new-company #name').val().indexOf?('其他') >= 0
-				$(@).parents('.padded').addClass('invalid')
-
-		# if $.regex.isMobile(manager) or $.regex.isEmail(manager)
-		# 	data = {account:manager}
-
-		# 	# $.get("/admin/companies/search_manager",data,(ret)->
-		# 	# 	if ret.success
-		# 	# 		if ret.value
-		# 	# 			$this.parents('.padded').addClass('valid')
-		# 	# 			$this.text('匹配成功!')
-		# 	# 		else
-		# 	# 			$this.parents('.padded').addClass('invalid')
-		# 	# 			$this.text('不存在，创建?')		
-		# 	# )
-		# else
-		# 	unless $('form.new-company #name').val().indexOf?('其他') >= 0
-		# 		$(@).parents('.padded').addClass('invalid')		
+				$(@).parents('.padded').addClass('invalid')	
 	)
 
 	$('body').on('click','.select-manager-btn',(e)->

@@ -19,6 +19,7 @@ class Admin::OrdersController < Admin::AdminController
 
   def search
     params[:t] ||= 'o'
+    params[:per_page] = 100 #考虑到导出excel翻页问题，将这个值改为100了 
     @orders = auto_paginate(Order.admin_search(params))
   end
 
@@ -50,7 +51,7 @@ class Admin::OrdersController < Admin::AdminController
     blue = Spreadsheet::Format.new :color => :blue, :weight => :bold, :size => 10,:horizontal_align => :center 
     sheet1.row(0).default_format = blue  
     sheet1.merge_cells(0, 0, 0, 4)
-    sheet1[0,0] = obj[0].course.try(:name_en) || '课程名称'
+    sheet1[0,0] = obj[0].course.try(:name_cn) || '课程名称'
     sheet1.row(1).concat %w{公司名称 报名人  邮箱  手机号 报名日期    }  
     count_row = 2  
     obj.each do |obj|  

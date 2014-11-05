@@ -55,7 +55,6 @@ $(->
 		if obj.hasClass('upd')
 			ajax_url = "/admin/users/update_info"
 			msg = '用户信息修改成功！'
-			console.log(msg)
 		else
 			ajax_url = "/admin/users"
 			msg = '用户信息创建成功,点击列表进行查看!'

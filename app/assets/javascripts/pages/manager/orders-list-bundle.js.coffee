@@ -16,14 +16,10 @@ $(->
 
   $('body').on('click','a.cancel',->
     oid = $(@).data('oid')
-
     $.get('/manager/orders/cancel',{id:oid},(ret)->
-      console.log(ret)
       if ret.success
         window.location.reload()
     )
-
-
   )
 
   handle_order = (obj,cid,uid,type)->

@@ -249,11 +249,9 @@ class Order
     manager = User.find(manager_id)
     company = manager.companies.first
     uids = company.users.map{|e| e.id.to_s}
-    
     opt[:t] ||= 'w'
-
     if opt[:t] ==  'w' # 等待企业审核的报名
-      orders = self.where(status:STATUS_CODE_0,state:STATE_CODE_0,passed:false,:user_id.in => uids,)
+      orders = self.where(status:STATUS_CODE_0,state:STATE_CODE_0,passed:false,:user_id.in => uids)
     end
     if opt[:t] == 's' # 企业审核通过,等待系统审核的报名
       orders = self.where(status:STATUS_CODE_1,state:STATE_CODE_0,passed:false,:user_id.in => uids)
@@ -262,10 +260,10 @@ class Order
       orders = self.where(state:STATE_CODE_1,passed:false,:user_id.in => uids)
     end
     if opt[:t] == 'c' #审核通过但是取消的报名
-      orders = self.where(is_cancel:true,state:STATE_CODE_1,passed:false,:user_id.in => uids,)
+      orders = self.where(is_cancel:true,state:STATE_CODE_1,passed:false,:user_id.in => uids)
     end
     if opt[:t] == 'p' # 过期的报名
-      orders = self.where(passed:true,:user_id.in => uids,)
+      orders = self.where(passed:true,:user_id.in => uids)
     end
     return orders
 
@@ -330,7 +328,7 @@ class Order
         orders = orders.select{|e| e.is_cancel == false}
       end
     end
-
+    
     return orders
   end
 

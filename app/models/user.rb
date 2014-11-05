@@ -9,7 +9,7 @@ class User
   attr_accessor :ref,:ordered
 
   EmailRexg  = '\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z'
-  MobileRexg = '^(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$'
+  MobileRexg = '^(13[0-9]|15[012356789]|18[02356789]|14[57])[0-9]{8}$'
 
   ROLE_ADMIN = 1 # 系统管理员
   ROLE_MANAGER = 2 # 企业管理员

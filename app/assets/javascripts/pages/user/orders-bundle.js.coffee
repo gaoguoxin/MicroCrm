@@ -5,11 +5,19 @@ $(->
 		$.get("#{href}",{},->)
 	)
 
+	$('body').on('click','a.cancel-order',->
+		open_confirm_box($(@))
+	)
+
+	$('body').on('click','.cancel-operation',->
+		$.fancybox.close();
+	)
+
 	$('body').on('click','.sure-operation',->
 		oid = $(@).data('oid')
 		$.get("/user/orders/#{oid}/cancel",{},(ret)->
 			if ret.success
-				$('a[data-id="#{oid}"]').parents('tr').remove()
+				window.location.reload()
 				
 		)		
 	)
