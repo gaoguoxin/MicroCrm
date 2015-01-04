@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   # init action
   def init
-    @icp = 'xxxxxx'
+    @icp = '京ICP备06003108号-3'
     refresh_session(cookies[:auth_key])
   end
 
