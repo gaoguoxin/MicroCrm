@@ -182,11 +182,11 @@ class User
 
   def self.find_pwd(mobile)
     u = User.where(mobile:mobile).first
-    Rails.logger.info('============================')
-    Rails.logger.info(u.inspect)
-    Rails.logger.info('============================')
     return ErrorEnum::USER_NOT_EXIST unless u.present?
-    return ErrorEnum::WAIT_FOR_MINUTES unless Time.now - u.find_time > 60
+    if u.find_time.present?
+      return ErrorEnum::WAIT_FOR_MINUTES unless Time.now - u.find_time > 60  
+    end
+    
     new_pwd = Random.rand(999999)
     SmsWorker.perform_async("find_password",mobile,{pwd:new_pwd})
     new_pwd = make_encrypt(new_pwd)
